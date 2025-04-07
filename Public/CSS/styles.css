@@ -1,0 +1,239 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    padding-top: 80px;
+
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Centrar el menú y ajustar el logo */
+.navbar {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85%;
+    max-width: 1200px;
+    height: 60px;
+    background: white;
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between; /* Espaciado entre logo y menú */
+    align-items: center;
+    padding: 0 25px;
+    z-index: 1000;
+    transition: background-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+    height: 100%;
+    justify-content: center; /* Centra los elementos del menú */
+    align-items: center;
+    flex: 1; /* Permite que el menú ocupe el espacio restante */
+}
+
+.nav-links li {
+    list-style: none;
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.nav-links li:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.nav-links li:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.nav-links li:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    font-size: 15px;
+    transition: color 0.5s ease, background-color 0.5s ease, transform 0.3s ease-in-out;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    border-radius: 20px;
+}
+
+.nav-links a:hover {
+    color: #2a7ae9;
+    background: #f0f7ff;
+    transform: scale(1.1); /* Efecto de zoom al pasar el mouse */
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    min-width: 220px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 15px 0;
+    z-index: 1;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content li {
+    padding: 8px 20px;
+}
+
+.dropdown-content a {
+    height: auto;
+    padding: 8px 15px;
+    border-radius: 15px;
+}
+
+/* Ajustar el logo */
+.logo {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #2a7ae9 0%, #1ac8db 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    box-shadow: 0 4px 15px rgba(42, 122, 233, 0.3);
+    margin-right: 20px; /* Espaciado entre el logo y el menú */
+}
+
+.logo span {
+    transform: rotate(15deg);
+}
+
+/* Botón de cambio de tema */
+.theme-toggle {
+    position: absolute; /* Alineado con el menú */
+    right: 25px;
+    top: 50%; /* Centrado verticalmente */
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #f9d71c, #f39c12); /* Sol */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.5s ease, transform 0.3s ease-in-out;
+}
+
+.theme-toggle:hover {
+    transform: translateY(-50%) scale(1.1); /* Efecto de zoom al pasar el mouse */
+}
+
+.theme-toggle.night {
+    background: linear-gradient(135deg, #2c3e50, #34495e); /* Luna */
+}
+
+.theme-toggle i {
+    font-size: 18px; /* Tamaño reducido para minimalismo */
+    color: white;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.theme-toggle.night i {
+    transform: rotate(180deg);
+}
+
+/* Animación de entrada para el menú */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estilos para el tema de día */
+body.day {
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+.navbar.day {
+    background: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.nav-links a.day {
+    color: #333;
+    background: transparent;
+}
+
+.nav-links a.day:hover {
+    background: #f0f7ff;
+    color: #2a7ae9;
+}
+
+/* Estilos para el tema de noche */
+body.night {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+}
+
+.navbar.night {
+    background: #34495e;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.nav-links a.night {
+    color: #ecf0f1;
+    background: transparent;
+}
+
+.nav-links a.night:hover {
+    background: #3b4a5a; /* Fondo oscuro al pasar el mouse */
+    color: #1abc9c; /* Texto con un color destacado */
+}
+
+/* Dropdown (menú desplegable) */
+body.night .dropdown-content {
+    background: #3b4a5a; /* Fondo oscuro para el tema nocturno */
+    color: #ecf0f1;
+}
+
+body.night .dropdown-content a {
+    color: #ecf0f1;
+}
+
+body.night .dropdown-content a:hover {
+    background: #1abc9c; /* Fondo destacado al pasar el mouse */
+    color: #2c3e50; /* Texto oscuro */
+}
