@@ -1,0 +1,7 @@
+Desktop/id_rsa*
+.ssh/
+*.pem
+*.key
+*.keystore
+*.p12
+*.pfx
