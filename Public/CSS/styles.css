@@ -7,38 +7,82 @@
 
 body {
     background-color: #f5f7fa;
-    padding-top: 80px;
-
+    padding-top: 20px; /* Reducir el espaciado superior */
     transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 /* Centrar el menú y ajustar el logo */
 .navbar {
-    position: fixed;
-    top: 20px;
+    position: relative;
+    top: 0px;
     left: 50%;
     transform: translateX(-50%);
-    width: 85%;
-    max-width: 1200px;
-    height: 60px;
+    width: 95%; /* Aumentar el ancho de la barra para ocupar más espacio horizontal */
+    max-width: 1400px; /* Ajustar el ancho máximo */
+    height: 90px; /* Aumentar la altura de la barra */
     background: white;
-    border-radius: 50px;
+    border-radius: 40px; /* Ajustar el borde redondeado */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between; /* Espaciado entre logo y menú */
     align-items: center;
-    padding: 0 25px;
+    padding: 0 50px; /* Aumentar el espaciado interno */
     z-index: 1000;
-    transition: background-color 0.5s ease, box-shadow 0.5s ease;
+    transition: background-color 0.5s ease, box-shadow 0.5s ease; /* Fondo y sombra */
 }
 
+/* Estilos para el botón de menú hamburguesa */
+.menu-toggle {
+    display: none; /* Ocultar el botón por defecto */
+    position: absolute;
+    top: 25px;
+    right: 30px;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 1100; /* Asegura que esté encima del menú */
+    color: #333;
+}
+
+/* Hacer que el menú principal sea desplazable */
 .nav-links {
     display: flex;
-    gap: 25px;
+    gap: 20px; /* Espaciado entre los elementos */
     height: 100%;
-    justify-content: center; /* Centra los elementos del menú */
+    justify-content: flex-start; /* Alinear los elementos al inicio */
     align-items: center;
-    flex: 1; /* Permite que el menú ocupe el espacio restante */
+    overflow-x: auto; /* Habilitar desplazamiento horizontal */
+    scrollbar-width: thin; /* Estilo del scrollbar en navegadores compatibles */
+    padding: 10px 0; /* Espaciado interno */
+}
+
+.nav-links::-webkit-scrollbar {
+    height: 8px; /* Altura del scrollbar */
+}
+
+.nav-links::-webkit-scrollbar-thumb {
+    background: #ccc; /* Color del scrollbar */
+    border-radius: 4px; /* Bordes redondeados */
+}
+
+.nav-links::-webkit-scrollbar-thumb:hover {
+    background: #aaa; /* Color del scrollbar al pasar el mouse */
+}
+
+.nav-links.responsive {
+    display: block; /* Cambiar a bloque en pantallas pequeñas */
+    position: absolute;
+    top: 90px; /* Debajo de la barra de navegación */
+    right: 0;
+    background: white;
+    width: 100%;
+    padding: 20px 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.nav-links.responsive li {
+    margin: 10px 0;
+    text-align: center;
 }
 
 .nav-links li {
@@ -66,81 +110,92 @@ body {
     text-decoration: none;
     color: #333;
     font-weight: 600;
-    font-size: 15px;
-    transition: color 0.5s ease, background-color 0.5s ease, transform 0.3s ease-in-out;
-    height: 100%;
+    font-size: 20px; /* Aumentar el tamaño del texto */
+    transition: color 0.5s ease, background-color 0.5s ease, transform 0.3s ease-in-out; /* Enlaces del menú */
+    height: 70px; /* Aumentar la altura de los enlaces */
     display: flex;
     align-items: center;
-    padding: 0 10px;
-    border-radius: 20px;
+    padding: 0 20px; /* Aumentar el espaciado interno de los enlaces */
+    border-radius: 35px; /* Ajustar el borde redondeado */
 }
 
 .nav-links a:hover {
     color: #2a7ae9;
-    background: #f0f7ff;
+    background: #f0f7ff; /* Fondo al pasar el mouse */
     transform: scale(1.1); /* Efecto de zoom al pasar el mouse */
 }
 
+/* Estilo para el contenedor del menú desplegable */
 .dropdown {
-    position: relative;
+    position: relative; /* Asegura que el contenido desplegable esté posicionado relativo al contenedor */
 }
 
 .dropdown-content {
-    display: none;
+    display: none; /* Ocultar por defecto */
     position: absolute;
-    top: 100%;
+    top: 100%; /* Mostrar debajo del botón de "Categorías" */
     left: 0;
     background: white;
-    min-width: 220px;
+    min-width: 300px; /* Ancho mínimo del menú desplegable */
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    padding: 15px 0;
+    padding: 25px 0; /* Espaciado interno */
     z-index: 1;
-    transition: background-color 0.5s ease, color 0.5s ease;
+    transition: background-color 0.5s ease, color 0.5s ease; /* Fondo y texto del menú desplegable */
 }
 
+/* Mostrar el menú desplegable al pasar el mouse */
 .dropdown:hover .dropdown-content {
-    display: block;
+    display: block; /* Mostrar el menú desplegable */
+    opacity: 1; /* Hacerlo visible */
+    transform: translateY(0); /* Restablecer la posición */
 }
 
+/* Estilo para los elementos del menú desplegable */
 .dropdown-content li {
-    padding: 8px 20px;
+    padding: 15px 25px; /* Espaciado interno de los elementos */
 }
 
 .dropdown-content a {
-    height: auto;
-    padding: 8px 15px;
-    border-radius: 15px;
+    text-decoration: none;
+    color: #333;
+    font-size: 18px; /* Tamaño del texto */
+    padding: 12px 20px; /* Espaciado interno */
+    border-radius: 25px; /* Bordes redondeados */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave */
+}
+
+.dropdown-content a:hover {
+    background: #f0f7ff; /* Fondo al pasar el mouse */
+    color: #2a7ae9; /* Cambiar el color del texto */
 }
 
 /* Ajustar el logo */
 .logo {
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, #2a7ae9 0%, #1ac8db 100%);
-    border-radius: 50%;
+    width: 120px; /* Tamaño fijo para el contenedor del logo */
+    height: 50px; /* Altura fija */
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    font-weight: bold;
-    font-size: 18px;
-    box-shadow: 0 4px 15px rgba(42, 122, 233, 0.3);
-    margin-right: 20px; /* Espaciado entre el logo y el menú */
+    flex-shrink: 0; /* Evita que el contenedor se reduzca */
 }
 
-.logo span {
-    transform: rotate(15deg);
+.logo-img {
+    width: 100%; /* Asegura que la imagen ocupe todo el ancho del contenedor */
+    height: auto; /* Mantiene la relación de aspecto */
+    object-fit: contain; /* Asegura que la imagen se ajuste correctamente */
+    max-width: 120px; /* Tamaño máximo para evitar que crezca demasiado */
+    min-width: 80px; /* Tamaño mínimo para evitar que desaparezca */
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8)); /* Aumentar el tamaño del contorno */
 }
 
 /* Botón de cambio de tema */
 .theme-toggle {
-    position: absolute; /* Alineado con el menú */
-    right: 25px;
-    top: 50%; /* Centrado verticalmente */
-    transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
+    position: fixed; /* Asegura que el botón esté siempre en la misma posición */
+    left: 20px; /* Alinearlo a la izquierda */
+    bottom: 20px; /* Alinearlo en la parte inferior */
+    width: 50px; /* Tamaño del botón */
+    height: 50px;
     background: linear-gradient(135deg, #f9d71c, #f39c12); /* Sol */
     border-radius: 50%;
     display: flex;
@@ -148,11 +203,12 @@ body {
     justify-content: center;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    transition: background-color 0.5s ease, transform 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    z-index: 9999; /* Asegura que el botón esté al frente de todos los elementos */
 }
 
 .theme-toggle:hover {
-    transform: translateY(-50%) scale(1.1); /* Efecto de zoom al pasar el mouse */
+    transform: scale(1.1); /* Efecto de zoom al pasar el mouse */
 }
 
 .theme-toggle.night {
@@ -236,4 +292,221 @@ body.night .dropdown-content a {
 body.night .dropdown-content a:hover {
     background: #1abc9c; /* Fondo destacado al pasar el mouse */
     color: #2c3e50; /* Texto oscuro */
+}
+
+/* Contorno dinámico más grande para el logo en el tema oscuro */
+body.night .logo-img {
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8)); /* Aumentar el tamaño del contorno */
+    border-radius: 0; /* Asegura que no haya bordes redondeados adicionales */
+}
+
+/* Contenedor del video */
+.video-container {
+    position: relative;
+    top: 20px; /* Reducir el espacio entre el menú y el video */
+    width: 100%; /* Hacer que el video ocupe todo el ancho de la página */
+    height: 50%; /* Reducir la altura del contenedor al 50% de la pantalla */
+    overflow: hidden; /* Ocultar las partes del video que sobresalgan */
+}
+
+/* Estilo del video con desvanecimiento en las orillas */
+.video {
+    width: 100%; /* Hacer que el video ocupe todo el ancho del contenedor */
+    height: 100%; /* Hacer que el video ocupe toda la altura del contenedor */
+    object-fit: cover; /* Recortar el video para que se ajuste al contenedor */
+    object-position: center bottom; /* Mostrar la parte inferior del video */
+    display: block;
+    border-radius: 20px; /* Redondear las esquinas del video */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Difuminar las esquinas */
+
+    /* Efecto de desvanecimiento en las orillas */
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-composite: destination-in;
+    mask-composite: intersect;
+}
+
+/* Contenedor del texto sobre el video */
+.video-text {
+    position: absolute;
+    top: 50%; /* Centrar verticalmente */
+    left: 50%; /* Centrar horizontalmente */
+    transform: translate(-50%, -50%); /* Ajustar el texto al centro exacto */
+    text-align: center;
+    color: white; /* Texto visible sobre el video */
+    z-index: 2; /* Asegura que el texto esté encima del video */
+    pointer-events: auto; /* Permitir eventos del mouse */
+    transition: transform 0.3s ease, color 0.3s ease; /* Transición suave */
+}
+
+/* Estilo para el texto grande */
+.video-text h1 {
+    font-size: 5rem; /* Tamaño más grande para el título */
+    font-weight: bold;
+    margin: 0;
+    text-shadow: 0 6px 20px rgba(0, 0, 0, 0.8); /* Sombra más pronunciada para profundidad */
+    transition: transform 0.3s ease, color 0.3s ease; /* Transición suave */
+}
+
+/* Estilo para el texto pequeño */
+.video-text p {
+    font-size: 2rem; /* Tamaño más grande para el subtítulo */
+    margin: 10px 0 0;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.7); /* Sombra para mejor visibilidad */
+    transition: transform 0.3s ease, color 0.3s ease; /* Transición suave */
+}
+
+/* Efecto al pasar el mouse sobre el contenedor del texto */
+.video-text:hover h1 {
+    transform: scale(1.1); /* Aumentar ligeramente el tamaño del título */
+    color: hsl(37, 89%, 81%); /* Cambiar el color del título */
+}
+
+.video-text:hover p {
+    transform: scale(1.05); /* Aumentar ligeramente el tamaño del subtítulo */
+    color: hsl(37, 89%, 81%); /* Cambiar el color del subtítulo */
+}
+
+/* Mostrar el botón hamburguesa en pantallas pequeñas */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-links {
+        display: flex;
+        flex-wrap: nowrap; /* Evitar que los elementos se ajusten a una nueva línea */
+    }
+
+    .nav-links {
+        display: flex;
+        flex-wrap: nowrap; /* Evitar que los elementos se ajusten a una nueva línea */
+        overflow-x: auto; /* Habilitar desplazamiento horizontal */
+        padding: 10px; /* Espaciado interno */
+    }
+}
+
+/* Estilos para el footer */
+.footer {
+    background-color: #ffffff; /* Fondo claro por defecto */
+    color: #333; /* Texto oscuro */
+    padding: 40px 20px; /* Espaciado interno */
+    text-align: center;
+    transition: background-color 0.5s ease, color 0.5s ease; /* Fondo y texto del footer */
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto; /* Centrar el contenido */
+    gap: 20px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px; /* Ancho mínimo para cada sección */
+    text-align: center; /* Centrar el contenido dentro de la sección */
+}
+
+.footer-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #f39c12; /* Color destacado para los títulos */
+    transition: color 0.5s ease; /* Texto del footer */
+}
+
+.footer-section p,
+.footer-section a {
+    font-size: 1rem;
+    margin: 5px 0;
+    color: #333; /* Texto oscuro */
+    text-decoration: none;
+    transition: color 0.5s ease; /* Texto del footer */
+}
+
+.footer-section a:hover {
+    color: #2a7ae9; /* Cambiar color al pasar el mouse */
+}
+
+.footer-section .social-link {
+    display: flex;
+    justify-content: center; /* Centrar los enlaces horizontalmente */
+    align-items: center; /* Centrar los íconos verticalmente */
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.footer-section .social-link a {
+    text-decoration: none;
+    color: #333; /* Texto oscuro */
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.footer-section .social-link a:hover {
+    color: #2a7ae9; /* Cambiar color al pasar el mouse */
+}
+
+.footer-section .social-link i {
+    font-size: 1.5rem; /* Tamaño del ícono */
+}
+
+.footer-bottom {
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    font-size: 0.9rem;
+    color: #666;
+    transition: color 0.5s ease, border-color 0.5s ease; /* Texto y borde inferior del footer */
+}
+
+/* Tema claro para el footer */
+body.day .footer {
+    background-color: #ffffff; /* Fondo blanco para el tema claro */
+    color: #333; /* Texto oscuro */
+}
+
+body.day .footer-section h3 {
+    color: #f39c12; /* Color destacado para los títulos */
+}
+
+body.day .footer-section p,
+body.day .footer-section a {
+    color: #333; /* Texto oscuro */
+}
+
+body.day .footer-section a:hover {
+    color: #2a7ae9; /* Cambiar color al pasar el mouse */
+}
+
+body.day .footer-bottom {
+    color: #666; /* Texto más claro para la parte inferior */
+    border-top: 1px solid #ddd; /* Línea más clara */
+}
+
+/* Tema oscuro para el footer */
+body.night .footer {
+    background-color: #34495e; /* Fondo oscuro */
+    color: #ecf0f1; /* Texto claro */
+}
+
+body.night .footer-section h3 {
+    color: #f1c40f; /* Color destacado para los títulos */
+}
+
+body.night .footer-section p,
+body.night .footer-section a {
+    color: #ecf0f1; /* Texto claro */
+}
+
+body.night .footer-section a:hover {
+    color: #1abc9c; /* Cambiar color al pasar el mouse */
+}
+
+body.night .footer-bottom {
+    color: #bdc3c7; /* Texto más claro para la parte inferior */
+    border-top: 1px solid #3b4a5a; /* Línea más oscura */
 }
