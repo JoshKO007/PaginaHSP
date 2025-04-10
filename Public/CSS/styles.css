@@ -237,6 +237,71 @@ video::-webkit-media-controls-panel {
     max-width: 1400px;
 }
 
+/* Estilo para los encabezados h4 dentro del contenedor de marcas */
+.marcas-container h4 {
+    font-size: 1rem; /* Reducir el tamaño de fuente */
+    font-weight: bold; /* Negrita */
+    color: #2a7ae9; /* Color azul */
+    text-align: center; /* Centrar el texto */
+    margin-top: 10px; /* Espaciado superior */
+    margin-bottom: 10px; /* Espaciado inferior */
+    text-transform: uppercase; /* Convertir texto a mayúsculas */
+    letter-spacing: 0.5px; /* Reducir el espaciado entre letras */
+    transition: none; /* Eliminar transiciones */
+}
+
+/* Estilo para los encabezados h3 dentro del contenedor de marcas */
+.marcas-container h3 {
+    font-size: 1.2rem; /* Reducir el tamaño de fuente */
+    font-weight: bold; /* Negrita */
+    color: #2a7ae9; /* Color azul */
+    text-align: center; /* Centrar el texto */
+    margin-top: 15px; /* Espaciado superior */
+    margin-bottom: 15px; /* Espaciado inferior */
+    text-transform: uppercase; /* Convertir texto a mayúsculas */
+    letter-spacing: 0.5px; /* Reducir el espaciado entre letras */
+    line-height: 1.4; /* Altura de línea */
+    transition: none; /* Eliminar transiciones */
+}
+
+/* Estilo específico para el contenedor de marcas en marcas.html */
+.marcas-container-especifico {
+    background: rgba(249, 249, 249, 0.8); /* Fondo claro con transparencia */
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    padding: 50px; /* Espaciado interno */
+    margin: 40px auto; /* Centrar y agregar margen superior/inferior */
+    max-width: 1400px; /* Igualar el ancho máximo al de la navbar */
+    width: 95%; /* Igualar el ancho al de la navbar */
+    text-align: center; /* Centrar el texto */
+}
+
+.marcas-container-especifico h2 {
+    font-size: 2rem; /* Tamaño de fuente más grande */
+    font-weight: bold; /* Negrita */
+    color: #2a7ae9; /* Color azul */
+    margin-bottom: 20px; /* Espaciado inferior */
+    text-transform: uppercase; /* Convertir texto a mayúsculas */
+}
+
+.marcas-container-especifico h3 {
+    font-size: 1.2rem; /* Tamaño de fuente */
+    font-weight: bold; /* Negrita */
+    color: #333; /* Color gris oscuro */
+    margin-bottom: 30px; /* Espaciado inferior */
+    text-transform: uppercase; /* Convertir texto a mayúsculas */
+    letter-spacing: 1px; /* Espaciado entre letras */
+}
+
+/* Estilo general para h3 */
+h3 {
+    font-size: 1.4rem; /* Tamaño de fuente general */
+    font-weight: 600; /* Peso de fuente */
+    color: #333; /* Color del texto */
+    margin-bottom: 20px; /* Espaciado inferior */
+    text-align: left; /* Alinear a la izquierda por defecto */
+}
+
 .marcas-grid {
     display: flex;
     flex-wrap: wrap;
@@ -289,6 +354,30 @@ video::-webkit-media-controls-panel {
 
 .ver-mas-btn:hover i {
     transform: translateY(3px);
+}
+
+/* Estilo para el botón "Ver productos" */
+.ver-productos-btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #2a7ae9, #1a5cb0); /* Fondo degradado */
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.ver-productos-btn:hover {
+    background: linear-gradient(135deg, #1a5cb0, #2a7ae9); /* Cambiar degradado al pasar el cursor */
+    transform: scale(1.05); /* Aumentar ligeramente el tamaño */
+}
+
+.ver-productos-btn:active {
+    transform: scale(0.95); /* Reducir ligeramente el tamaño al hacer clic */
 }
 
 /* ---- Footer ---- */
@@ -585,6 +674,47 @@ body.night .social-icon {
     
     .marcas-grid img {
         width: 200px;
+    }
+
+    .footer {
+        padding: 20px 0; /* Reducir el padding del footer */
+        font-size: 0.9rem; /* Reducir el tamaño de fuente */
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr; /* Mostrar las secciones en una sola columna */
+        gap: 20px; /* Reducir el espacio entre secciones */
+        text-align: center; /* Centrar el contenido */
+    }
+
+    .footer-logo {
+        width: 100px; /* Reducir el tamaño del logo */
+        margin: 0 auto 10px;
+    }
+
+    .footer-title {
+        font-size: 1rem; /* Reducir el tamaño de los títulos */
+        margin-bottom: 10px;
+    }
+
+    .footer-contact p {
+        font-size: 0.9rem; /* Reducir el tamaño del texto de contacto */
+        margin-bottom: 10px;
+    }
+
+    .footer-social {
+        justify-content: center; /* Centrar los íconos sociales */
+        gap: 10px; /* Reducir el espacio entre íconos */
+    }
+
+    .footer-bottom {
+        padding: 10px; /* Reducir el padding inferior */
+        font-size: 0.8rem; /* Reducir el tamaño de fuente */
+    }
+
+    .footer-legal {
+        flex-direction: column; /* Mostrar los enlaces legales en una columna */
+        gap: 10px; /* Reducir el espacio entre enlaces */
     }
 }
 
@@ -1003,50 +1133,201 @@ img {
     color: #333; /* Color del texto */
     font-size: 1rem; /* Tamaño de fuente */
     line-height: 1.6; /* Altura de línea para mejor legibilidad */
+    opacity: 0; /* Ocultar inicialmente */
+    transform: translateY(20px); /* Mover hacia abajo inicialmente */
+    animation: fadeInUp 1s ease forwards; /* Animación de entrada */
 }
 
-/* Estilo para los encabezados dentro de la política de privacidad */
+/* Animación para los encabezados */
 .privacy-policy h1,
 .privacy-policy h2 {
     color: #2a7ae9; /* Color azul para los encabezados */
     margin-bottom: 15px;
     text-align: center;
+    opacity: 0; /* Ocultar inicialmente */
+    transform: translateY(-20px); /* Mover hacia arriba inicialmente */
+    animation: fadeInDown 1s ease forwards;
 }
 
 .privacy-policy h1 {
     font-size: 2rem; /* Tamaño más grande para el título principal */
     font-weight: bold;
+    animation-delay: 0.2s; /* Retraso para la animación */
 }
 
 .privacy-policy h2 {
     font-size: 1.5rem; /* Tamaño más pequeño para subtítulos */
     font-weight: 600;
+    animation-delay: 0.4s; /* Retraso para la animación */
 }
 
-/* Estilo para los párrafos */
+/* Animación para los párrafos */
 .privacy-policy p {
     margin-bottom: 15px;
     text-align: justify; /* Justificar el texto */
+    opacity: 0; /* Ocultar inicialmente */
+    transform: translateY(10px); /* Mover hacia abajo inicialmente */
+    animation: fadeInUp 1s ease forwards;
+    animation-delay: 0.6s; /* Retraso para la animación */
 }
 
-/* Estilo para las listas */
+/* Animación para las listas */
 .privacy-policy ul {
     margin-left: 20px; /* Espaciado a la izquierda */
     margin-bottom: 15px;
     list-style-type: disc; /* Estilo de lista con viñetas */
+    opacity: 0; /* Ocultar inicialmente */
+    transform: translateY(10px); /* Mover hacia abajo inicialmente */
+    animation: fadeInUp 1s ease forwards;
+    animation-delay: 0.8s; /* Retraso para la animación */
 }
 
 .privacy-policy ul li {
     margin-bottom: 10px;
+    opacity: 0; /* Ocultar inicialmente */
+    transform: translateX(-10px); /* Mover hacia la izquierda inicialmente */
+    animation: fadeInLeft 1s ease forwards;
+    animation-delay: 1s; /* Retraso para la animación */
 }
 
-/* Estilo para los enlaces */
+/* Animación para los enlaces */
 .privacy-policy a {
     color: #2a7ae9; /* Color azul para los enlaces */
     text-decoration: none;
     transition: color 0.3s ease;
+    opacity: 0; /* Ocultar inicialmente */
+    transform: scale(0.9); /* Reducir tamaño inicialmente */
+    animation: fadeInScale 1s ease forwards;
+    animation-delay: 1.2s; /* Retraso para la animación */
 }
 
 .privacy-policy a:hover {
     color: #1a5cb0; /* Color más oscuro al pasar el cursor */
+    transform: scale(1.1); /* Aumentar tamaño al pasar el cursor */
+}
+
+/* Definición de animaciones */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+.item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+}
+
+.item img {
+    max-width: 300px;
+    max-height: 300px;
+}
+
+/* Estilo para los ítems cargados desde el JSON */
+#contenedor-items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 150px; /* Aumentar el espaciado entre ítems */
+    padding: 30px;
+}
+
+#contenedor-items .item {
+    display: flex; /* Usar Flexbox para centrar contenido */
+    flex-direction: column; /* Alinear elementos en columna */
+    align-items: center; /* Centrar horizontalmente */
+    justify-content: space-between; /* Espaciado uniforme entre elementos */
+    width: 250px; /* Ancho consistente */
+    height: 350px; /* Altura fija para todos los contenedores */
+    text-align: center;
+    border: none; /* Quitar el borde */
+    background: none; /* Quitar el fondo */
+    padding: 10px; /* Espaciado interno */
+    box-shadow: none; /* Quitar la sombra */
+    transition: transform 0.3s ease; /* Mantener la transición suave */
+}
+
+#contenedor-items .item img {
+    max-width: 100%; /* Ajustar al ancho máximo permitido */
+    max-height: 200px; /* Ajustar a la altura máxima permitida */
+    object-fit: contain; /* Mantener proporciones */
+    display: block; /* Asegurar que la imagen sea tratada como un bloque */
+    margin: auto; /* Centrar la imagen vertical y horizontalmente */
+}
+
+#contenedor-items .item .ver-productos-btn {
+    margin-top: auto; /* Empujar el botón hacia la parte inferior del contenedor */
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #2a7ae9, #1a5cb0); /* Fondo degradado */
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#contenedor-items .item .ver-productos-btn:hover {
+    background: linear-gradient(135deg, #1a5cb0, #2a7ae9); /* Cambiar degradado al pasar el cursor */
+    transform: scale(1.05); /* Aumentar ligeramente el tamaño */
+}
+
+#contenedor-items .item h4 {
+    font-size: 1rem; /* Tamaño de fuente */
+    font-weight: bold; /* Negrita */
+    color: #333; /* Color del texto */
+    margin-top: 10px; /* Espaciado superior */
+    text-transform: uppercase; /* Convertir texto a mayúsculas */
+    letter-spacing: 0.5px; /* Espaciado entre letras */
+}
+
+#backgroundCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Asegura que esté detrás del contenido */
+    background: #f5f7fa; /* Color de fondo base */
 }

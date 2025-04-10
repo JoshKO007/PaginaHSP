@@ -6,12 +6,16 @@
     <title>Política de Privacidad</title>
     <link rel="stylesheet" href="CSS/styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="IMG/Y.png" type="image/png"> <!-- Favicon -->
 
 </head>
 <body>
+    <canvas id="backgroundCanvas"></canvas>
     <nav class="navbar">
         <div class="logo">
-            <img src="IMG/logoNBE.png" alt="Logo" class="logo-img">
+            <a href="index.html">
+                <img src="IMG/logoNBE.png" alt="Logo" class="logo-img">
+            </a>
         </div>
         
         <!-- Menú hamburguesa (solo visible en móvil) -->
@@ -21,6 +25,7 @@
         
         <!-- Menú principal -->
         <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Inicio</a></li>
             <li><a href="#">Categorías</a></li>
             <li><a href="#">Marcas Destacadas</a></li>
             <li><a href="#">Servicios</a></li>
@@ -75,7 +80,7 @@
             <div class="footer-section">
                 <h3 class="footer-title">Enlaces Rápidos</h3>
                 <ul class="footer-links">
-                    <li><a href="#">Inicio</a></li>
+                    <li><a href="index.html">Inicio</a></li>
                     <li><a href="#">Productos</a></li>
                     <li><a href="#">Servicios</a></li>
                     <li><a href="#">Contacto</a></li>
@@ -108,7 +113,7 @@
             <p>&copy; 2025 <strong>YOLOTECH</strong>. Todos los derechos reservados.</p>
             <div class="footer-legal">
                 <a href="privacidad.html">Política de privacidad</a>
-                <a href="#">Términos de servicio</a>
+                <a href="servicio.html">Términos de servicio</a>
             </div>
         </div>
     </footer>
@@ -210,5 +215,6 @@
         });
     </script>
     <script src="JS/script.js"></script>
+    <script src="JS/background.js"></script>
 </body>
 </html>
