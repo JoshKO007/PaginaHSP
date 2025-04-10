@@ -178,6 +178,19 @@ body {
     mask-composite: intersect;
 }
 
+/* Ocultar controles del video */
+video::-webkit-media-controls {
+    display: none !important;
+}
+
+video::-webkit-media-controls-enclosure {
+    display: none !important;
+}
+
+video::-webkit-media-controls-panel {
+    display: none !important;
+}
+
 .video-text {
     position: absolute;
     top: 50%;
