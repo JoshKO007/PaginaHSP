@@ -324,12 +324,13 @@ h3 {
 }
 
 .ver-mas-btn {
-    display: block;
+    display: inline-block;
     margin: 40px auto 0;
     padding: 12px 30px;
     background: linear-gradient(135deg, #2a7ae9, #1a5cb0);
     color: white;
-    border: none;
+    text-align: center;
+    text-decoration: none; /* Quitar subrayado */
     border-radius: 30px;
     font-size: 1.1rem;
     font-weight: 600;
@@ -345,15 +346,6 @@ h3 {
 
 .ver-mas-btn:active {
     transform: translateY(1px);
-}
-
-.ver-mas-btn i {
-    margin-left: 8px;
-    transition: transform 0.3s ease;
-}
-
-.ver-mas-btn:hover i {
-    transform: translateY(3px);
 }
 
 /* Estilo para el botón "Ver productos" */
