@@ -991,3 +991,62 @@ img {
         background: none; /* Eliminar el fondo */
     }
 }
+
+/* Estilo para el contenedor de la política de privacidad */
+.privacy-policy {
+    max-width: 800px; /* Limitar el ancho del contenido */
+    margin: 50px auto; /* Centrar el contenedor */
+    padding: 20px; /* Espaciado interno */
+    background: #ffffff; /* Fondo blanco */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    color: #333; /* Color del texto */
+    font-size: 1rem; /* Tamaño de fuente */
+    line-height: 1.6; /* Altura de línea para mejor legibilidad */
+}
+
+/* Estilo para los encabezados dentro de la política de privacidad */
+.privacy-policy h1,
+.privacy-policy h2 {
+    color: #2a7ae9; /* Color azul para los encabezados */
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.privacy-policy h1 {
+    font-size: 2rem; /* Tamaño más grande para el título principal */
+    font-weight: bold;
+}
+
+.privacy-policy h2 {
+    font-size: 1.5rem; /* Tamaño más pequeño para subtítulos */
+    font-weight: 600;
+}
+
+/* Estilo para los párrafos */
+.privacy-policy p {
+    margin-bottom: 15px;
+    text-align: justify; /* Justificar el texto */
+}
+
+/* Estilo para las listas */
+.privacy-policy ul {
+    margin-left: 20px; /* Espaciado a la izquierda */
+    margin-bottom: 15px;
+    list-style-type: disc; /* Estilo de lista con viñetas */
+}
+
+.privacy-policy ul li {
+    margin-bottom: 10px;
+}
+
+/* Estilo para los enlaces */
+.privacy-policy a {
+    color: #2a7ae9; /* Color azul para los enlaces */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.privacy-policy a:hover {
+    color: #1a5cb0; /* Color más oscuro al pasar el cursor */
+}
