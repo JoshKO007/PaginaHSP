@@ -7,196 +7,114 @@
 
 body {
     background-color: #f5f7fa;
-    padding-top: 20px; /* Reducir el espaciado superior */
+    padding-top: 20px;
     transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-/* Centrar el menú y ajustar el logo */
+/* ---- Navbar ---- */
 .navbar {
     position: relative;
     top: 0px;
     left: 50%;
     transform: translateX(-50%);
-    width: 95%; /* Aumentar el ancho de la barra para ocupar más espacio horizontal */
-    max-width: 1400px; /* Ajustar el ancho máximo */
-    height: 90px; /* Aumentar la altura de la barra */
+    width: 95%;
+    max-width: 1400px;
+    height: 90px;
     background: white;
-    border-radius: 40px; /* Ajustar el borde redondeado */
+    border-radius: 40px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     display: flex;
-    justify-content: space-between; /* Espaciado entre logo y menú */
+    justify-content: space-between;
     align-items: center;
-    padding: 0 50px; /* Aumentar el espaciado interno */
+    padding: 0 50px;
     z-index: 1000;
-    transition: background-color 0.5s ease, box-shadow 0.5s ease; /* Fondo y sombra */
+    transition: background-color 0.5s ease, box-shadow 0.5s ease;
 }
 
-/* Estilos para el botón de menú hamburguesa */
+/* Estilo del botón hamburguesa */
 .menu-toggle {
-    display: none; /* Ocultar el botón por defecto */
+    display: none;
     position: absolute;
     top: 25px;
     right: 30px;
     font-size: 2rem;
     cursor: pointer;
-    z-index: 1100; /* Asegura que esté encima del menú */
+    z-index: 1100;
     color: #333;
 }
 
-/* Hacer que el menú principal sea desplazable */
+/* Ajustar el menú desplegable para que aparezca pegado al botón hamburguesa */
 .nav-links {
     display: flex;
-    gap: 20px; /* Espaciado entre los elementos */
-    height: 100%;
-    justify-content: flex-start; /* Alinear los elementos al inicio */
-    align-items: center;
-    overflow-x: auto; /* Habilitar desplazamiento horizontal */
-    scrollbar-width: thin; /* Estilo del scrollbar en navegadores compatibles */
-    padding: 10px 0; /* Espaciado interno */
+    flex-direction: row; /* Mostrar los elementos en línea horizontal */
+    position: static; /* Eliminar posición absoluta */
+    width: auto; /* Ajustar al contenido */
+    background: none; /* Sin fondo */
+    box-shadow: none; /* Sin sombra */
+    padding: 0; /* Sin relleno */
+    gap: 30px; /* Espaciado entre elementos */
+    transform: none; /* Sin transformaciones */
+    opacity: 1; /* Totalmente visible */
+    overflow: visible; /* Sin restricciones */
+    list-style: none; /* Elimina los puntos de la lista */
+    margin: 0; /* Asegura que no haya margen adicional */
 }
 
-.nav-links::-webkit-scrollbar {
-    height: 8px; /* Altura del scrollbar */
-}
-
-.nav-links::-webkit-scrollbar-thumb {
-    background: #ccc; /* Color del scrollbar */
-    border-radius: 4px; /* Bordes redondeados */
-}
-
-.nav-links::-webkit-scrollbar-thumb:hover {
-    background: #aaa; /* Color del scrollbar al pasar el mouse */
-}
-
-.nav-links.responsive {
-    display: block; /* Cambiar a bloque en pantallas pequeñas */
-    position: absolute;
-    top: 90px; /* Debajo de la barra de navegación */
-    right: 0;
-    background: white;
-    width: 100%;
-    padding: 20px 0;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-}
-
-.nav-links.responsive li {
-    margin: 10px 0;
-    text-align: center;
+/* Mostrar el menú desplegable cuando está activo */
+.nav-links.active {
+    transform: scaleY(1); /* Mostrar el menú desplegable */
+    opacity: 1;
 }
 
 .nav-links li {
-    list-style: none;
-    position: relative;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-.nav-links li:nth-child(1) {
-    animation-delay: 0.1s;
-}
-
-.nav-links li:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.nav-links li:nth-child(3) {
-    animation-delay: 0.3s;
+    width: 100%;
+    text-align: center;
+    list-style: none; /* Asegura que los elementos individuales no tengan puntos */
 }
 
 .nav-links a {
-    text-decoration: none;
+    display: block;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
     color: #333;
-    font-weight: 600;
-    font-size: 20px; /* Aumentar el tamaño del texto */
-    transition: color 0.5s ease, background-color 0.5s ease, transform 0.3s ease-in-out; /* Enlaces del menú */
-    height: 70px; /* Aumentar la altura de los enlaces */
-    display: flex;
-    align-items: center;
-    padding: 0 20px; /* Aumentar el espaciado interno de los enlaces */
-    border-radius: 35px; /* Ajustar el borde redondeado */
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .nav-links a:hover {
+    background: #f0f7ff;
     color: #2a7ae9;
-    background: #f0f7ff; /* Fondo al pasar el mouse */
-    transform: scale(1.1); /* Efecto de zoom al pasar el mouse */
 }
 
-/* Estilo para el contenedor del menú desplegable */
-.dropdown {
-    position: relative; /* Asegura que el contenido desplegable esté posicionado relativo al contenedor */
-}
-
-.dropdown-content {
-    display: none; /* Ocultar por defecto */
-    position: absolute;
-    top: 100%; /* Mostrar debajo del botón de "Categorías" */
-    left: 0;
-    background: white;
-    min-width: 300px; /* Ancho mínimo del menú desplegable */
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    padding: 25px 0; /* Espaciado interno */
-    z-index: 1;
-    transition: background-color 0.5s ease, color 0.5s ease; /* Fondo y texto del menú desplegable */
-}
-
-/* Mostrar el menú desplegable al pasar el mouse */
-.dropdown:hover .dropdown-content {
-    display: block; /* Mostrar el menú desplegable */
-    opacity: 1; /* Hacerlo visible */
-    transform: translateY(0); /* Restablecer la posición */
-}
-
-/* Estilo para los elementos del menú desplegable */
-.dropdown-content li {
-    padding: 15px 25px; /* Espaciado interno de los elementos */
-}
-
-.dropdown-content a {
-    text-decoration: none;
-    color: #333;
-    font-size: 18px; /* Tamaño del texto */
-    padding: 12px 20px; /* Espaciado interno */
-    border-radius: 25px; /* Bordes redondeados */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave */
-}
-
-.dropdown-content a:hover {
-    background: #f0f7ff; /* Fondo al pasar el mouse */
-    color: #2a7ae9; /* Cambiar el color del texto */
-}
-
-/* Ajustar el logo */
+/* Logo */
 .logo {
-    width: 120px; /* Tamaño fijo para el contenedor del logo */
-    height: 50px; /* Altura fija */
+    width: 120px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0; /* Evita que el contenedor se reduzca */
+    flex-shrink: 0;
 }
 
 .logo-img {
-    width: 100%; /* Asegura que la imagen ocupe todo el ancho del contenedor */
-    height: auto; /* Mantiene la relación de aspecto */
-    object-fit: contain; /* Asegura que la imagen se ajuste correctamente */
-    max-width: 120px; /* Tamaño máximo para evitar que crezca demasiado */
-    min-width: 80px; /* Tamaño mínimo para evitar que desaparezca */
-    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8)); /* Aumentar el tamaño del contorno */
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    max-width: 120px;
+    min-width: 80px;
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
 }
 
-/* Botón de cambio de tema */
+/* Theme Toggle */
 .theme-toggle {
-    position: fixed; /* Asegura que el botón esté siempre en la misma posición */
-    left: 20px; /* Alinearlo a la izquierda */
-    bottom: 20px; /* Alinearlo en la parte inferior */
-    width: 50px; /* Tamaño del botón */
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    width: 50px;
     height: 50px;
-    background: linear-gradient(135deg, #f9d71c, #f39c12); /* Sol */
+    background: linear-gradient(135deg, #f9d71c, #f39c12);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -204,19 +122,19 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     transition: all 0.3s ease-in-out;
-    z-index: 9999; /* Asegura que el botón esté al frente de todos los elementos */
+    z-index: 9999;
 }
 
 .theme-toggle:hover {
-    transform: scale(1.1); /* Efecto de zoom al pasar el mouse */
+    transform: scale(1.1);
 }
 
 .theme-toggle.night {
-    background: linear-gradient(135deg, #2c3e50, #34495e); /* Luna */
+    background: linear-gradient(135deg, #2c3e50, #34495e);
 }
 
 .theme-toggle i {
-    font-size: 18px; /* Tamaño reducido para minimalismo */
+    font-size: 18px;
     color: white;
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
@@ -225,7 +143,7 @@ body {
     transform: rotate(180deg);
 }
 
-/* Animación de entrada para el menú */
+/* Animations */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -237,270 +155,110 @@ body {
     }
 }
 
-/* Estilos para el tema de día */
-body.day {
-    background-color: #f5f7fa;
-    color: #333;
-}
-
-.navbar.day {
-    background: white;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-.nav-links a.day {
-    color: #333;
-    background: transparent;
-}
-
-.nav-links a.day:hover {
-    background: #f0f7ff;
-    color: #2a7ae9;
-}
-
-/* Estilos para el tema de noche */
-body.night {
-    background-color: #2c3e50;
-    color: #ecf0f1;
-}
-
-.navbar.night {
-    background: #34495e;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-.nav-links a.night {
-    color: #ecf0f1;
-    background: transparent;
-}
-
-.nav-links a.night:hover {
-    background: #3b4a5a; /* Fondo oscuro al pasar el mouse */
-    color: #1abc9c; /* Texto con un color destacado */
-}
-
-/* Dropdown (menú desplegable) */
-body.night .dropdown-content {
-    background: #3b4a5a; /* Fondo oscuro para el tema nocturno */
-    color: #ecf0f1;
-}
-
-body.night .dropdown-content a {
-    color: #ecf0f1;
-}
-
-body.night .dropdown-content a:hover {
-    background: #1abc9c; /* Fondo destacado al pasar el mouse */
-    color: #2c3e50; /* Texto oscuro */
-}
-
-/* Contorno dinámico más grande para el logo en el tema oscuro */
-body.night .logo-img {
-    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8)); /* Aumentar el tamaño del contorno */
-    border-radius: 0; /* Asegura que no haya bordes redondeados adicionales */
-}
-
-/* Contenedor del video */
+/* ---- Video Hero Section ---- */
 .video-container {
     position: relative;
-    top: 20px; /* Reducir el espacio entre el menú y el video */
-    width: 100%; /* Hacer que el video ocupe todo el ancho de la página */
-    height: 50%; /* Reducir la altura del contenedor al 50% de la pantalla */
-    overflow: hidden; /* Ocultar las partes del video que sobresalgan */
+    top: 20px;
+    width: 100%;
+    height: 90vh;
+    overflow: hidden;
 }
 
-/* Estilo del video con desvanecimiento en las orillas */
 .video {
-    width: 100%; /* Hacer que el video ocupe todo el ancho del contenedor */
-    height: 100%; /* Hacer que el video ocupe toda la altura del contenedor */
-    object-fit: cover; /* Recortar el video para que se ajuste al contenedor */
-    object-position: center bottom; /* Mostrar la parte inferior del video */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center bottom;
     display: block;
-    border-radius: 20px; /* Redondear las esquinas del video */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Difuminar las esquinas */
-
-    /* Efecto de desvanecimiento en las orillas */
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
     mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
     -webkit-mask-composite: destination-in;
     mask-composite: intersect;
 }
 
-/* Contenedor del texto sobre el video */
 .video-text {
     position: absolute;
-    top: 50%; /* Centrar verticalmente */
-    left: 50%; /* Centrar horizontalmente */
-    transform: translate(-50%, -50%); /* Ajustar el texto al centro exacto */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
-    color: white; /* Texto visible sobre el video */
-    z-index: 2; /* Asegura que el texto esté encima del video */
-    pointer-events: auto; /* Permitir eventos del mouse */
-    transition: transform 0.3s ease, color 0.3s ease; /* Transición suave */
+    color: white;
+    z-index: 2;
+    pointer-events: auto;
+    transition: transform 0.3s ease, color 0.3s ease;
 }
 
-/* Estilo para el texto grande */
 .video-text h1 {
-    font-size: 5rem; /* Tamaño más grande para el título */
+    font-size: 5rem;
     font-weight: bold;
     margin: 0;
-    text-shadow: 0 6px 20px rgba(0, 0, 0, 0.8); /* Sombra más pronunciada para profundidad */
-    transition: transform 0.3s ease, color 0.3s ease; /* Transición suave */
+    text-shadow: 0 6px 20px rgba(0, 0, 0, 0.8);
+    transition: transform 0.3s ease, color 0.3s ease;
 }
 
-/* Estilo para el texto pequeño */
 .video-text p {
-    font-size: 2rem; /* Tamaño más grande para el subtítulo */
+    font-size: 2rem;
     margin: 10px 0 0;
-    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.7); /* Sombra para mejor visibilidad */
-    transition: transform 0.3s ease, color 0.3s ease; /* Transición suave */
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+    transition: transform 0.3s ease, color 0.3s ease;
 }
 
-/* Efecto al pasar el mouse sobre el contenedor del texto */
 .video-text:hover h1 {
-    transform: scale(1.1); /* Aumentar ligeramente el tamaño del título */
-    color: hsl(37, 89%, 81%); /* Cambiar el color del título */
+    transform: scale(1.1);
+    color: hsl(37, 89%, 81%);
 }
 
 .video-text:hover p {
-    transform: scale(1.05); /* Aumentar ligeramente el tamaño del subtítulo */
-    color: hsl(37, 89%, 81%); /* Cambiar el color del subtítulo */
+    transform: scale(1.05);
+    color: hsl(37, 89%, 81%);
 }
 
-/* Mostrar el botón hamburguesa en pantallas pequeñas */
-@media (max-width: 768px) {
-    .menu-toggle {
-        display: block;
-    }
-
-    .nav-links {
-        display: flex;
-        flex-wrap: nowrap; /* Evitar que los elementos se ajusten a una nueva línea */
-    }
-
-    .nav-links {
-        display: flex;
-        flex-wrap: nowrap; /* Evitar que los elementos se ajusten a una nueva línea */
-        overflow-x: auto; /* Habilitar desplazamiento horizontal */
-        padding: 10px; /* Espaciado interno */
-    }
-}
-
-/* Tema claro para el footer */
-body.day .footer {
-    background-color: #ffffff; /* Fondo blanco para el tema claro */
-    color: #333; /* Texto oscuro */
-}
-
-body.day .footer-section h3 {
-    color: #f39c12; /* Color destacado para los títulos */
-}
-
-body.day .footer-section p,
-body.day .footer-section a {
-    color: #333; /* Texto oscuro */
-}
-
-body.day .footer-section a:hover {
-    color: #2a7ae9; /* Cambiar color al pasar el mouse */
-}
-
-body.day .footer-bottom {
-    color: #666; /* Texto más claro para la parte inferior */
-    border-top: 1px solid #ddd; /* Línea más clara */
-}
-
-/* Tema oscuro para el footer */
-body.night .footer {
-    background-color: #34495e; /* Fondo oscuro */
-    color: #ecf0f1; /* Texto claro */
-}
-
-body.night .footer-section h3 {
-    color: #f1c40f; /* Color destacado para los títulos */
-}
-
-body.night .footer-section p,
-body.night .footer-section a {
-    color: #ecf0f1; /* Texto claro */
-}
-
-body.night .footer-section a:hover {
-    color: #1abc9c; /* Cambiar color al pasar el mouse */
-}
-
-body.night .footer-bottom {
-    color: #bdc3c7; /* Texto más claro para la parte inferior */
-    border-top: 1px solid #3b4a5a; /* Línea más oscura */
-}
-
-/* Contenedor principal */
+/* ---- Marcas Section ---- */
 .marcas-container {
     text-align: center;
-    padding: 60px 20px; /* Más espacio interno */
+    padding: 60px 20px;
     margin: 50px auto;
-    max-width: 1400px; /* Contenedor más ancho */
+    max-width: 1400px;
 }
 
-/* Grid de marcas - Versión XXL */
 .marcas-grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 50px; /* Más espacio entre logos */
+    gap: 50px;
     padding: 30px;
 }
 
-/* Tamaño XXL para logos */
 .marcas-grid img {
-    width: 250px; /* Tamaño aumentado (antes era 150px) */
+    width: 250px;
     height: auto;
     object-fit: contain;
     transition: all 0.4s ease;
-    filter: grayscale(20%); /* Opcional: efecto profesional */
+    filter: grayscale(20%);
 }
 
-/* Efecto hover más pronunciado */
 .marcas-grid img:hover {
     transform: scale(1.15);
 }
 
-/* Responsive para tablets */
-@media (max-width: 1024px) {
-    .marcas-grid img {
-        width: 200px; /* Un poco más pequeñas en tablets */
-        gap: 30px;
-    }
-}
-
-/* Responsive para móviles */
-@media (max-width: 768px) {
-    .marcas-grid {
-        gap: 25px; /* Menor espacio en móviles */
-    }
-    .marcas-grid img {
-        width: 150px; /* Tamaño balanceado para móviles */
-    }
-}
-
-/* Estilo del botón "Ver más" */
 .ver-mas-btn {
     display: block;
-    margin: 40px auto 0; /* 40px arriba, centrado horizontal, 0 abajo */
+    margin: 40px auto 0;
     padding: 12px 30px;
-    background: linear-gradient(135deg, #2a7ae9, #1a5cb0); /* Gradiente azul */
+    background: linear-gradient(135deg, #2a7ae9, #1a5cb0);
     color: white;
     border: none;
-    border-radius: 30px; /* Bordes muy redondeados */
+    border-radius: 30px;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(42, 122, 233, 0.3); /* Sombra sutil */
+    box-shadow: 0 4px 15px rgba(42, 122, 233, 0.3);
 }
 
-/* Efecto hover y active */
 .ver-mas-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(42, 122, 233, 0.4);
@@ -510,23 +268,16 @@ body.night .footer-bottom {
     transform: translateY(1px);
 }
 
-/* Icono (chevron) */
 .ver-mas-btn i {
     margin-left: 8px;
     transition: transform 0.3s ease;
 }
 
-/* Animación al pasar el mouse */
 .ver-mas-btn:hover i {
     transform: translateY(3px);
 }
 
-body.night .ver-mas-btn {
-    background: linear-gradient(135deg, #1abc9c, #16a085); /* Gradiente verde */
-    box-shadow: 0 4px 15px rgba(26, 188, 156, 0.3);
-}
-
-/* ---- Footer Principal ---- */
+/* ---- Footer ---- */
 .footer {
     background: #ffffff;
     color: #333;
@@ -545,7 +296,6 @@ body.night .ver-mas-btn {
     padding: 0 20px;
 }
 
-/* ---- Secciones ---- */
 .footer-brand {
     max-width: 300px;
 }
@@ -609,7 +359,6 @@ body.night .ver-mas-btn {
     color: #2a7ae9;
 }
 
-/* ---- Redes Sociales ---- */
 .footer-social {
     display: flex;
     gap: 15px;
@@ -633,7 +382,6 @@ body.night .ver-mas-btn {
     transform: translateY(-3px);
 }
 
-/* ---- Footer Inferior ---- */
 .footer-bottom {
     background: #f9f9f9;
     padding: 20px;
@@ -659,7 +407,58 @@ body.night .ver-mas-btn {
     color: #2a7ae9;
 }
 
-/* ---- Tema Oscuro ---- */
+/* ---- Themes ---- */
+/* Day Theme */
+body.day {
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+.navbar.day {
+    background: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.nav-links a.day {
+    color: #333;
+    background: transparent;
+}
+
+.nav-links a.day:hover {
+    background: #f0f7ff;
+    color: #2a7ae9;
+}
+
+/* Night Theme */
+body.night {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+}
+
+.navbar.night {
+    background: #34495e;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.nav-links a.night {
+    color: #ecf0f1;
+    background: transparent;
+}
+
+.nav-links a.night:hover {
+    background: #3b4a5a;
+    color: #1abc9c;
+}
+
+body.night .logo-img {
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
+}
+
+body.night .ver-mas-btn {
+    background: linear-gradient(135deg, #1abc9c, #16a085);
+    box-shadow: 0 4px 15px rgba(26, 188, 156, 0.3);
+}
+
 body.night .footer {
     background: #2c3e50;
     color: #ecf0f1;
@@ -682,16 +481,200 @@ body.night .social-icon {
     color: #ecf0f1;
 }
 
-/* ---- Responsive ---- */
+/* ---- Responsive Styles ---- */
+@media (max-width: 1200px) {
+    .navbar {
+        width: 98%;
+    }
+    
+    .video-text h1 {
+        font-size: 4rem;
+    }
+    
+    .video-text p {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .navbar {
+        padding: 0 30px;
+        height: 80px;
+    }
+    
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%; /* Justo debajo del navbar */
+        right: 0; /* Alineado a la esquina derecha */
+        width: 280px; /* Ancho más grande del menú */
+        background: white;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        padding: 20px; /* Más espacio interno */
+        gap: 20px; /* Más espacio entre elementos */
+        border-radius: 10px; /* Bordes redondeados */
+        z-index: 1000;
+        transform: scaleY(0); /* Oculto inicialmente */
+        transform-origin: top right; /* Animación desde la esquina superior derecha */
+        opacity: 0;
+        overflow: hidden;
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    }
+    
+    .nav-links.active {
+        transform: scaleY(1); /* Mostrar el menú desplegable */
+        opacity: 1;
+    }
+    
+    .nav-links li {
+        width: 100%; /* Asegurar que los elementos ocupen todo el ancho del menú */
+        text-align: left; /* Alinear el texto a la izquierda */
+        list-style: none; /* Sin puntos de lista */
+    }
+    
+    .nav-links a {
+        display: block;
+        padding: 15px 20px; /* Más espacio interno en los enlaces */
+        font-size: 18px; /* Tamaño de fuente más grande */
+        font-weight: bold;
+        color: #333;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .nav-links a:hover {
+        background: #f0f7ff;
+        color: #2a7ae9;
+    }
+    
+    .menu-toggle {
+        display: block; /* Mostrar el botón hamburguesa */
+    }
+    
+    .logo {
+        width: 100px;
+    }
+    
+    .video-container {
+        height: 50vh;
+    }
+    
+    .video-text h1 {
+        font-size: 3rem;
+    }
+    
+    .video-text p {
+        font-size: 1.2rem;
+    }
+    
+    .marcas-grid img {
+        width: 200px;
+    }
+}
+
 @media (max-width: 768px) {
+    .navbar {
+        height: 70px;
+        border-radius: 20px;
+    }
+    
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%; /* Justo debajo del navbar */
+        right: 10px; /* Alineado al lado derecho */
+        width: 200px; /* Menú más pequeño */
+        background: white;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        padding: 10px;
+        gap: 10px;
+        border-radius: 10px; /* Bordes redondeados */
+        z-index: 1000;
+        transform: scaleY(0); /* Oculto inicialmente */
+        transform-origin: top right; /* Animación desde la esquina superior derecha */
+        opacity: 0;
+        overflow: hidden;
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    }
+    
+    .nav-links.active {
+        transform: scaleY(1); /* Mostrar el menú desplegable */
+        opacity: 1;
+    }
+    
+    .nav-links li {
+        width: 100%; /* Asegurar que los elementos ocupen todo el ancho del menú */
+        text-align: left; /* Alinear el texto a la izquierda */
+        list-style: none; /* Sin puntos de lista */
+    }
+    
+    .nav-links a {
+        display: block;
+        padding: 8px 10px; /* Reducir el padding para que quepan todos los elementos */
+        font-size: 14px; /* Reducir el tamaño de fuente */
+        font-weight: bold;
+        color: #333;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .nav-links a:hover {
+        background: #f0f7ff;
+        color: #2a7ae9;
+    }
+    
+    .menu-toggle {
+        display: block; /* Mostrar el botón hamburguesa */
+    }
+    
+    .logo {
+        width: 80px;
+    }
+    
+    .menu-toggle {
+        display: block;
+        font-size: 1.5rem;
+        top: 20px;
+    }
+    
+    .video-container {
+        height: 40vh;
+    }
+    
+    .video-text h1 {
+        font-size: 2.5rem;
+    }
+    
+    .video-text p {
+        font-size: 1rem;
+    }
+    
+    .marcas-grid {
+        gap: 20px;
+    }
+    
+    .marcas-grid img {
+        width: 120px;
+    }
+    
+    .ver-mas-btn {
+        padding: 10px 25px;
+        font-size: 1rem;
+    }
+    
     .footer-grid {
         grid-template-columns: 1fr;
+        text-align: center;
         gap: 30px;
     }
     
     .footer-brand {
         max-width: 100%;
-        text-align: center;
+        margin: 0 auto;
     }
     
     .footer-logo {
@@ -709,5 +692,288 @@ body.night .social-icon {
     
     .footer-social {
         justify-content: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar {
+        height: 60px;
+        padding: 0 20px;
+    }
+    
+    .nav-links {
+        top: 60px;
+    }
+    
+    .menu-toggle {
+        right: 20px;
+    }
+    
+    .logo {
+        width: 70px;
+    }
+    
+    .video-container {
+        height: 35vh;
+        border-radius: 0;
+    }
+    
+    .video {
+        border-radius: 0;
+    }
+    
+    .video-text h1 {
+        font-size: 2rem;
+        line-height: 1.2;
+    }
+    
+    .video-text p {
+        font-size: 0.9rem;
+    }
+    
+    .marcas-grid {
+        gap: 15px;
+    }
+    
+    .marcas-grid img {
+        width: 100px;
+    }
+    
+    .ver-mas-btn {
+        margin-top: 30px;
+        padding: 8px 20px;
+    }
+    
+    .footer {
+        padding: 30px 0 0;
+    }
+    
+    .footer-logo {
+        width: 120px;
+    }
+    
+    .footer-title {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+    
+    .footer-bottom {
+        padding: 15px;
+        font-size: 0.8rem;
+    }
+    
+    .footer-legal {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .theme-toggle {
+        width: 40px;
+        height: 40px;
+        left: 15px;
+        bottom: 15px;
+    }
+
+    /* Ajustar el footer para pantallas pequeñas */
+    .footer-grid, /* Ocultar la cuadrícula del footer */
+    .footer-social, /* Ocultar los íconos sociales */
+    .footer-brand, /* Ocultar la marca del footer */
+    .footer-contact, /* Ocultar la información de contacto */
+    .footer-links { /* Ocultar los enlaces del footer */
+        display: none;
+    }
+
+    .footer-bottom {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        font-size: 0.8rem; /* Reducir el tamaño de fuente */
+        text-align: center;
+    }
+
+    .footer-legal {
+        flex-direction: column; /* Alinear la información legal en una sola columna */
+        gap: 5px;
+    }
+}
+
+/* Mostrar el logo y los elementos importantes del footer en pantallas pequeñas */
+@media (max-width: 1200px),
+       (max-width: 992px),
+       (max-width: 768px),
+       (max-width: 576px) {
+    /* Ocultar elementos no esenciales */
+    .footer-grid, /* Ocultar la cuadrícula del footer */
+    .footer-social, /* Ocultar los íconos sociales */
+    .footer-contact, /* Ocultar la información de contacto */
+    .footer-links { /* Ocultar los enlaces del footer */
+        display: none;
+    }
+
+    /* Mostrar el logo */
+    .footer-brand {
+        display: flex !important; /* Asegurar que se muestre */
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .footer-logo {
+        display: block !important; /* Asegurar que el logo sea visible */
+        margin: 0 auto 10px;
+        width: 120px; /* Ajustar el tamaño del logo */
+    }
+
+    /* Mantener los elementos legales */
+    .footer-bottom {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        font-size: 0.8rem; /* Reducir el tamaño de fuente */
+        text-align: center;
+        background: none; /* Eliminar el fondo */
+        box-shadow: none; /* Eliminar cualquier sombra */
+    }
+
+    .footer-legal {
+        display: flex;
+        flex-direction: column; /* Alinear la información legal en una sola columna */
+        gap: 5px;
+        background: none; /* Eliminar el fondo */
+    }
+}
+
+/* Prevent zoom on inputs in iOS */
+@media screen and (max-width: 767px) {
+    input, select, textarea {
+        font-size: 16px;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive images outside brands section */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Estilo mejorado para el menú desplegable */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    min-width: 200px;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: #f0f7ff;
+    color: #2a7ae9;
+}
+
+/* Ajustar los botones del menú en pantallas grandes */
+@media (min-width: 993px) {
+    .nav-links {
+        display: flex;
+        flex-direction: row; /* Mostrar los elementos en línea horizontal */
+        justify-content: center; /* Centrar los elementos */
+        align-items: center; /* Alinear verticalmente */
+        gap: 20px; /* Espaciado uniforme entre los botones */
+        list-style: none; /* Eliminar los puntos de lista */
+        padding: 0;
+        margin: 0;
+    }
+
+    .nav-links li {
+        flex: 1; /* Asegurar que todos los botones tengan el mismo tamaño */
+        text-align: center;
+    }
+
+    .nav-links a {
+        display: inline-block;
+        padding: 10px 20px; /* Espaciado interno uniforme */
+        font-size: 16px; /* Tamaño de fuente consistente */
+        font-weight: bold;
+        color: #333; /* Solo texto visible */
+        text-decoration: none;
+        background: none; /* Sin fondo */
+        transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    }
+
+    .nav-links a:hover {
+        background: #f0f7ff; /* Fondo al pasar el cursor */
+        color: #2a7ae9; /* Color del texto al pasar el cursor */
+        transform: translateY(-2px); /* Efecto de elevación */
+    }
+}
+
+/* Ocultar elementos del footer en todas las media queries con max-width */
+@media (max-width: 1200px),
+       (max-width: 992px),
+       (max-width: 768px),
+       (max-width: 576px) {
+    .footer-grid, /* Ocultar la cuadrícula del footer */
+    .footer-social, /* Ocultar los íconos sociales */
+    .footer-brand, /* Ocultar la marca del footer */
+    .footer-contact, /* Ocultar la información de contacto */
+    .footer-links { /* Ocultar los enlaces del footer */
+        display: none;
+    }
+
+    .footer-bottom {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        font-size: 0.8rem; /* Reducir el tamaño de fuente */
+        text-align: center;
+        background: none; /* Eliminar el fondo */
+        box-shadow: none; /* Eliminar cualquier sombra */
+    }
+
+    .footer-legal {
+        flex-direction: column; /* Alinear la información legal en una sola columna */
+        gap: 5px;
+        background: none; /* Eliminar el fondo */
     }
 }
