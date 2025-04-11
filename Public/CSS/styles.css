@@ -1277,6 +1277,7 @@ img {
     padding: 10px; /* Espaciado interno */
     box-shadow: none; /* Quitar la sombra */
     transition: transform 0.3s ease; /* Mantener la transición suave */
+    margin: -60px 0; /* Reducir el margen vertical a 5px y mantener 0px horizontal */
 }
 
 #contenedor-items .item img {
