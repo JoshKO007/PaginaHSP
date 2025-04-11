@@ -66,8 +66,4 @@
   "id" : 17,
   "nombre" : "TOITU",
   "imagen" : "IMG/TOITU.png"
-}, {
-  "id" : 18,
-  "nombre" : "Mano",
-  "imagen" : "IMG/MANO.png"
 } ]
