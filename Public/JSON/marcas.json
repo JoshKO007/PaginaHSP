@@ -70,4 +70,8 @@
   "id" : 18,
   "nombre" : "VIEWORKS",
   "imagen" : "IMG/VIEWORKS.png"
+}, {
+  "id" : 19,
+  "nombre" : "Mano",
+  "imagen" : "IMG/MANO.png"
 } ]
