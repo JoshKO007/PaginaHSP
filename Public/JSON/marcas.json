@@ -70,8 +70,5 @@
   "id" : 18,
   "nombre" : "VIEWORKS",
   "imagen" : "IMG/VIEWWORKS.png"
-}, {
-  "id" : 19,
-  "nombre" : "NUEVAMARCA",
-  "imagen" : "IMG/NUEVAMARCA.png"
-} ]
+}
+]
