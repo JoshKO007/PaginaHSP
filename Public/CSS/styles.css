@@ -1289,7 +1289,7 @@ img {
 }
 
 #contenedor-items .item .ver-productos-btn {
-    margin-top: auto; /* Empujar el botón hacia la parte inferior del contenedor */
+    margin-top: 5px; /* Reducir el espacio superior del botón */
     padding: 10px 20px;
     background: linear-gradient(135deg, #2a7ae9, #1a5cb0); /* Fondo degradado */
     color: white;
