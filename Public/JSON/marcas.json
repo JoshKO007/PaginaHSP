@@ -74,4 +74,8 @@
   "id" : 19,
   "nombre" : "NUEVAMARCA",
   "imagen" : "IMG/NUEVAMARCA.png"
+}, {
+  "id" : 20,
+  "nombre" : "NUEVAMARCA",
+  "imagen" : "IMG/NUEVAMARCA.png"
 } ]
