@@ -13,8 +13,16 @@ fetch('JSON/marcas.json')
       // Agregar la imagen (si existe la URL)
       if (item.imagen) {
         const imagen = document.createElement('img');
-        imagen.src = item.imagen;
-        imagen.alt = item.nombre;
+        const basePath = window.location.origin; // Obtiene la URL base
+        imagen.src = `${basePath}/${item.imagen}`; // Construye la ruta completa
+        imagen.alt = `Logo de ${item.nombre}`;
+        imagen.className = 'marca-img'; // Clase para estilos de la imagen
+        elemento.appendChild(imagen);
+      } else {
+        console.error('No se encontró la imagen para la marca seleccionada.');
+        const imagen = document.createElement('img');
+        imagen.src = 'IMG/default-logo.png'; // Imagen por defecto si no se encuentra
+        imagen.alt = 'Logo no disponible';
         imagen.className = 'marca-img'; // Clase para estilos de la imagen
         elemento.appendChild(imagen);
       }
