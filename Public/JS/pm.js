@@ -11,18 +11,19 @@ const marcasJsonUrl = `JSON/Marcas.json?nocache=${new Date().getTime()}`;
 const marcaSeleccionada = getQueryParam('marca');
 
 // Mostrar la imagen de la marca seleccionada
-fetch(marcasJsonUrl)
+fetch('JSON/Marcas.json')
   .then(response => response.json())
   .then(marcas => {
     const marcaImagen = document.getElementById('marca-imagen');
     const marca = marcas.find(m => m.nombre === marcaSeleccionada);
 
-    if (marca) {
-      marcaImagen.src = marca.imagen; // Usar la imagen de la marca
+    if (marca && marca.imagen) {
+      marcaImagen.src = marca.imagen; // Asegúrate de que esta ruta sea válida
       marcaImagen.alt = `Logo de ${marcaSeleccionada}`;
     } else {
-      marcaImagen.src = '';
-      marcaImagen.alt = 'Marca no encontrada';
+      console.error('No se encontró la imagen para la marca seleccionada.');
+      marcaImagen.src = 'IMG/default-logo.png'; // Imagen por defecto si no se encuentra
+      marcaImagen.alt = 'Logo no disponible';
     }
   })
   .catch(error => console.error('Error al cargar el JSON de marcas:', error));
