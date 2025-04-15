@@ -11,7 +11,7 @@ const marcasJsonUrl = `JSON/Marcas.json?nocache=${new Date().getTime()}`;
 const marcaSeleccionada = getQueryParam('marca');
 
 // Mostrar la imagen de la marca seleccionada
-fetch('JSON/Marcas.json')
+fetch(`JSON/Marcas.json?nocache=${new Date().getTime()}`)
   .then(response => response.json())
   .then(marcas => {
     const marcaImagen = document.getElementById('marca-imagen');
