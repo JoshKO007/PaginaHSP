@@ -302,6 +302,15 @@ h3 {
     text-align: left; /* Alinear a la izquierda por defecto */
 }
 
+/* Título de productos disponibles */
+.productos-container h3 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin: 30px 0; /* Aumentar el margen superior e inferior */
+}
+
 .marcas-grid {
     display: flex;
     flex-wrap: wrap;
@@ -372,8 +381,33 @@ h3 {
     transform: scale(0.95); /* Reducir ligeramente el tamaño al hacer clic */
 }
 
+/* Botón "Ver más" para productos */
+.ver-mas-btn-producto {
+  display: inline-block;
+  margin-top: 10px; /* Reduce el espacio superior del botón */
+  padding: 10px 20px;
+  background: #fff;
+  color: #333;
+  border: 2px solid #333;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.ver-mas-btn-producto:hover {
+  background: #333;
+  color: #fff;
+  transform: scale(1.05);
+}
+
 /* ---- Footer ---- */
 .footer {
+    background: #ffffff;
+    color: #333;
+    padding: 60px 0 0;
     background: #ffffff;
     color: #333;
     padding: 60px 0 0;
@@ -708,6 +742,106 @@ body.night .social-icon {
         flex-direction: column; /* Mostrar los enlaces legales en una columna */
         gap: 10px; /* Reducir el espacio entre enlaces */
     }
+
+    
+    .producto-card {
+        flex-direction: column; /* Cambia a diseño vertical */
+        align-items: center; /* Centra los elementos */
+        text-align: center; /* Centra el texto */
+        padding: 15px; /* Agrega un poco de padding interno */
+    }
+
+    .producto-card .producto-img {
+        width: 80%; /* Reduce el tamaño de la imagen */
+        height: auto; /* Ajusta la altura automáticamente */
+        margin-bottom: 10px; /* Espaciado entre la imagen y el texto */
+    }
+
+    .producto-card .producto-texto {
+        display: flex; /* Asegura que el texto siga visible */
+        flex-direction: column; /* Alinea los elementos en columna */
+        align-items: center; /* Centra el texto */
+        padding: 10px; /* Reduce el padding interno */
+    }
+
+    .producto-card h3 {
+        font-size: 1.4rem; /* Ajusta el tamaño del título */
+        margin-bottom: 10px; /* Espaciado inferior */
+        font-weight: bold; /* Negrita para destacar el título */
+    }
+
+    .ver-mas-btn-producto {
+        margin-top: 10px; /* Espaciado superior del botón */
+        padding: 10px 20px; /* Ajusta el tamaño del botón */
+        font-size: 1rem; /* Ajusta el tamaño del texto del botón */
+    }
+}
+
+@media (max-width: 1000px) {
+  .producto-card {
+    flex-direction: column !important; /* Cambia a diseño vertical */
+    align-items: center; /* Centra los elementos */
+    text-align: center; /* Centra el texto */
+    padding: 10px; /* Reduce el padding interno */
+    gap: 10px; /* Espaciado entre los elementos */
+    background: none !important; /* Quita el color de fondo */
+  }
+
+  .producto-card .producto-img {
+    order: 1; /* Asegura que la imagen esté arriba */
+    width: 70%; /* Reduce el tamaño de la imagen */
+    height: auto; /* Ajusta la altura automáticamente */
+    margin-bottom: 10px; /* Espaciado entre la imagen y el texto */
+    display: block; /* Asegura que la imagen sea visible */
+  }
+
+  .producto-card h3 {
+    order: 2; /* Asegura que el título esté debajo de la imagen */
+    display: block !important; /* Asegura que el título sea visible */
+    font-size: 1.2rem; /* Ajusta el tamaño del título */
+    margin-bottom: 10px; /* Espaciado inferior */
+    font-weight: bold; /* Negrita para destacar el título */
+    color: #333; /* Color del texto */
+    text-align: center;
+  }
+
+  .ver-mas-btn-producto {
+    order: 3; /* Asegura que el botón esté debajo del título */
+    display: block !important; /* Asegura que el botón sea visible */
+    margin-top: 10px; /* Espaciado superior del botón */
+    padding: 8px 16px; /* Ajusta el tamaño del botón */
+    font-size: 0.9rem; /* Ajusta el tamaño del texto del botón */
+    background: #fff; /* Fondo blanco */
+    color: #333; /* Color del texto */
+    border: 2px solid #333; /* Borde del botón */
+    border-radius: 8px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    text-align: center; /* Centra el texto dentro del botón */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  }
+
+  .ver-mas-btn-producto:hover {
+    background: #333; /* Fondo negro al pasar el cursor */
+    color: #fff; /* Texto blanco al pasar el cursor */
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+  }
+
+  /* Mostrar el contenedor de texto */
+  .producto-card .producto-texto {
+    display: flex !important; /* Asegura que el contenedor de texto sea visible */
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px; /* Espaciado interno */
+    background: none !important; /* Quita el color de fondo */
+  }
+
+  /* Ocultar elementos específicos dentro del contenedor de texto */
+  .producto-card p,
+  .producto-card ul,
+  .producto-card .caracteristicas-titulo {
+    display: none !important; /* Oculta el resto del contenido */
+  }
 }
 
 @media (max-width: 768px) {
@@ -831,108 +965,51 @@ body.night .social-icon {
     }
 }
 
-@media (max-width: 576px) {
-    .navbar {
-        height: 60px;
-        padding: 0 20px;
-    }
-    
-    .nav-links {
-        top: 60px;
-    }
-    
-    .menu-toggle {
-        right: 20px;
-    }
-    
-    .logo {
-        width: 70px;
-    }
-    
-    .video-container {
-        height: 35vh;
-        border-radius: 0;
-    }
-    
-    .video {
-        border-radius: 0;
-    }
-    
-    .video-text h1 {
-        font-size: 2rem;
-        line-height: 1.2;
-    }
-    
-    .video-text p {
-        font-size: 0.9rem;
-    }
-    
-    .marcas-grid {
-        gap: 15px;
-    }
-    
-    .marcas-grid img {
-        width: 100px;
-    }
-    
-    .ver-mas-btn {
-        margin-top: 30px;
-        padding: 8px 20px;
-    }
-    
-    .footer {
-        padding: 30px 0 0;
-    }
-    
-    .footer-logo {
-        width: 120px;
-    }
-    
-    .footer-title {
-        font-size: 1.1rem;
-        margin-bottom: 15px;
-    }
-    
-    .footer-bottom {
-        padding: 15px;
-        font-size: 0.8rem;
-    }
-    
-    .footer-legal {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .theme-toggle {
-        width: 40px;
-        height: 40px;
-        left: 15px;
-        bottom: 15px;
-    }
+@media (max-width: 1000px) {
+  .producto-card {
+    flex-direction: column !important; /* Cambia a diseño vertical */
+    align-items: center; /* Centra los elementos */
+    text-align: center; /* Centra el texto */
+    padding: 10px; /* Reduce el padding interno */
+    gap: 10px; /* Espaciado entre los elementos */
+  }
 
-    /* Ajustar el footer para pantallas pequeñas */
-    .footer-grid, /* Ocultar la cuadrícula del footer */
-    .footer-social, /* Ocultar los íconos sociales */
-    .footer-brand, /* Ocultar la marca del footer */
-    .footer-contact, /* Ocultar la información de contacto */
-    .footer-links { /* Ocultar los enlaces del footer */
-        display: none;
-    }
+  .producto-card .producto-img {
+    order: 1; /* Asegura que la imagen esté arriba */
+    width: 70%; /* Reduce el tamaño de la imagen */
+    height: auto; /* Ajusta la altura automáticamente */
+    margin-bottom: 10px; /* Espaciado entre la imagen y el texto */
+    display: block; /* Asegura que la imagen sea visible */
+  }
 
-    .footer-bottom {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 10px;
-        font-size: 0.8rem; /* Reducir el tamaño de fuente */
-        text-align: center;
-    }
+  .producto-card h3 {
+    display: block !important;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+  }
 
-    .footer-legal {
-        flex-direction: column; /* Alinear la información legal en una sola columna */
-        gap: 5px;
-    }
+  .ver-mas-btn-producto {
+    display: block !important;
+    margin-top: 10px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    background: #fff;
+    color: #333;
+    border: 2px solid #333;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .producto-card .producto-texto,
+  .producto-card p,
+  .producto-card ul,
+  .producto-card .caracteristicas-titulo {
+    display: none !important; /* Oculta el resto del contenido */
+  }
 }
 
 /* Mostrar el logo y los elementos importantes del footer en pantallas pequeñas */
@@ -1324,3 +1401,386 @@ img {
     z-index: -1; /* Asegura que esté detrás del contenido */
     background: #f5f7fa; /* Color de fondo base */
 }
+
+.marca-seleccionada {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px 0;
+}
+
+.marca-img-grande {
+  max-width: 400px;
+  width: 90vw;
+  height: auto;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  margin-bottom: 24px;
+  background: #fff;
+  padding: 24px;
+}
+
+.marca-card {
+  display: inline-block;
+  width: 220px;
+  margin: 24px;
+  padding: 20px 16px 16px 16px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  text-align: center;
+  transition: transform 0.2s;
+}
+.marca-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+.marca-img-lista {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 12px;
+}
+.marca-card button {
+  margin-top: 10px;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #007bff;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.marca-card button:hover {
+  background: #0056b3;
+}
+
+/* Estilo para el h2 en PM.html */
+.pm-title {
+  font-size: 2.8rem;
+  font-weight: bold;
+  color: #007bff; /* Azul vibrante */
+  text-align: center;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+}
+
+.pm-title::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 4px;
+  background-color: #0056b3; /* Azul más oscuro */
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+/* Estilo para las imágenes en PM.html */
+.pm-marca-img {
+  width: 700px; /* Ancho fijo */
+  height: 200px; /* Alto fijo */
+  object-fit: contain; /* Mantener proporción de aspecto */
+  object-position: center; /* Centrar la imagen */
+  margin: 20px auto; /* Centrar horizontalmente */
+  display: block; /* Asegurar que se comporte como un bloque */
+}
+
+/* Contenedor del seleccionador */
+.letra-selector {
+  margin: 20px auto;
+  text-align: center;
+  padding: 10px 0;
+}
+
+/* Lista de letras */
+.letra-lista {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.letra-lista li {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #007bff;
+  padding: 5px 10px;
+  border-radius: 50%;
+  background-color: #fff;
+  cursor: pointer;
+  transition: transform 0.3s, background-color 0.3s, color 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.letra-lista li:hover {
+  transform: scale(1.2);
+  background-color: #0056b3;
+  color: #fff;
+}
+
+/* Animación al hacer clic */
+.letra-lista li:active {
+  transform: scale(1);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo mejorado para el texto explicativo del seleccionador */
+.letra-instrucciones {
+  font-size: 1.2rem; /* Tamaño de fuente más grande */
+  font-weight: bold; /* Negrita */
+  color: #0056b3; /* Azul oscuro */
+  text-align: center;
+  margin-bottom: 15px;
+  padding: 10px 20px; /* Espaciado interno */
+  background-color: #f0f7ff; /* Fondo azul claro */
+  border: 2px solid #007bff; /* Borde azul vibrante */
+  border-radius: 12px; /* Bordes redondeados */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  display: inline-block; /* Ajustar al tamaño del contenido */
+  max-width: 80%; /* Limitar el ancho máximo */
+  line-height: 1.5; /* Mejorar la legibilidad */
+}
+
+/* Contenedor de productos */
+.productos-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.productos-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Contenedor principal de productos */
+.productos-lista {
+  display: flex;
+  flex-direction: column; /* Asegura que los productos estén en una columna */
+  gap: 10px; /* Espaciado entre las tarjetas de productos */
+  padding: 0; /* Elimina cualquier padding interno */
+  margin: 0; /* Elimina cualquier margen externo */
+}
+
+/* Tarjetas de productos */
+.producto-card {
+  margin: 0; /* Asegura que no haya margen adicional en las tarjetas */
+  display: flex;
+  margin: 0; /* Asegura que no haya margen adicional en las tarjetas */
+  display: flex;
+  align-items: stretch; /* Asegura que la imagen y el texto tengan el mismo alto */
+  justify-content: space-between;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 0; /* Elimina el padding interno */
+  gap: 0; /* Sin espacio entre la imagen y el texto */
+  width: 100%; /* Ajusta el ancho de las tarjetas al contenedor */
+}
+
+/* Imagen del producto */
+.producto-card .producto-img {
+  width: auto; /* Ajusta el ancho automáticamente */
+  height: 100%; /* Ocupa todo el alto del contenedor */
+  object-fit: contain; /* Mantiene el aspect ratio sin recortar */
+  flex-shrink: 0; /* Evita que la imagen se reduzca */
+  display: block; /* Asegura que la imagen sea tratada como un bloque */
+  margin: 0; /* Elimina cualquier margen adicional */
+}
+
+/* Contenedor de texto */
+.producto-card .producto-texto {
+  flex: 1; /* Ocupa el resto del espacio disponible */
+  display: flex;
+  flex-direction: column; /* Asegura que los elementos estén uno debajo del otro */
+  gap: 10px; /* Espaciado entre los elementos */
+  padding: 20px; /* Espaciado interno */
+  text-align: left; /* Alinear el texto a la izquierda */
+  background: #fff; /* Fondo blanco */
+  box-sizing: border-box; /* Incluye el padding en el cálculo del alto */
+}
+
+/* Alternar diseño: Imagen a la izquierda */
+.producto-card.izquierda {
+  flex-direction: row;
+}
+
+/* Alternar diseño: Imagen a la derecha */
+.producto-card.derecha {
+  flex-direction: row-reverse;
+}
+
+/* Botón "Ver más" */
+.ver-mas-btn-producto {
+  display: inline-block;
+  margin-top: 10px; /* Reduce el espacio superior del botón */
+  padding: 10px 20px;
+  background: #fff;
+  color: #333;
+  border: 2px solid #333;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.ver-mas-btn-producto:hover {
+  background: #333;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* Elementos internos de las tarjetas */
+.producto-card h3,
+.producto-card p,
+.producto-card ul {
+  margin: 0; /* Elimina márgenes adicionales en los elementos internos */
+  padding: 0; /* Elimina cualquier padding adicional */
+}
+
+/* Elementos de la lista de características */
+.producto-card ul {
+  list-style: none; /* Eliminar las viñetas */
+  padding: 0;
+  margin: 10px auto; /* Centrar la lista horizontalmente */
+  text-align: center; /* Centrar el contenido de la lista */
+  display: block; /* Asegurar que las características estén en bloque */
+}
+
+/* Elementos de la lista de características */
+.producto-card ul li {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 5px 0; /* Espaciado entre elementos */
+  text-align: center; /* Centrar el texto de cada elemento */
+}
+
+/* Título de características */
+.producto-card .caracteristicas-titulo {
+  font-size: 0.8rem; /* Tamaño ligeramente más pequeño */
+  font-weight: bold; /* Negrita */
+  color: #000;
+}
+
+/* ---- Media Queries para Responsividad ---- */
+
+/* Pantallas medianas (tablets) */
+@media (max-width: 992px) {
+  .producto-card {
+    flex-direction: column; /* Cambia a diseño vertical */
+    align-items: center; /* Centra los elementos */
+    text-align: center; /* Centra el texto */
+    padding: 15px; /* Agrega un poco de padding interno */
+  }
+
+  .producto-card .producto-img {
+    width: 80%; /* Reduce el tamaño de la imagen */
+    height: auto; /* Ajusta la altura automáticamente */
+    margin-bottom: 10px; /* Espaciado entre la imagen y el texto */
+  }
+
+  .producto-card .producto-texto {
+    display: flex; /* Asegura que el texto siga visible */
+    flex-direction: column; /* Alinea los elementos en columna */
+    align-items: center; /* Centra el texto */
+    padding: 10px; /* Reduce el padding interno */
+  }
+
+  .producto-card h3 {
+    font-size: 1.4rem; /* Ajusta el tamaño del título */
+    margin-bottom: 10px; /* Espaciado inferior */
+    font-weight: bold; /* Negrita para destacar el título */
+  }
+
+  .ver-mas-btn-producto {
+    margin-top: 10px; /* Espaciado superior del botón */
+    padding: 10px 20px; /* Ajusta el tamaño del botón */
+    font-size: 1rem; /* Ajusta el tamaño del texto del botón */
+  }
+}
+
+/* Pantallas pequeñas (móviles) */
+@media (max-width: 1000px) {
+  .producto-card {
+    flex-direction: column !important; /* Cambia a diseño vertical */
+    align-items: center; /* Centra los elementos */
+    text-align: center; /* Centra el texto */
+    padding: 10px; /* Reduce el padding interno */
+    gap: 10px; /* Espaciado entre los elementos */
+    background: none !important; /* Quita el color de fondo */
+  }
+
+  .producto-card .producto-img {
+    order: 1; /* Asegura que la imagen esté arriba */
+    width: 70%; /* Reduce el tamaño de la imagen */
+    height: auto; /* Ajusta la altura automáticamente */
+    margin-bottom: 10px; /* Espaciado entre la imagen y el texto */
+    display: block; /* Asegura que la imagen sea visible */
+  }
+
+  .producto-card h3 {
+    order: 2; /* Asegura que el título esté debajo de la imagen */
+    display: block !important; /* Asegura que el título sea visible */
+    font-size: 1.2rem; /* Ajusta el tamaño del título */
+    margin-bottom: 10px; /* Espaciado inferior */
+    font-weight: bold; /* Negrita para destacar el título */
+    color: #333; /* Color del texto */
+    text-align: center;
+  }
+
+  .ver-mas-btn-producto {
+    order: 3; /* Asegura que el botón esté debajo del título */
+    display: block !important; /* Asegura que el botón sea visible */
+    margin-top: 10px; /* Espaciado superior del botón */
+    padding: 8px 16px; /* Ajusta el tamaño del botón */
+    font-size: 0.9rem; /* Ajusta el tamaño del texto del botón */
+    background: #fff; /* Fondo blanco */
+    color: #333; /* Color del texto */
+    border: 2px solid #333; /* Borde del botón */
+    border-radius: 8px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    text-align: center; /* Centra el texto dentro del botón */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  }
+
+  .ver-mas-btn-producto:hover {
+    background: #333; /* Fondo negro al pasar el cursor */
+    color: #fff; /* Texto blanco al pasar el cursor */
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+  }
+
+  /* Mostrar el contenedor de texto */
+  .producto-card .producto-texto {
+    display: flex !important; /* Asegura que el contenedor de texto sea visible */
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px; /* Espaciado interno */
+    background: none !important; /* Quita el color de fondo */
+  }
+
+  /* Ocultar elementos específicos dentro del contenedor de texto */
+  .producto-card p,
+  .producto-card ul,
+  .producto-card .caracteristicas-titulo {
+    display: none !important; /* Oculta el resto del contenido */
+  }
+}
+

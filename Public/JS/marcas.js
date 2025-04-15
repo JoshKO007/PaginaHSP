@@ -25,7 +25,8 @@ fetch('JSON/marcas.json')
       boton.className = 'ver-productos-btn';
       boton.textContent = 'Ver productos';
       boton.addEventListener('click', () => {
-        alert(`Ver productos de ${item.nombre}`); // Acción al hacer clic
+        // Redirigir a PM.html con el nombre de la marca como parámetro
+        window.location.href = `PM.html?marca=${encodeURIComponent(item.nombre)}`;
       });
       elemento.appendChild(boton);
 
