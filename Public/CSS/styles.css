@@ -1847,59 +1847,11 @@ img {
 
 /* Contenedor principal de marcas */
 #marcas-grid {
-  display: flex; /* Cambia a diseño horizontal */
-  flex-wrap: wrap; /* Permite que las marcas se ajusten a la siguiente línea si es necesario */
-  justify-content: center; /* Centra las marcas horizontalmente */
-  gap: 20px; /* Espaciado entre las marcas */
-  padding: 20px; /* Espaciado interno */
-  margin: 0 auto; /* Centra el contenedor */
-  max-width: 1200px; /* Limita el ancho máximo */
-}
-
-/* Elementos individuales de las marcas */
-.marca-item {
-  display: flex;
-  flex-direction: column; /* Asegura que los elementos estén en columna */
-  align-items: center; /* Centra los elementos horizontalmente */
-  justify-content: center; /* Centra los elementos verticalmente */
-  width: 200px; /* Ancho fijo para cada marca */
-  height: auto; /* Ajusta la altura automáticamente */
-  padding: 15px; /* Espaciado interno */
-  background: #fff; /* Fondo blanco */
-  border-radius: 12px; /* Bordes redondeados */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra ligera */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-}
-
-/* Efectos al pasar el cursor */
-.marca-item:hover {
-  transform: scale(1.05); /* Aumenta ligeramente el tamaño */
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
-}
-
-/* Imagen dentro de cada marca */
-.marca-img {
-  width: 100px; /* Tamaño fijo para las imágenes */
-  height: 100px; /* Tamaño fijo para las imágenes */
-  object-fit: contain; /* Mantiene las proporciones de la imagen */
-  margin-bottom: 10px; /* Espaciado entre la imagen y el botón */
-}
-
-/* Botón "Ver productos" */
-.ver-productos-btn {
-  padding: 10px 20px;
-  background: linear-gradient(135deg, #2a7ae9, #1a5cb0); /* Fondo degradado */
-  color: white;
-  border: none;
-  border-radius: 20px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.ver-productos-btn:hover {
-  background: linear-gradient(135deg, #1a5cb0, #2a7ae9); /* Cambiar degradado al pasar el cursor */
-  transform: scale(1.05); /* Aumentar ligeramente el tamaño */
-}
+    display: flex; /* Cambia a diseño horizontal */
+    flex-wrap: wrap; /* Permite que las marcas se ajusten a la siguiente línea si es necesario */
+    justify-content: center; /* Centra las marcas horizontalmente */
+    gap: 20px; /* Espaciado entre las marcas */
+    padding: 20px; /* Espaciado interno */
+    margin: 0 auto; /* Centra el contenedor */
+    max-width: 1200px; /* Limita el ancho máximo */
+  }
