@@ -1496,15 +1496,16 @@ img {
 
 /* Lista de letras */
 .letra-lista {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  padding: 0;
-  margin: 0;
-  list-style: none;
+  display: flex !important; /* Asegura que sea horizontal */
+  flex-wrap: wrap; /* Permite que las letras se ajusten a la siguiente línea si es necesario */
+  justify-content: center; /* Centra las letras horizontalmente */
+  gap: 10px; /* Espaciado entre las letras */
+  padding: 0; /* Elimina el padding interno */
+  margin: 0; /* Elimina el margen externo */
+  list-style: none; /* Elimina los puntos de lista */
 }
 
+/* Elementos individuales de la lista */
 .letra-lista li {
   font-size: 1rem;
   font-weight: bold;
@@ -1522,6 +1523,7 @@ img {
   justify-content: center;
 }
 
+/* Efectos al pasar el cursor */
 .letra-lista li:hover {
   transform: scale(1.2);
   background-color: #0056b3;
@@ -1578,16 +1580,16 @@ img {
 
 /* Tarjetas de productos */
 .producto-card {
-  margin: 5px 0; /* Reduce el margen entre los productos */
-  padding: 10px; /* Ajusta el padding interno */
   display: flex;
+  flex-direction: row; /* Asegura que la imagen y el texto estén en línea */
   align-items: stretch; /* Asegura que la imagen y el texto tengan el mismo alto */
   justify-content: space-between;
+  gap: 10px; /* Espaciado entre la imagen y el texto */
+  margin: 10px 0; /* Espaciado entre las tarjetas */
+  padding: 10px; /* Espaciado interno */
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  gap: 0; /* Sin espacio entre la imagen y el texto */
-  width: 100%; /* Ajusta el ancho de las tarjetas al contenedor */
+  background: #fff; /* Fondo blanco */
 }
 
 /* Imagen del producto */
@@ -1792,3 +1794,112 @@ img {
   padding: 0; /* Elimina el padding */
 }
 
+/* Contenedor principal de marcas */
+.marcas-contenedor {
+  display: flex; /* Cambia a diseño horizontal */
+  flex-wrap: wrap; /* Permite que las marcas se ajusten a la siguiente línea si es necesario */
+  justify-content: center; /* Centra las marcas horizontalmente */
+  gap: 20px; /* Espaciado entre las marcas */
+  padding: 20px; /* Espaciado interno */
+  margin: 0 auto; /* Centra el contenedor */
+  max-width: 1200px; /* Limita el ancho máximo */
+  list-style: none; /* Elimina los puntos de lista */
+}
+
+/* Elementos individuales de las marcas */
+.marca-item {
+  display: flex;
+  flex-direction: column; /* Asegura que los elementos estén en columna */
+  align-items: center; /* Centra los elementos horizontalmente */
+  justify-content: center; /* Centra los elementos verticalmente */
+  width: 200px; /* Ancho fijo para cada marca */
+  height: auto; /* Ajusta la altura automáticamente */
+  padding: 15px; /* Espaciado interno */
+  background: #fff; /* Fondo blanco */
+  border-radius: 12px; /* Bordes redondeados */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+/* Efectos al pasar el cursor */
+.marca-item:hover {
+  transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
+}
+
+/* Imagen dentro de cada marca */
+.marca-img {
+  width: 100px; /* Tamaño fijo para las imágenes */
+  height: 100px; /* Tamaño fijo para las imágenes */
+  object-fit: contain; /* Mantiene las proporciones de la imagen */
+  margin-bottom: 10px; /* Espaciado entre la imagen y el texto */
+}
+
+/* Texto dentro de cada marca */
+.marca-nombre {
+  font-size: 1rem; /* Tamaño de fuente */
+  font-weight: bold; /* Negrita */
+  color: #333; /* Color del texto */
+  text-align: center; /* Centra el texto */
+  margin: 0; /* Elimina márgenes adicionales */
+}
+
+/* Contenedor principal de marcas */
+#marcas-grid {
+  display: flex; /* Cambia a diseño horizontal */
+  flex-wrap: wrap; /* Permite que las marcas se ajusten a la siguiente línea si es necesario */
+  justify-content: center; /* Centra las marcas horizontalmente */
+  gap: 20px; /* Espaciado entre las marcas */
+  padding: 20px; /* Espaciado interno */
+  margin: 0 auto; /* Centra el contenedor */
+  max-width: 1200px; /* Limita el ancho máximo */
+}
+
+/* Elementos individuales de las marcas */
+.marca-item {
+  display: flex;
+  flex-direction: column; /* Asegura que los elementos estén en columna */
+  align-items: center; /* Centra los elementos horizontalmente */
+  justify-content: center; /* Centra los elementos verticalmente */
+  width: 200px; /* Ancho fijo para cada marca */
+  height: auto; /* Ajusta la altura automáticamente */
+  padding: 15px; /* Espaciado interno */
+  background: #fff; /* Fondo blanco */
+  border-radius: 12px; /* Bordes redondeados */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+/* Efectos al pasar el cursor */
+.marca-item:hover {
+  transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
+}
+
+/* Imagen dentro de cada marca */
+.marca-img {
+  width: 100px; /* Tamaño fijo para las imágenes */
+  height: 100px; /* Tamaño fijo para las imágenes */
+  object-fit: contain; /* Mantiene las proporciones de la imagen */
+  margin-bottom: 10px; /* Espaciado entre la imagen y el botón */
+}
+
+/* Botón "Ver productos" */
+.ver-productos-btn {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #2a7ae9, #1a5cb0); /* Fondo degradado */
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.ver-productos-btn:hover {
+  background: linear-gradient(135deg, #1a5cb0, #2a7ae9); /* Cambiar degradado al pasar el cursor */
+  transform: scale(1.05); /* Aumentar ligeramente el tamaño */
+}

@@ -1,22 +1,21 @@
 // Obtener el contenedor
-const contenedor = document.getElementById('contenedor-items');
+const contenedor = document.getElementById('marcas-grid'); // Cambiado de contenedor-items a marcas-grid
 
 // Cargar y procesar el JSON
 fetch('JSON/marcas.json') 
   .then(response => response.json())
   .then(data => {
     data.forEach(item => {
-      // Crear un elemento para cada item (ej. una tarjeta)
+      // Crear un elemento para cada marca
       const elemento = document.createElement('div');
-      elemento.className = 'item';  // Clase para estilos CSS
+      elemento.className = 'marca-item'; // Clase para estilos CSS
 
       // Agregar la imagen (si existe la URL)
       if (item.imagen) {
         const imagen = document.createElement('img');
         imagen.src = item.imagen;
         imagen.alt = item.nombre;
-        imagen.style.width = '1000px'; // Ajustar el ancho de la imagen
-        imagen.style.height = 'auto'; // Mantener proporciones
+        imagen.className = 'marca-img'; // Clase para estilos de la imagen
         elemento.appendChild(imagen);
       }
 
