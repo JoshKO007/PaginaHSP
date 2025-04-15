@@ -1334,11 +1334,10 @@ img {
 /* Estilo para los ítems cargados desde el JSON */
 #contenedor-items {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 150px; /* Aumentar el espaciado entre ítems */
-    padding: 30px;
+    flex-direction: column; /* Asegura que los productos estén en una columna */
+    gap: 5px; /* Reduce el espaciado entre las tarjetas de productos */
+    padding: 0; /* Elimina cualquier padding interno */
+    margin: 0; /* Elimina cualquier margen externo */
 }
 
 #contenedor-items .item {
@@ -1579,16 +1578,14 @@ img {
 
 /* Tarjetas de productos */
 .producto-card {
-  margin: 0; /* Asegura que no haya margen adicional en las tarjetas */
-  display: flex;
-  margin: 0; /* Asegura que no haya margen adicional en las tarjetas */
+  margin: 5px 0; /* Reduce el margen entre los productos */
+  padding: 10px; /* Ajusta el padding interno */
   display: flex;
   align-items: stretch; /* Asegura que la imagen y el texto tengan el mismo alto */
   justify-content: space-between;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  padding: 0; /* Elimina el padding interno */
   gap: 0; /* Sin espacio entre la imagen y el texto */
   width: 100%; /* Ajusta el ancho de las tarjetas al contenedor */
 }
@@ -1782,5 +1779,16 @@ img {
   .producto-card .caracteristicas-titulo {
     display: none !important; /* Oculta el resto del contenido */
   }
+}
+
+/* Estilo para el encabezado de letras */
+.letra-encabezado {
+  font-size: 1.5rem; /* Tamaño de la letra */
+  font-weight: bold;
+  color: #333; /* Color del texto */
+  margin: 5px 0; /* Reduce el margen superior e inferior */
+  text-align: center; /* Centra el texto */
+  text-transform: uppercase; /* Convierte a mayúsculas */
+  padding: 0; /* Elimina el padding */
 }
 

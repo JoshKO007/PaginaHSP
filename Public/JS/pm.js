@@ -40,7 +40,25 @@ fetch(productosJsonUrl)
     const productosFiltrados = data.filter(producto => producto.marca === marcaSeleccionada);
 
     if (productosFiltrados.length > 0) {
+      // Ordenar los productos alfabéticamente por nombre
+      productosFiltrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
+
+      let letraActual = ''; // Variable para rastrear la letra actual
+
       productosFiltrados.forEach((producto, index) => {
+        const primeraLetra = producto.nombre.charAt(0).toUpperCase(); // Obtener la primera letra del nombre
+
+        // Si la letra cambia, agregar un encabezado con la letra
+        if (primeraLetra !== letraActual) {
+          letraActual = primeraLetra;
+
+          const encabezadoLetra = document.createElement('h2');
+          encabezadoLetra.textContent = letraActual;
+          encabezadoLetra.className = 'letra-encabezado'; // Clase para estilos
+          encabezadoLetra.id = `letra-${letraActual}`; // Agregar ID para desplazamiento
+          contenedorProductos.appendChild(encabezadoLetra);
+        }
+
         // Crear un contenedor para cada producto
         const productoCard = document.createElement('div');
         productoCard.className = `producto-card ${index % 2 === 0 ? 'izquierda' : 'derecha'}`; // Alternar clases
@@ -202,8 +220,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Agregar evento al hacer clic en una letra
     li.addEventListener('click', () => {
-      alert(`Seleccionaste la letra: ${letra}`);
-      // Aquí puedes agregar lógica para filtrar productos por la letra seleccionada
+      const target = document.getElementById(`letra-${letra}`);
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth', // Desplazamiento suave
+          block: 'start' // Alinea al inicio de la página
+        });
+      } else {
+        console.warn(`No se encontró la sección para la letra: ${letra}`);
+      }
     });
 
     // Agregar la letra al contenedor
