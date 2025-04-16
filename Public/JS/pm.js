@@ -33,6 +33,31 @@ fetch(marcasJsonUrl)
     console.error('Error al cargar el JSON de marcas:', error);
   });
 
+// Mostrar la imagen de la marca seleccionada
+fetch(marcasJsonUrl)
+  .then(response => response.json())
+  .then(marcas => {
+    const marcaContenedor = document.getElementById('marca-imagen'); // Contenedor de la imagen
+    const marca = marcas.find(m => m.nombre === marcaSeleccionada); // Buscar la marca seleccionada en el JSON
+
+    if (marcaContenedor) {
+      if (marca && marca.imagen) {
+        // Asignar la imagen de la marca al contenedor
+        marcaContenedor.src = marca.imagen;
+        marcaContenedor.alt = `Logo de ${marcaSeleccionada}`;
+      } else {
+        console.error('No se encontró la imagen para la marca seleccionada.');
+        marcaContenedor.alt = 'Imagen no disponible';
+        marcaContenedor.src = 'IMG/default-logo.png'; // Imagen por defecto si no se encuentra
+      }
+    } else {
+      console.error('El contenedor de la imagen de la marca no se encontró.');
+    }
+  })
+  .catch(error => {
+    console.error('Error al cargar el JSON de marcas:', error);
+  });
+
 // Mostrar los productos de la marca seleccionada
 fetch(productosJsonUrl)
   .then(response => response.json())
@@ -42,23 +67,11 @@ fetch(productosJsonUrl)
     // Limpiar el contenedor de productos antes de agregar contenido nuevo
     contenedorProductos.innerHTML = '';
 
-    // Agregar la imagen de la marca al contenedor de productos
-    fetch(marcasJsonUrl)
-      .then(response => response.json())
-      .then(marcas => {
-        const marca = marcas.find(m => m.nombre === marcaSeleccionada); // Buscar la marca seleccionada en el JSON
-
-        if (marca && marca.imagen) {
-          const imagenMarca = document.createElement('img');
-          imagenMarca.src = marca.imagen; // Ruta de la imagen
-          imagenMarca.alt = `Logo de ${marcaSeleccionada}`; // Texto alternativo
-          imagenMarca.className = 'imagen-marca-productos'; // Clase para estilos
-          contenedorProductos.appendChild(imagenMarca);
-        } else {
-          console.error('No se encontró la imagen para la marca seleccionada.');
-        }
-      })
-      .catch(error => console.error('Error al cargar el JSON de marcas:', error));
+    // Agregar el nombre de la marca al contenedor de productos
+    const tituloMarca = document.createElement('h2');
+    tituloMarca.textContent = `Productos de la marca: ${marcaSeleccionada}`;
+    tituloMarca.className = 'titulo-marca-productos'; // Clase para estilos
+    contenedorProductos.appendChild(tituloMarca);
 
     // Filtrar productos por la marca seleccionada
     const productosFiltrados = data.filter(producto => producto.marca === marcaSeleccionada);
