@@ -10,7 +10,6 @@ const marcasJsonUrl = `JSON/Marcas.json?nocache=${new Date().getTime()}`;
 // Obtener la marca seleccionada
 const marcaSeleccionada = getQueryParam('marca');
 
-// Mostrar la imagen de la marca seleccionada
 fetch(marcasJsonUrl)
   .then(response => response.json())
   .then(marcas => {
@@ -18,18 +17,9 @@ fetch(marcasJsonUrl)
     const marca = marcas.find(m => m.nombre === marcaSeleccionada); // Buscar la marca seleccionada en el JSON
 
     if (marca && marca.imagen) {
-      // Usar la misma lógica que para las imágenes de los productos
-      const img = new Image();
-      img.src = marca.imagen;
-      img.onload = () => {
-        marcaImagen.src = marca.imagen; // Asignar la ruta de la imagen si se carga correctamente
-        marcaImagen.alt = `Logo de ${marcaSeleccionada}`; // Asignar el texto alternativo
-      };
-      img.onerror = () => {
-        console.error('Error al cargar la imagen de la marca.');
-        marcaImagen.src = 'IMG/default-logo.png'; // Imagen por defecto si no se encuentra
-        marcaImagen.alt = 'Logo no disponible';
-      };
+      // Asignar directamente la ruta de la imagen
+      marcaImagen.src = marca.imagen;
+      marcaImagen.alt = `Logo de ${marcaSeleccionada}`; // Asignar el texto alternativo
     } else {
       console.error('No se encontró la imagen para la marca seleccionada.');
       marcaImagen.src = 'IMG/default-logo.png'; // Imagen por defecto si no se encuentra
@@ -37,7 +27,7 @@ fetch(marcasJsonUrl)
     }
   })
   .catch(error => console.error('Error al cargar el JSON de marcas:', error));
-
+  
 // Mostrar los productos de la marca seleccionada
 fetch(productosJsonUrl)
   .then(response => response.json())
