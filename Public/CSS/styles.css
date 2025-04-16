@@ -1902,3 +1902,11 @@ img {
   text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Agregar sombra al texto */
 }
 
+/* Estilo para las imágenes de marca en productos */
+.imagen-marca-productos {
+  display: block;
+  margin: 0 auto 10px; /* Centrar la imagen y agregar espaciado inferior */
+  max-width: 700px; /* Limitar el ancho máximo */
+  height: auto; /* Mantener proporciones */
+}
+
