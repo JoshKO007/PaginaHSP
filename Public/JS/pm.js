@@ -18,8 +18,18 @@ fetch(marcasJsonUrl)
     const marca = marcas.find(m => m.nombre === marcaSeleccionada); // Buscar la marca seleccionada en el JSON
 
     if (marca && marca.imagen) {
-      marcaImagen.src = marca.imagen; // Asignar la ruta de la imagen
-      marcaImagen.alt = `Logo de ${marcaSeleccionada}`; // Asignar el texto alternativo
+      // Usar la misma lógica que para las imágenes de los productos
+      const img = new Image();
+      img.src = marca.imagen;
+      img.onload = () => {
+        marcaImagen.src = marca.imagen; // Asignar la ruta de la imagen si se carga correctamente
+        marcaImagen.alt = `Logo de ${marcaSeleccionada}`; // Asignar el texto alternativo
+      };
+      img.onerror = () => {
+        console.error('Error al cargar la imagen de la marca.');
+        marcaImagen.src = 'IMG/default-logo.png'; // Imagen por defecto si no se encuentra
+        marcaImagen.alt = 'Logo no disponible';
+      };
     } else {
       console.error('No se encontró la imagen para la marca seleccionada.');
       marcaImagen.src = 'IMG/default-logo.png'; // Imagen por defecto si no se encuentra
