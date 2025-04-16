@@ -3,48 +3,51 @@ function getQueryParam(param) {
   return urlParams.get(param);
 }
 
-// URL del JSON de productos
+// URL del JSON de productos y marcas
 const productosJsonUrl = `JSON/Productos.json?nocache=${new Date().getTime()}`;
+const marcasJsonUrl = `JSON/marcas.json?nocache=${new Date().getTime()}`;
 
 // Obtener la marca seleccionada
 const marcaSeleccionada = getQueryParam('marca');
 
 // Mostrar los productos de la marca seleccionada
-fetch(productosJsonUrl)
-  .then(response => response.json())
-  .then(data => {
+Promise.all([
+  fetch(marcasJsonUrl).then(response => response.json()), // Cargar marcas.json
+  fetch(productosJsonUrl).then(response => response.json()) // Cargar productos.json
+])
+  .then(([marcas, productos]) => {
     const contenedorProductos = document.getElementById('contenedor-items');
     const marcaContenedor = document.getElementById('marca-nombre'); // Contenedor del nombre o logo de la marca
 
     // Limpiar el contenedor de productos antes de agregar contenido nuevo
     contenedorProductos.innerHTML = '';
 
+    // Buscar la marca seleccionada en marcas.json
+    const marca = marcas.find(m => m.nombre.toUpperCase() === marcaSeleccionada.toUpperCase());
+
+    if (marca) {
+      // Crear un elemento de imagen para el logo de la marca
+      const logoMarca = document.createElement('img');
+      logoMarca.src = marca.imagen; // Ruta del logo desde marcas.json
+      logoMarca.alt = `Logo de ${marcaSeleccionada}`;
+      logoMarca.className = 'logo-marca-productos'; // Clase para estilos
+
+      // Agregar el logo al contenedor del nombre de la marca
+      if (marcaContenedor) {
+        marcaContenedor.innerHTML = ''; // Limpiar contenido previo
+        marcaContenedor.appendChild(logoMarca);
+      }
+    } else {
+      console.warn('No se encontró la marca seleccionada en marcas.json.');
+      if (marcaContenedor) {
+        marcaContenedor.textContent = `Productos de la marca: ${marcaSeleccionada}`;
+      }
+    }
+
     // Filtrar productos por la marca seleccionada
-    const productosFiltrados = data.filter(producto => producto.marca === marcaSeleccionada);
+    const productosFiltrados = productos.filter(producto => producto.marca.toUpperCase() === marcaSeleccionada.toUpperCase());
 
     if (productosFiltrados.length > 0) {
-      // Obtener el logo de la marca desde el primer producto filtrado
-      const logoMarcaUrl = productosFiltrados[0]?.logo; // Asegúrate de que el JSON tenga un campo "logo"
-
-      if (logoMarcaUrl) {
-        // Crear un elemento de imagen para el logo de la marca
-        const logoMarca = document.createElement('img');
-        logoMarca.src = logoMarcaUrl; // Ruta del logo desde el JSON
-        logoMarca.alt = `Logo de ${marcaSeleccionada}`;
-        logoMarca.className = 'logo-marca-productos'; // Clase para estilos
-
-        // Agregar el logo al contenedor del nombre de la marca
-        if (marcaContenedor) {
-          marcaContenedor.innerHTML = ''; // Limpiar contenido previo
-          marcaContenedor.appendChild(logoMarca);
-        }
-      } else {
-        console.warn('No se encontró el logo para la marca seleccionada.');
-        if (marcaContenedor) {
-          marcaContenedor.textContent = `Productos de la marca: ${marcaSeleccionada}`;
-        }
-      }
-
       // Ordenar los productos alfabéticamente por nombre
       productosFiltrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
 
@@ -144,7 +147,7 @@ fetch(productosJsonUrl)
       contenedorProductos.appendChild(mensaje);
     }
   })
-  .catch(error => console.error('Error al cargar el JSON de productos:', error));
+  .catch(error => console.error('Error al cargar los JSON:', error));
 
 // Función para ajustar la vista en pantallas pequeñas
 function ajustarVistaProductos() {
