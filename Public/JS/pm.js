@@ -42,55 +42,21 @@ fetch(productosJsonUrl)
     // Limpiar el contenedor de productos antes de agregar contenido nuevo
     contenedorProductos.innerHTML = '';
 
-    // Agregar la imagen de la marca, las instrucciones y el índice de letras al inicio del contenedor
+    // Agregar la imagen de la marca al contenedor de productos
     fetch(marcasJsonUrl)
       .then(response => response.json())
       .then(marcas => {
         const marca = marcas.find(m => m.nombre === marcaSeleccionada); // Buscar la marca seleccionada en el JSON
 
         if (marca && marca.imagen) {
-          // Crear la imagen de la marca
           const imagenMarca = document.createElement('img');
           imagenMarca.src = marca.imagen; // Ruta de la imagen
           imagenMarca.alt = `Logo de ${marcaSeleccionada}`; // Texto alternativo
           imagenMarca.className = 'imagen-marca-productos'; // Clase para estilos
-          contenedorProductos.appendChild(imagenMarca); // Agregar al inicio del contenedor
+          contenedorProductos.appendChild(imagenMarca);
         } else {
           console.error('No se encontró la imagen para la marca seleccionada.');
         }
-
-        // Crear las instrucciones del índice de filtro
-        const instrucciones = document.createElement('p');
-        instrucciones.textContent = 'Seleccione una letra para explorar los productos disponibles que comienzan con ella:';
-        instrucciones.className = 'letra-instrucciones'; // Clase para estilos
-        contenedorProductos.appendChild(instrucciones); // Agregar después de la imagen
-
-        // Crear el índice de letras
-        const contenedorLetras = document.createElement('ul');
-        contenedorLetras.className = 'letra-lista'; // Clase para estilos
-
-        const letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-        letras.forEach(letra => {
-          const li = document.createElement('li');
-          li.textContent = letra;
-          li.className = 'letra-item'; // Clase para estilos
-
-          li.addEventListener('click', () => {
-            const target = document.getElementById(`letra-${letra}`);
-            if (target) {
-              target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-              });
-            } else {
-              console.warn(`No se encontró la sección para la letra: ${letra}`);
-            }
-          });
-
-          contenedorLetras.appendChild(li);
-        });
-
-        contenedorProductos.appendChild(contenedorLetras); // Agregar después de las instrucciones
       })
       .catch(error => console.error('Error al cargar el JSON de marcas:', error));
 
