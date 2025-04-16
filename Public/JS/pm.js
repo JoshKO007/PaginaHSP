@@ -233,3 +233,23 @@ document.addEventListener('DOMContentLoaded', () => {
     contenedorLetras.appendChild(li);
   });
 });
+
+// Mostrar el nombre de la marca seleccionada en lugar de la imagen
+document.addEventListener('DOMContentLoaded', () => {
+  const marcaSeleccionada = getQueryParam('marca'); // Obtener la marca seleccionada desde la URL
+  const marcaContenedor = document.querySelector('.marca-seleccionada'); // Contenedor de la marca
+
+  if (marcaContenedor) {
+    // Crear un elemento de texto para mostrar el nombre de la marca
+    const marcaTexto = document.createElement('h2');
+    marcaTexto.textContent = `Marca seleccionada ${marcaSeleccionada}`;
+    marcaTexto2.textContent = `${marcaSeleccionada}`;
+    marcaTexto.className = 'marca-nombre'; // Clase para estilos
+
+    // Limpiar cualquier contenido previo y agregar el texto
+    marcaContenedor.innerHTML = ''; // Elimina cualquier contenido previo
+    marcaContenedor.appendChild(marcaTexto); // Agrega el texto al contenedor
+  } else {
+    console.error('El contenedor de la marca no se encontró.');
+  }
+});
