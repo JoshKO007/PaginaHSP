@@ -216,7 +216,6 @@ window.addEventListener('resize', ajustarVistaProductos);
 document.addEventListener('DOMContentLoaded', () => {
   const contenedorLetras = document.querySelector('.letra-lista');
 
-  // Asegúrate de que el contenedor exista
   if (!contenedorLetras) {
     console.error('El contenedor de letras no se encontró.');
     return;
@@ -227,22 +226,20 @@ document.addEventListener('DOMContentLoaded', () => {
   letras.forEach(letra => {
     const li = document.createElement('li');
     li.textContent = letra;
-    li.className = 'letra-item'; // Clase para estilos
+    li.className = 'letra-item';
 
-    // Agregar evento al hacer clic en una letra
     li.addEventListener('click', () => {
       const target = document.getElementById(`letra-${letra}`);
       if (target) {
         target.scrollIntoView({
-          behavior: 'smooth', // Desplazamiento suave
-          block: 'start' // Alinea al inicio de la página
+          behavior: 'smooth',
+          block: 'start'
         });
       } else {
         console.warn(`No se encontró la sección para la letra: ${letra}`);
       }
     });
 
-    // Agregar la letra al contenedor
     contenedorLetras.appendChild(li);
   });
 });
