@@ -1455,6 +1455,37 @@ img {
   background: #0056b3;
 }
 
+/* Estilo para el título de la sección marca-seleccionada */
+.marca-seleccionada h3 {
+  font-size: 2.5rem; /* Tamaño grande para destacar */
+  font-weight: bold; /* Negrita */
+  color: #2a7ae9; /* Azul vibrante */
+  text-align: center; /* Centrar el texto */
+  margin-bottom: 20px; /* Espaciado inferior */
+  font-family: 'Roboto', sans-serif; /* Fuente moderna */
+  text-transform: uppercase; /* Convertir texto a mayúsculas */
+  letter-spacing: 1.5px; /* Espaciado entre letras */
+  position: relative; /* Para agregar decoraciones */
+}
+
+/* Línea decorativa debajo del texto */
+.marca-seleccionada h3::after {
+  content: '';
+  display: block;
+  width: 100px; /* Ancho de la línea */
+  height: 4px; /* Altura de la línea */
+  background-color: #1a5cb0; /* Azul más oscuro */
+  margin: 10px auto 0; /* Centrar la línea */
+  border-radius: 2px; /* Bordes redondeados */
+}
+
+/* Efectos al pasar el mouse */
+.marca-seleccionada h3:hover {
+  color: #0056b3; /* Cambiar a un azul más oscuro */
+  transform: scale(1.05); /* Aumentar ligeramente el tamaño */
+  transition: transform 0.3s ease, color 0.3s ease; /* Transiciones suaves */
+}
+
 /* Estilo para el h2 en PM.html */
 .pm-title {
   font-size: 2.8rem;
@@ -1496,16 +1527,15 @@ img {
 
 /* Lista de letras */
 .letra-lista {
-  display: flex !important; /* Asegura que sea horizontal */
-  flex-wrap: wrap; /* Permite que las letras se ajusten a la siguiente línea si es necesario */
-  justify-content: center; /* Centra las letras horizontalmente */
-  gap: 10px; /* Espaciado entre las letras */
-  padding: 0; /* Elimina el padding interno */
-  margin: 0; /* Elimina el margen externo */
-  list-style: none; /* Elimina los puntos de lista */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
-/* Elementos individuales de la lista */
 .letra-lista li {
   font-size: 1rem;
   font-weight: bold;
@@ -1523,7 +1553,6 @@ img {
   justify-content: center;
 }
 
-/* Efectos al pasar el cursor */
 .letra-lista li:hover {
   transform: scale(1.2);
   background-color: #0056b3;
@@ -1556,9 +1585,9 @@ img {
 /* Contenedor de productos */
 .productos-container {
   padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px; /* Mantén los bordes redondeados */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  background-color: transparent; /* Cambia el fondo a transparente */
 }
 
 .productos-title {
@@ -1580,16 +1609,16 @@ img {
 
 /* Tarjetas de productos */
 .producto-card {
+  margin: 5px 0; /* Reduce el margen entre los productos */
+  padding: 10px; /* Ajusta el padding interno */
   display: flex;
-  flex-direction: row; /* Asegura que la imagen y el texto estén en línea */
   align-items: stretch; /* Asegura que la imagen y el texto tengan el mismo alto */
   justify-content: space-between;
-  gap: 10px; /* Espaciado entre la imagen y el texto */
-  margin: 10px 0; /* Espaciado entre las tarjetas */
-  padding: 10px; /* Espaciado interno */
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  background: #fff; /* Fondo blanco */
+  overflow: hidden;
+  gap: 0; /* Sin espacio entre la imagen y el texto */
+  width: 100%; /* Ajusta el ancho de las tarjetas al contenedor */
 }
 
 /* Imagen del producto */
@@ -1610,7 +1639,6 @@ img {
   gap: 10px; /* Espaciado entre los elementos */
   padding: 20px; /* Espaciado interno */
   text-align: left; /* Alinear el texto a la izquierda */
-  background: #fff; /* Fondo blanco */
   box-sizing: border-box; /* Incluye el padding en el cálculo del alto */
 }
 
@@ -1795,7 +1823,7 @@ img {
 }
 
 /* Contenedor principal de marcas */
-.marcas-contenedor {
+#marcas-grid {
   display: flex; /* Cambia a diseño horizontal */
   flex-wrap: wrap; /* Permite que las marcas se ajusten a la siguiente línea si es necesario */
   justify-content: center; /* Centra las marcas horizontalmente */
@@ -1803,7 +1831,6 @@ img {
   padding: 20px; /* Espaciado interno */
   margin: 0 auto; /* Centra el contenedor */
   max-width: 1200px; /* Limita el ancho máximo */
-  list-style: none; /* Elimina los puntos de lista */
 }
 
 /* Elementos individuales de las marcas */
@@ -1833,25 +1860,45 @@ img {
   width: 100px; /* Tamaño fijo para las imágenes */
   height: 100px; /* Tamaño fijo para las imágenes */
   object-fit: contain; /* Mantiene las proporciones de la imagen */
-  margin-bottom: 10px; /* Espaciado entre la imagen y el texto */
+  margin-bottom: 10px; /* Espaciado entre la imagen y el botón */
 }
 
-/* Texto dentro de cada marca */
-.marca-nombre {
-  font-size: 1rem; /* Tamaño de fuente */
+/* Botón "Ver productos" */
+.ver-productos-btn {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #2a7ae9, #1a5cb0); /* Fondo degradado */
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.ver-productos-btn:hover {
+  background: linear-gradient(135deg, #1a5cb0, #2a7ae9); /* Cambiar degradado al pasar el cursor */
+  transform: scale(1.05); /* Aumentar ligeramente el tamaño */
+}
+
+/* Estilo para el contenedor del nombre de la marca */
+#marca-nombre {
+  font-size: 4rem; /* Tamaño grande para destacar */
   font-weight: bold; /* Negrita */
-  color: #333; /* Color del texto */
-  text-align: center; /* Centra el texto */
-  margin: 0; /* Elimina márgenes adicionales */
+  color: #515e71; /* Azul vibrante */
+  text-align: center; /* Centrar el texto */
+  margin: 20px 0; /* Espaciado superior e inferior */
+  font-family: 'Arial', Arial, Helvetica, sans-serif; /* Fuente moderna y limpia */
+  text-transform: uppercase; /* Convertir texto a mayúsculas */
+  letter-spacing: 2px; /* Espaciado entre letras */
+  transition: transform 0.3s ease, color 0.3s ease; /* Transiciones suaves */
+  cursor: pointer; /* Cambiar el cursor al pasar el mouse */
 }
 
-/* Contenedor principal de marcas */
-#marcas-grid {
-    display: flex; /* Cambia a diseño horizontal */
-    flex-wrap: wrap; /* Permite que las marcas se ajusten a la siguiente línea si es necesario */
-    justify-content: center; /* Centra las marcas horizontalmente */
-    gap: 20px; /* Espaciado entre las marcas */
-    padding: 20px; /* Espaciado interno */
-    margin: 0 auto; /* Centra el contenedor */
-    max-width: 1200px; /* Limita el ancho máximo */
-  }
+/* Efectos al pasar el mouse */
+#marca-nombre:hover {
+  transform: scale(1.1); /* Aumentar ligeramente el tamaño */
+  color: #0056b3; /* Cambiar a un azul más oscuro */
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Agregar sombra al texto */
+}
+

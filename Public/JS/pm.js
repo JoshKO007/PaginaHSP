@@ -10,24 +10,29 @@ const marcasJsonUrl = `JSON/Marcas.json?nocache=${new Date().getTime()}`;
 // Obtener la marca seleccionada
 const marcaSeleccionada = getQueryParam('marca');
 
+// Mostrar el nombre de la marca seleccionada
 fetch(marcasJsonUrl)
   .then(response => response.json())
   .then(marcas => {
-    const marcaImagen = document.getElementById('marca-imagen');
+    const marcaContenedor = document.getElementById('marca-nombre'); // Contenedor del texto
     const marca = marcas.find(m => m.nombre === marcaSeleccionada); // Buscar la marca seleccionada en el JSON
 
-    if (marca && marca.imagen) {
-      // Asignar directamente la ruta de la imagen
-      marcaImagen.src = marca.imagen;
-      marcaImagen.alt = `Logo de ${marcaSeleccionada}`; // Asignar el texto alternativo
+    if (marcaContenedor) {
+      if (marca) {
+        // Asignar el nombre de la marca al contenedor
+        marcaContenedor.textContent = `${marcaSeleccionada}`;
+      } else {
+        console.error('No se encontró la marca seleccionada.');
+        marcaContenedor.textContent = 'Marca no encontrada.';
+      }
     } else {
-      console.error('No se encontró la imagen para la marca seleccionada.');
-      marcaImagen.src = 'IMG/default-logo.png'; // Imagen por defecto si no se encuentra
-      marcaImagen.alt = 'Logo no disponible';
+      console.error('El contenedor del nombre de la marca no se encontró.');
     }
   })
-  .catch(error => console.error('Error al cargar el JSON de marcas:', error));
-  
+  .catch(error => {
+    console.error('Error al cargar el JSON de marcas:', error);
+  });
+
 // Mostrar los productos de la marca seleccionada
 fetch(productosJsonUrl)
   .then(response => response.json())
@@ -211,6 +216,9 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
+  // Limpiar el contenedor de letras antes de generar contenido nuevo
+  contenedorLetras.innerHTML = '';
+
   // Generar letras de la A a la Z
   const letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   letras.forEach(letra => {
@@ -232,24 +240,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     contenedorLetras.appendChild(li);
   });
-});
-
-// Mostrar el nombre de la marca seleccionada en lugar de la imagen
-document.addEventListener('DOMContentLoaded', () => {
-  const marcaSeleccionada = getQueryParam('marca'); // Obtener la marca seleccionada desde la URL
-  const marcaContenedor = document.querySelector('.marca-seleccionada'); // Contenedor de la marca
-
-  if (marcaContenedor) {
-    // Crear un elemento de texto para mostrar el nombre de la marca
-    const marcaTexto = document.createElement('h2');
-    marcaTexto.textContent = `Marca seleccionada ${marcaSeleccionada}`;
-    marcaTexto2.textContent = `${marcaSeleccionada}`;
-    marcaTexto.className = 'marca-nombre'; // Clase para estilos
-
-    // Limpiar cualquier contenido previo y agregar el texto
-    marcaContenedor.innerHTML = ''; // Elimina cualquier contenido previo
-    marcaContenedor.appendChild(marcaTexto); // Agrega el texto al contenedor
-  } else {
-    console.error('El contenedor de la marca no se encontró.');
-  }
 });
