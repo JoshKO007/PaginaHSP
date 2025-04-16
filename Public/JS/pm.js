@@ -42,6 +42,12 @@ fetch(productosJsonUrl)
     // Limpiar el contenedor de productos antes de agregar contenido nuevo
     contenedorProductos.innerHTML = '';
 
+    // Agregar el nombre de la marca al contenedor de productos
+    const tituloMarca = document.createElement('h2');
+    tituloMarca.textContent = `Productos de la marca: ${marcaSeleccionada}`;
+    tituloMarca.className = 'titulo-marca-productos'; // Clase para estilos
+    contenedorProductos.appendChild(tituloMarca);
+
     // Filtrar productos por la marca seleccionada
     const productosFiltrados = data.filter(producto => producto.marca === marcaSeleccionada);
 
@@ -138,9 +144,6 @@ fetch(productosJsonUrl)
         // Agregar la tarjeta al contenedor principal
         contenedorProductos.appendChild(productoCard);
       });
-
-      // Llamar a la función para ajustar la vista después de cargar los productos
-      ajustarVistaProductos();
     } else {
       // Mostrar mensaje si no hay productos para la marca seleccionada
       const mensaje = document.createElement('p');
