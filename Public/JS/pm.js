@@ -11,15 +11,15 @@ const marcasJsonUrl = `JSON/Marcas.json?nocache=${new Date().getTime()}`;
 const marcaSeleccionada = getQueryParam('marca');
 
 // Mostrar la imagen de la marca seleccionada
-fetch(`JSON/Marcas.json?nocache=${new Date().getTime()}`)
+fetch(marcasJsonUrl)
   .then(response => response.json())
   .then(marcas => {
     const marcaImagen = document.getElementById('marca-imagen');
-    const marca = marcas.find(m => m.nombre === marcaSeleccionada);
+    const marca = marcas.find(m => m.nombre === marcaSeleccionada); // Buscar la marca seleccionada en el JSON
 
     if (marca && marca.imagen) {
-      marcaImagen.src = marca.imagen; // Asegúrate de que esta ruta sea válida
-      marcaImagen.alt = `Logo de ${marcaSeleccionada}`;
+      marcaImagen.src = marca.imagen; // Asignar la ruta de la imagen
+      marcaImagen.alt = `Logo de ${marcaSeleccionada}`; // Asignar el texto alternativo
     } else {
       console.error('No se encontró la imagen para la marca seleccionada.');
       marcaImagen.src = 'IMG/default-logo.png'; // Imagen por defecto si no se encuentra

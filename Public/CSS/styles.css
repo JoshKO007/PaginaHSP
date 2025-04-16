@@ -1855,11 +1855,3 @@ img {
     margin: 0 auto; /* Centra el contenedor */
     max-width: 1200px; /* Limita el ancho máximo */
   }
-
-#marca-imagen {
-  display: block; /* Asegura que la imagen sea visible */
-  width: auto; /* Ajusta automáticamente el ancho */
-  height: auto; /* Ajusta automáticamente la altura */
-  max-width: 100%; /* Evita que la imagen exceda el ancho del contenedor */
-  margin: 0 auto; /* Centra la imagen horizontalmente */
-}
