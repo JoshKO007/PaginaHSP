@@ -10,71 +10,34 @@ const marcasJsonUrl = `JSON/Marcas.json?nocache=${new Date().getTime()}`;
 // Obtener la marca seleccionada
 const marcaSeleccionada = getQueryParam('marca');
 
-// Mostrar el nombre de la marca seleccionada
-fetch(marcasJsonUrl)
-  .then(response => response.json())
-  .then(marcas => {
-    const marcaContenedor = document.getElementById('marca-nombre'); // Contenedor del texto
-    const marca = marcas.find(m => m.nombre === marcaSeleccionada); // Buscar la marca seleccionada en el JSON
-
-    if (marcaContenedor) {
-      if (marca) {
-        // Asignar el nombre de la marca al contenedor
-        marcaContenedor.textContent = `${marcaSeleccionada}`;
-      } else {
-        console.error('No se encontró la marca seleccionada.');
-        marcaContenedor.textContent = 'Marca no encontrada.';
-      }
-    } else {
-      console.error('El contenedor del nombre de la marca no se encontró.');
-    }
-  })
-  .catch(error => {
-    console.error('Error al cargar el JSON de marcas:', error);
-  });
-
-// Mostrar la imagen de la marca seleccionada
-fetch(marcasJsonUrl)
-  .then(response => response.json())
-  .then(marcas => {
-    const marcaContenedor = document.getElementById('marca-imagen'); // Contenedor de la imagen
-    const marca = marcas.find(m => m.nombre === marcaSeleccionada); // Buscar la marca seleccionada en el JSON
-
-    if (marcaContenedor) {
-      if (marca && marca.imagen) {
-        // Asignar la imagen de la marca al contenedor
-        marcaContenedor.src = marca.imagen;
-        marcaContenedor.alt = `Logo de ${marcaSeleccionada}`;
-      } else {
-        console.error('No se encontró la imagen para la marca seleccionada.');
-        marcaContenedor.alt = 'Imagen no disponible';
-        marcaContenedor.src = 'IMG/default-logo.png'; // Imagen por defecto si no se encuentra
-      }
-    } else {
-      console.error('El contenedor de la imagen de la marca no se encontró.');
-    }
-  })
-  .catch(error => {
-    console.error('Error al cargar el JSON de marcas:', error);
-  });
-
-// Mostrar los productos de la marca seleccionada
-fetch(productosJsonUrl)
-  .then(response => response.json())
-  .then(data => {
+// Combinar datos de marcas.json y productos.json
+Promise.all([
+  fetch(marcasJsonUrl).then(response => response.json()), // Cargar marcas.json
+  fetch(productosJsonUrl).then(response => response.json()) // Cargar productos.json
+])
+  .then(([marcas, productos]) => {
     const contenedorProductos = document.getElementById('contenedor-items');
 
     // Limpiar el contenedor de productos antes de agregar contenido nuevo
     contenedorProductos.innerHTML = '';
 
-    // Agregar el nombre de la marca al contenedor de productos
-    const tituloMarca = document.createElement('h2');
-    tituloMarca.textContent = `Productos de la marca: ${marcaSeleccionada}`;
-    tituloMarca.className = 'titulo-marca-productos'; // Clase para estilos
-    contenedorProductos.appendChild(tituloMarca);
+    // Buscar la marca seleccionada en marcas.json
+    const marca = marcas.find(m => m.nombre === marcaSeleccionada);
+
+    if (!marca) {
+      console.error('No se encontró la marca seleccionada en marcas.json.');
+      return;
+    }
+
+    // Agregar el logo de la marca al contenedor
+    const logoMarca = document.createElement('img');
+    logoMarca.src = marca.imagen; // Ruta del logo desde marcas.json
+    logoMarca.alt = `Logo de ${marcaSeleccionada}`;
+    logoMarca.className = 'logo-marca-productos'; // Clase para estilos
+    contenedorProductos.appendChild(logoMarca);
 
     // Filtrar productos por la marca seleccionada
-    const productosFiltrados = data.filter(producto => producto.marca === marcaSeleccionada);
+    const productosFiltrados = productos.filter(producto => producto.marca === marcaSeleccionada);
 
     if (productosFiltrados.length > 0) {
       // Ordenar los productos alfabéticamente por nombre
@@ -176,7 +139,7 @@ fetch(productosJsonUrl)
       contenedorProductos.appendChild(mensaje);
     }
   })
-  .catch(error => console.error('Error al cargar el JSON de productos:', error));
+  .catch(error => console.error('Error al cargar los JSON:', error));
 
 // Función para ajustar la vista en pantallas pequeñas
 function ajustarVistaProductos() {
