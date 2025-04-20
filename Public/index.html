@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="CSS/styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="IMG/Y.png" type="image/png"> <!-- Favicon -->
+    <style>
+        .categorias-container h3 {
+            text-align: center; /* Centrar el texto */
+            font-size: 2rem; /* Tamaño de fuente */
+            margin-bottom: 20px; /* Espaciado inferior */
+            color: #333; /* Color del texto */
+        }
+    </style>
 </head>
 <body>
     <canvas id="backgroundCanvas"></canvas>
@@ -41,6 +49,14 @@
             <p>Equipando el Futuro de la Medicina con Soluciones Confiables</p>
         </div>
     </div>
+
+    <section class="categorias-container">
+        <h3>Categorías</h3>
+        <div class="categorias-grid">
+            <!-- Las categorías se generarán dinámicamente con JavaScript -->
+        </div>
+        <a href="categorias.html" class="ver-mas-btn-cat">Ver todas las categorías</a>
+    </section>
 
     <section class="marcas-container">
         <h2>Nuestras Marcas</h2>
@@ -104,6 +120,29 @@
             </div>
         </div>
     </footer>
+    
+    <div class="chat-bubble" id="chatBubble">
+        <i class="fas fa-comments"></i>
+    </div>
+
+    <div class="chat-widget" id="chatWidget">
+        <div class="chat-header">
+            <h3>¡Hola! 👋</h3>
+            <p>¿En qué podemos ayudarte?</p>
+            <span class="close-chat" id="closeChat">&times;</span>
+        </div>
+        <div class="chat-body">
+            <textarea id="chatMessage" placeholder="Escribe tu mensaje aquí..."></textarea>
+            <div class="chat-actions">
+                <a id="sendWhatsApp" class="chat-button whatsapp-button" target="_blank">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+                <a id="sendEmail" class="chat-button email-button" href="#">
+                    <i class="fas fa-envelope"></i> Correo
+                </a>
+            </div>
+        </div>
+    </div>
     
     <!-- JavaScript -->
     <script>
@@ -202,5 +241,7 @@
         });
     </script>
     <script src="JS/script.js"></script>
+    <script src="JS/categorias.js"></script>
+    <script src="JS/ayuda.js"></script>
 </body>
 </html>
