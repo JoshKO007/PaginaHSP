@@ -21,23 +21,23 @@
   },
   {
     "nombre": "Negatoscopios",
-    "imagen": "IMG/negatoscopios.png"
+    "imagen": "IMG/negatoscopio.png"
   },
   {
     "nombre": "Vidrio Emplomado",
-    "imagen": "IMG/vidrio_emplomado.png"
+    "imagen": "IMG/vidrio.png"
   },
   {
     "nombre": "Accesorios",
-    "imagen": "IMG/accesorios.png"
+    "imagen": "IMG/mandil.png"
   },
   {
     "nombre": "Densitometría",
-    "imagen": "IMG/densitometria.png"
+    "imagen": "IMG/Densitometria.png"
   },
   {
     "nombre": "Nebulizadores",
-    "imagen": "IMG/nebulizadores.png"
+    "imagen": "IMG/nebulizador.png"
   },
   {
     "nombre": "Capnografía",
@@ -45,7 +45,7 @@
   },
   {
     "nombre": "Electrocardiografos",
-    "imagen": "IMG/electrocardiografos.png"
+    "imagen": "IMG/electrocardiografo.png"
   },
   {
     "nombre": "Veterinaria",
@@ -61,15 +61,15 @@
   },
   {
     "nombre": "Mesas de operación",
-    "imagen": "IMG/mesas_operacion.png"
+    "imagen": "IMG/mesasOperacion.png"
   },
   {
     "nombre": "Mesas de belleza",
-    "imagen": "IMG/mesas_belleza.png"
+    "imagen": "IMG/mesaBelleza.png"
   },
   {
     "nombre": "Lamparas LED",
-    "imagen": "IMG/lamparas_led.png"
+    "imagen": "IMG/lampara.png"
   },
   {
     "nombre": "Carros",
@@ -77,6 +77,6 @@
   },
   {
     "nombre": "Resonancias y tomógrafos",
-    "imagen": "IMG/resonancias_tomografos.png"
+    "imagen": "IMG/resonancias.png"
   }
 ]
