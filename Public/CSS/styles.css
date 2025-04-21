@@ -173,8 +173,8 @@ body {
     display: block;
     border-radius: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
-    mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 85%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, black 10%, black 85%, transparent);
     -webkit-mask-composite: destination-in;
     mask-composite: intersect;
 }
