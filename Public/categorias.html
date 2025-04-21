@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOLOTECH - Inicio</title>
+    <link rel="stylesheet" href="CSS/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="IMG/Y.png" type="image/png"> <!-- Favicon -->
+</head>
+<body>
+    <canvas id="backgroundCanvas"></canvas>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="index.html">
+                <img src="IMG/logoNBE.png" alt="Logo" class="logo-img">
+            </a>
+        </div>
+        
+        <!-- Menú hamburguesa (solo visible en móvil) -->
+        <div class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </div>
+        
+        <!-- Menú principal -->
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="categorias.html">Categorías</a></li>
+            <li><a href="marcas.html">Marcas Destacadas</a></li>
+            <li><a href="#">Servicios</a></li>
+            <li><a href="#">Contacto</a></li>
+            <li><a href="#">Soporte Técnico</a></li>
+        </ul>
+    </nav>
+
+    <section class="marcas-container">
+        <h2>CATEGORIAS</h2>
+        <h3>Explora nuestras categorias y encuentra la solución perfecta para tus necesidades</h3>
+        <div id="marcas-grid"></div> <!-- Cambiado de contenedor-items a marcas-grid -->
+    </section>
+    
+    <footer class="footer">
+        <div class="footer-grid">
+            <!-- Sección 1: Logo y descripción -->
+            <div class="footer-brand">
+                <img src="IMG/logoNBE.png" alt="Logo" class="footer-logo">
+            </div>
+    
+            <!-- Sección 2: Enlaces rápidos -->
+            <div class="footer-section">
+                <h3 class="footer-title">Enlaces Rápidos</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="#">Productos</a></li>
+                    <li><a href="#">Servicios</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </div>
+    
+            <!-- Sección 3: Contacto -->
+            <div class="footer-section">
+                <h3 class="footer-title">Contacto</h3>
+                <div class="footer-contact">
+                    <p><i class="fas fa-map-marker-alt"></i> Calle Principal #123, CDMX</p>
+                    <p><i class="fas fa-phone"></i> +52 55 1234 5678</p>
+                    <p><i class="fas fa-envelope"></i> contacto@yolotech.com</p>
+                </div>
+            </div>
+    
+            <!-- Sección 4: Redes sociales -->
+            <div class="footer-section">
+                <h3 class="footer-title">Síguenos</h3>
+                <div class="footer-social">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    
+        <div class="footer-bottom">
+            <p>&copy; 2025 <strong>YOLOTECH</strong>. Todos los derechos reservados.</p>
+            <div class="footer-legal">
+                <a href="privacidad.html">Política de privacidad</a>
+                <a href="servicio.html">Términos de servicio</a>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script>
+        // Menú hamburguesa
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            const dropdowns = document.querySelectorAll('.dropdown');
+            
+            // Toggle del menú principal
+            menuToggle.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                this.querySelector('i').classList.toggle('fa-bars');
+                this.querySelector('i').classList.toggle('fa-times');
+            });
+            
+            // Dropdowns en móvil
+            dropdowns.forEach(dropdown => {
+                const link = dropdown.querySelector('a');
+                
+                link.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 992) {
+                        e.preventDefault();
+                        dropdown.classList.toggle('active');
+                        
+                        // Cerrar otros dropdowns
+                        dropdowns.forEach(otherDropdown => {
+                            if (otherDropdown !== dropdown) {
+                                otherDropdown.classList.remove('active');
+                            }
+                        });
+                    }
+                });
+            });
+            
+            // Cerrar menú al hacer clic en un enlace
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 992) {
+                        navLinks.classList.remove('active');
+                        menuToggle.querySelector('i').classList.add('fa-bars');
+                        menuToggle.querySelector('i').classList.remove('fa-times');
+                    }
+                });
+            });
+            
+            // Cambiar tema
+            const themeToggle = document.getElementById('themeToggle');
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('night');
+                document.body.classList.toggle('day');
+                
+                // Cambiar icono
+                const icon = this.querySelector('i');
+                if (document.body.classList.contains('night')) {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                } else {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                }
+                
+                // Cambiar clase en navbar
+                document.querySelector('.navbar').classList.toggle('night');
+                document.querySelector('.navbar').classList.toggle('day');
+                
+                // Cambiar clase en enlaces
+                document.querySelectorAll('.nav-links a').forEach(link => {
+                    link.classList.toggle('night');
+                    link.classList.toggle('day');
+                });
+            });
+            
+            // Verificar tema al cargar
+            if (document.body.classList.contains('night')) {
+                themeToggle.querySelector('i').classList.remove('fa-sun');
+                themeToggle.querySelector('i').classList.add('fa-moon');
+            }
+        });
+        
+        // Control de video
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.querySelector('.video');
+            
+            // Pausar/reproducir al hacer clic
+            video.addEventListener('click', function() {
+                if (this.paused) {
+                    this.play();
+                } else {
+                    this.pause();
+                }
+            });
+            
+            // Reproducir automáticamente (con mute)
+            video.play();
+        });
+    </script>
+    <script src="JS/script.js"></script>
+    <script src="JS/categoriasData.js"></script>
+</body>
+</html>
