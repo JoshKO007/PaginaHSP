@@ -29,13 +29,13 @@ body {
     padding: 0 50px;
     z-index: 1000;
     transition: background-color 0.5s ease, box-shadow 0.5s ease;
+    margin-top: 20px; /* Agregar espacio en la parte superior */
 }
 
 /* Estilo del botón hamburguesa */
 .menu-toggle {
     display: none;
     position: absolute;
-    top: 25px;
     right: 30px;
     font-size: 2rem;
     cursor: pointer;
@@ -2823,4 +2823,206 @@ img {
 .producto-card-unico .ver-mas-btn:hover {
     background: linear-gradient(135deg, #1a5cb0, #2a7ae9);
     transform: scale(1.05);
+}
+
+/* Estilos Generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    background-color: #f9f9f9;
+}
+
+.contact-header {
+    text-align: center;
+    padding: 50px 20px;
+    color: rgb(47, 49, 138);
+}
+
+.contact-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.contact-header p {
+    font-size: 1.2rem;
+}
+
+.contact-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+    gap: 20px;
+}
+
+.contact-form, .contact-info {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    flex: 1 1 45%;
+    max-width: 500px;
+}
+
+.contact-form h2, .contact-info h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2a7ae9;
+}
+
+.contact-form .form-group {
+    margin-bottom: 15px;
+}
+
+.contact-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.contact-form input, .contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.contact-form button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #2a7ae9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.contact-form button:hover {
+    background-color: #1a5cb0;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column; /* Alinear los elementos en columna */
+    align-items: center; /* Centrar horizontalmente */
+    justify-content: center; /* Centrar verticalmente */
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    flex: 1 1 45%;
+    max-width: 500px;
+    gap: 15px; /* Espaciado uniforme entre los elementos */
+    text-align: center; /* Centrar el texto */
+}
+
+.contact-info h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2a7ae9;
+}
+
+.contact-info p {
+    font-size: 1rem;
+    margin: 5px 0; /* Reducir el margen entre los párrafos */
+    display: flex;
+    align-items: center; /* Centrar íconos verticalmente */
+    gap: 10px; /* Espaciado entre el ícono y el texto */
+}
+
+.contact-info .social-icons {
+    display: flex;
+    justify-content: center; /* Centrar los íconos horizontalmente */
+    gap: 15px; /* Espaciado entre los íconos */
+    margin-top: 20px;
+}
+
+.contact-info .social-icon {
+    color: #2a7ae9;
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.contact-info .social-icon:hover {
+    color: #1a5cb0;
+    transform: scale(1.1); /* Efecto de zoom al pasar el cursor */
+}
+
+/* Horario de Atención */
+.contact-hours {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    flex: 1 1 45%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.contact-hours h2 {
+    color: #2a7ae9;
+    margin-bottom: 15px;
+}
+
+.contact-hours ul {
+    list-style: none;
+    padding: 0;
+}
+
+.contact-hours li {
+    font-size: 1rem;
+    margin: 10px 0;
+}
+
+/* Mapa Interactivo */
+.contact-map {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    flex: 1 1 100%;
+    text-align: center;
+}
+
+.contact-map h2 {
+    color: #2a7ae9;
+    margin-bottom: 15px;
+}
+
+/* Preguntas Frecuentes */
+.contact-faq {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    flex: 1 1 100%;
+    text-align: left;
+}
+
+.contact-faq h2 {
+    color: #2a7ae9;
+    margin-bottom: 15px;
+}
+
+.faq-item {
+    margin-bottom: 20px;
+}
+
+.faq-item h3 {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.faq-item p {
+    font-size: 1rem;
+    color: #666;
 }
