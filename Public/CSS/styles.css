@@ -2239,3 +2239,588 @@ img {
         transform: translateY(20px);
     }
 }
+
+/* ---- Producto Detalle Mejorado ---- */
+.producto-detalle-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(135deg, #f9f9f9, #ffffff);
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    min-height: 500px; /* Altura mínima aumentada */
+}
+
+.producto-detalle {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    align-items: center; /* Centrar verticalmente */
+    justify-content: center; /* Centrar horizontalmente */
+    padding: 20px;
+}
+
+.producto-detalle-img {
+    max-width: 500px; /* Aumentar el tamaño máximo de la imagen */
+    width: 100%;
+    background: transparent;
+    padding: 20px;
+}
+
+
+.producto-detalle-info {
+    flex: 1;
+    max-width: 600px;
+    background: transparent;
+    padding: 20px;
+    text-align: left;
+}
+
+.producto-detalle-info h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: #2a7ae9;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #2a7ae9;
+    padding-bottom: 10px;
+}
+
+.producto-detalle-info p {
+    margin: 10px 0;
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.producto-detalle-info ul {
+    list-style: disc;
+    padding-left: 20px;
+    margin-top: 15px;
+}
+
+.producto-detalle-info ul li {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #333;
+}
+
+.producto-detalle-info h3 {
+    font-size: 1.8rem;
+    margin-top: 20px;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+/* Botón de acción estilo Mercado Libre */
+.producto-detalle-info .action-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #ffcc00, #ff9900); /* Fondo amarillo estilo Mercado Libre */
+    color: #333;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 204, 0, 0.3);
+}
+
+.producto-detalle-info .action-btn:hover {
+    background: linear-gradient(135deg, #ff9900, #ffcc00);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 204, 0, 0.4);
+}
+
+/* Precio destacado */
+.producto-detalle-info .precio {
+    font-size: 2.2rem; /* Aumentar el tamaño del precio */
+    font-weight: bold;
+    color: #00a650; /* Verde estilo Mercado Libre */
+    margin: 15px 0;
+}
+
+/* Contenedor de los botones */
+.botones-container {
+    display: flex; /* Usar Flexbox para alinear los botones */
+    justify-content: center; /* Centrar los botones horizontalmente */
+    align-items: center; /* Alinear los botones verticalmente */
+    gap: 20px; /* Espaciado entre los botones */
+    margin-top: 20px; /* Espaciado superior para separarlos del contenedor de detalles */
+    width: 100%; /* Asegurar que ocupe el ancho del contenedor de detalles */
+    max-width: 600px; /* Limitar el ancho máximo para que coincida con el contenedor de detalles */
+    margin-left: auto; /* Centrar horizontalmente */
+    margin-right: auto; /* Centrar horizontalmente */
+}
+
+/* Botón de Cotizar */
+.cotizar-btn {
+    position: relative;
+    display: inline-block;
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #ffcc00, #ff9900); /* Fondo amarillo estilo Mercado Libre */
+    text-align: center;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    border: none; /* Eliminar cualquier borde */
+    box-shadow: none; /* Eliminar cualquier sombra */
+    border-radius: 15px; /* Esquinas redondeadas */
+}
+
+.cotizar-btn:hover {
+    background: linear-gradient(135deg, #ff9900, #ffcc00);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 204, 0, 0.4); /* Sombra al pasar el mouse */
+}
+
+/* Botón de Dudas */
+.dudas-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #2a7ae9, #1a5cb0); /* Fondo azul */
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 15px; /* Esquinas redondeadas */
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(42, 122, 233, 0.3);
+}
+
+.dudas-btn:hover {
+    background: linear-gradient(135deg, #1a5cb0, #2a7ae9);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(42, 122, 233, 0.4);
+}
+
+/* Contenedor de opciones dentro del botón de Cotizar */
+.cotizar-btn:hover .cotizar-opciones,
+.cotizar-btn:focus-within .cotizar-opciones {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.cotizar-opciones {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: none; /* Eliminar cualquier borde */
+    border-radius: 15px; /* Esquinas redondeadas */
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 10;
+}
+
+/* Opciones individuales */
+.cotizar-opciones a {
+    display: block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    text-decoration: none;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 15px; /* Esquinas redondeadas */
+}
+
+.cotizar-opciones a:last-child {
+    border-bottom: none; /* Quitar la línea del último elemento */
+}
+
+.cotizar-opciones a:hover {
+    background: #f0f7ff;
+    color: #2a7ae9;
+}
+
+/* Botón de WhatsApp */
+.modal-option.whatsapp {
+    background: #25d366; /* Verde de WhatsApp */
+    border-radius: 15px; /* Esquinas redondeadas */
+    padding: 10px 18px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Espaciado entre el ícono y el texto */
+}
+
+.modal-option.whatsapp:hover {
+    background: #1da851; /* Verde más oscuro al pasar el mouse */
+    transform: scale(1.05);
+}
+
+/* Botón de Correo */
+.modal-option.correo {
+    background: #007bff; /* Azul para el correo */
+    border-radius: 15px; /* Esquinas redondeadas */
+    padding: 10px 18px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Espaciado entre el ícono y el texto */
+}
+
+.modal-option.correo:hover {
+    background: #0056b3; /* Azul más oscuro al pasar el mouse */
+    transform: scale(1.05);
+}
+
+/* Íconos dentro de los botones */
+.modal-option i {
+    font-size: 1.2rem; /* Tamaño del ícono */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .producto-detalle {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .producto-detalle-img {
+        max-width: 350px; /* Ajustar el tamaño de la imagen para pantallas pequeñas */
+    }
+
+    .producto-detalle-info {
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .producto-detalle-info h1 {
+        font-size: 2rem;
+    }
+
+    .producto-detalle-info p {
+        font-size: 1rem;
+    }
+
+    .producto-detalle-info h3 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Estilo para el modal */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    opacity: 0; /* Inicialmente invisible */
+    animation: fadeOut 0.3s ease forwards; /* Animación de salida por defecto */
+}
+
+/* Mostrar el modal con animación */
+.modal.show {
+    display: flex;
+    opacity: 1; /* Visible */
+    animation: fadeIn 0.3s ease forwards; /* Animación de entrada */
+}
+
+/* Contenido del modal */
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 90%;
+    transform: scale(0.8); /* Escalado inicial */
+    animation: scaleOut 0.3s ease forwards; /* Animación de salida por defecto */
+}
+
+/* Mostrar el contenido del modal con animación */
+.modal.show .modal-content {
+    transform: scale(1); /* Escalado normal */
+    animation: scaleIn 0.3s ease forwards; /* Animación de entrada */
+}
+
+/* Botón de cerrar */
+.close-btn {
+    position: absolute;
+    top: -20px; /* Posicionar fuera del cuadro emergente */
+    right: -20px; /* Posicionar fuera del cuadro emergente */
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    background: #ff0000;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    z-index: 1001; /* Asegurarse de que esté por encima del modal */
+}
+
+.close-btn:hover {
+    transform: scale(1.1);
+    background-color: #cc0000;
+}
+
+/* Opciones del modal */
+.modal-options {
+    display: flex;
+    justify-content: center; /* Centrar los botones */
+    gap: 15px; /* Espaciado entre los botones */
+    margin-top: 20px;
+}
+
+.modal-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Espaciado entre el ícono y el texto */
+    padding: 10px 18px; /* Reducir el padding */
+    border-radius: 30px;
+    font-size: 0.9rem; /* Reducir el tamaño del texto */
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    text-align: center;
+    width: 160px; /* Tamaño uniforme para ambos botones */
+}
+
+/* Botón de WhatsApp */
+.modal-option.whatsapp {
+    background: #25d366; /* Verde de WhatsApp */
+}
+
+.modal-option.whatsapp:hover {
+    background: #1da851; /* Verde más oscuro al pasar el mouse */
+    transform: scale(1.05);
+}
+
+/* Botón de Correo */
+.modal-option.correo {
+    background: #007bff; /* Azul para el correo */
+}
+
+.modal-option.correo:hover {
+    background: #0056b3; /* Azul más oscuro al pasar el mouse */
+    transform: scale(1.05);
+}
+
+/* Íconos dentro de los botones */
+.modal-option i {
+    font-size: 1.2rem; /* Reducir el tamaño del ícono */
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.8);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+@keyframes scaleOut {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(0.8);
+    }
+}
+
+/* Contenedor de productos relacionados */
+.productos-relacionados {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+}
+
+.productos-relacionados h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.productos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.producto-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.producto-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.producto-card h3 {
+    font-size: 1.1rem;
+    margin: 10px 0;
+    color: #333;
+}
+
+.producto-card p {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.producto-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenedor principal de productos relacionados */
+.productos-relacionados-container {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenedor interno de productos relacionados */
+.productos-relacionados {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.productos-relacionados h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.productos-grid-unicos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-evenly;
+}
+
+.producto-card-unico {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 200px;
+    height: 300px; /* Asegurar que el contenedor tenga una altura fija */
+    display: flex;
+    flex-direction: column; /* Alinear el contenido en columna */
+    justify-content: space-between; /* Espaciar los elementos dentro del contenedor */
+    align-items: center; /* Centrar horizontalmente los elementos */
+    overflow: hidden; /* Evitar que el contenido se desborde */
+}
+
+.producto-card-unico img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.producto-card-unico h3 {
+    font-size: 1rem;
+    margin: 10px 0;
+    color: #333;
+    text-align: center;
+}
+
+.producto-card-unico p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.producto-card-unico .ver-mas-btn {
+    display: inline-block;
+    padding: 8px 15px;
+    background: linear-gradient(135deg, #2a7ae9, #1a5cb0);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: auto; /* Empujar el botón hacia la parte inferior del contenedor */
+}
+
+.producto-card-unico .ver-mas-btn:hover {
+    background: linear-gradient(135deg, #1a5cb0, #2a7ae9);
+    transform: scale(1.05);
+}

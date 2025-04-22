@@ -121,7 +121,8 @@ Promise.all([
         verMasBtn.textContent = 'Ver más';
         verMasBtn.className = 'ver-mas-btn-producto';
         verMasBtn.addEventListener('click', () => {
-          alert(`Más información sobre: ${producto.nombre}`);
+            // Redirigir a producto.html con el nombre del producto como parámetro
+            window.location.href = `producto.html?producto=${encodeURIComponent(producto.nombre)}`;
         });
 
         // Agregar elementos al contenedor de texto
