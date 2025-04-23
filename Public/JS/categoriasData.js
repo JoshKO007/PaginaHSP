@@ -30,7 +30,7 @@ fetch('JSON/categorias.json')
       boton.textContent = 'Ver productos';
       boton.addEventListener('click', () => {
         // Redirigir a PM.html con el nombre de la marca como parámetro
-        window.location.href = `PM.html?marca=${encodeURIComponent(item.nombre)}`;
+        window.location.href = `CAT.html?marca=${encodeURIComponent(item.nombre)}`;
       });
       elemento.appendChild(boton);
 

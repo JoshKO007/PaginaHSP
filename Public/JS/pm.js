@@ -40,7 +40,7 @@ Promise.all([
     } else {
       console.warn('No se encontró la marca seleccionada en marcas.json.');
       if (marcaContenedor) {
-        marcaContenedor.textContent = `Productos de la marca: ${marcaSeleccionada}`;
+        marcaContenedor.textContent = `${marcaSeleccionada}`;
       }
     }
 
