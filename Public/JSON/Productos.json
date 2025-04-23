@@ -79,15 +79,4 @@
   "caracteristica3" : "Característica 3",
   "imagen" : "IMG/Prueba_2.png",
   "categoria" : "Detectores de Flat Panel"
-}, {
-  "id" : 8,
-  "nombre" : "Prueba 3",
-  "numeroModelo" : "PB-03",
-  "marca" : "DRGEM",
-  "descripcion" : "Descripción",
-  "caracteristica1" : "Caracteristica 1",
-  "caracteristica2" : "Caractersitica 2",
-  "caracteristica3" : "Caracteristica 3",
-  "imagen" : "IMG/Prueba_3.png",
-  "categoria" : "Mastografos"
 } ]
