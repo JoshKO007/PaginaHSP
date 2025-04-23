@@ -204,6 +204,28 @@ function getQueryParam(param) {
     });
   }
   
+  // Ajustar el tamaño del texto en el contenedor de la marca
+  function ajustarTextoResponsive() {
+    const marcaContenedor = document.getElementById('marca-nombre');
+    if (!marcaContenedor) {
+        console.error('El contenedor de la marca no se encontró.');
+        return;
+    }
+
+    // Obtener el ancho de la ventana
+    const anchoVentana = window.innerWidth;
+
+    // Calcular el tamaño del texto en función del ancho de la ventana
+    let tamañoTexto = Math.max(16, anchoVentana / 30); // Mínimo 16px, ajusta según el ancho
+
+    // Aplicar el tamaño calculado al texto
+    marcaContenedor.style.fontSize = `${tamañoTexto}px`;
+  }
+
+  // Llamar a la función al cargar la página y al redimensionar la ventana
+  window.addEventListener('resize', ajustarTextoResponsive);
+  document.addEventListener('DOMContentLoaded', ajustarTextoResponsive);
+
   // Llamar a la función al redimensionar la ventana
   window.addEventListener('resize', ajustarVistaProductos);
   
