@@ -103,13 +103,13 @@
   "categoria" : "Mastografos"
 }, {
   "id" : 10,
-  "nombre" : "Producto 4",
-  "numeroModelo" : "PB-04",
-  "marca" : "FUJIFILM",
-  "descripcion" : "",
+  "nombre" : "Producto Cambiado",
+  "numeroModelo" : "PB-Cambio",
+  "marca" : "SONY",
+  "descripcion" : "Descripción del producto 4",
   "caracteristica1" : "Caracteristica 1",
   "caracteristica2" : "Caracteristica 2",
   "caracteristica3" : "Caracteristica 3",
   "imagen" : "IMG/Producto_4.png",
-  "categoria" : "Rayos X"
+  "categoria" : "Accesorios"
 } ]
