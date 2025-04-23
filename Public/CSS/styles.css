@@ -177,6 +177,21 @@ body {
     mask-image: linear-gradient(to bottom, transparent, black 10%, black 85%, transparent);
     -webkit-mask-composite: destination-in;
     mask-composite: intersect;
+    position: relative;
+    z-index: 1; /* Asegúrate de que el video esté debajo de la superposición */
+}
+
+/* Superposición blanca para el efecto de fade */
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    z-index: 2; /* Asegúrate de que esté encima del video */
 }
 
 /* Ocultar controles del video */
@@ -1857,10 +1872,11 @@ img {
 
 /* Imagen dentro de cada marca */
 .marca-img {
-  width: 100px; /* Tamaño fijo para las imágenes */
-  height: 100px; /* Tamaño fijo para las imágenes */
-  object-fit: contain; /* Mantiene las proporciones de la imagen */
-  margin-bottom: 10px; /* Espaciado entre la imagen y el botón */
+    max-width: 150px; /* Ancho máximo */
+    max-height: 150px; /* Altura máxima */
+    object-fit: contain; /* Mantener proporciones dentro del límite */
+    display: block; /* Asegurar que se comporte como un bloque */
+    margin: 0 auto; /* Centrar la imagen dentro del contenedor */
 }
 
 /* Botón "Ver productos" */

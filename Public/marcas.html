@@ -31,9 +31,16 @@
         </ul>
     </nav>
 
+     <!-- Contenido de la página -->
+     <div class="video-container">
+        <video src="VID/mamografía.mp4" autoplay muted loop class="video" playsinline></video>
+        <div class="video-text">
+            <h1>Nuestras Marcas</h1>
+            <p>Explora nuestras marcas y encuentra la solución perfecta para tus necesidades</p>
+        </div>
+    </div>
+
     <section class="marcas-container">
-        <h2>Nuestras Marcas</h2>
-        <h3>Explora nuestras marcas y encuentra la solución perfecta para tus necesidades</h3>
         <div id="marcas-grid"></div> <!-- Cambiado de contenedor-items a marcas-grid -->
     </section>
     
@@ -85,6 +92,29 @@
             </div>
         </div>
     </footer>
+
+    <div class="chat-bubble" id="chatBubble">
+        <i class="fas fa-comments"></i>
+    </div>
+
+    <div class="chat-widget" id="chatWidget">
+        <div class="chat-header">
+            <h3>¡Hola! 👋</h3>
+            <p>¿En qué podemos ayudarte?</p>
+            <span class="close-chat" id="closeChat">&times;</span>
+        </div>
+        <div class="chat-body">
+            <textarea id="chatMessage" placeholder="Escribe tu mensaje aquí..."></textarea>
+            <div class="chat-actions">
+                <a id="sendWhatsApp" class="chat-button whatsapp-button" target="_blank">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+                <a id="sendEmail" class="chat-button email-button" href="#">
+                    <i class="fas fa-envelope"></i> Correo
+                </a>
+            </div>
+        </div>
+    </div>
     
     <!-- JavaScript -->
     <script>
@@ -184,5 +214,6 @@
     </script>
     <script src="JS/script.js"></script>
     <script src="JS/marcas.js"></script>
+    <script src="JS/ayuda.js"></script>
 </body>
 </html>

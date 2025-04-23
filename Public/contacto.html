@@ -15,6 +15,10 @@
                 <img src="IMG/logoNBE.png" alt="Logo" class="logo-img">
             </a>
         </div>
+                <!-- Menú hamburguesa (solo visible en móvil) -->
+                <div class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
         <ul class="nav-links" id="navLinks">
             <li><a href="index.html">Inicio</a></li>
             <li><a href="categorias.html">Categorías</a></li>
@@ -23,10 +27,15 @@
         </ul>
     </nav>
 
-    <header class="contact-header">
-        <h1>Contáctanos</h1>
-        <p>Estamos aquí para ayudarte. Completa el formulario o utiliza los medios de contacto a continuación.</p>
-    </header>
+        <!-- Contenido de la página -->
+        <div class="video-container">
+            <video src="VID/moño.mp4" autoplay muted loop class="video" playsinline></video>
+            <div class="video-text">
+                <h1>Contacto</h1>
+                <p>Estamos aquí para ayudarte. Escribenos a través de nuestras redes sociales.</p>
+            </div>
+        </div>
+
 
     <main class="contact-container">
         <!-- Información de Contacto -->
@@ -132,5 +141,127 @@
             </div>
         </div>
     </footer>
+
+    <div class="chat-bubble" id="chatBubble">
+        <i class="fas fa-comments"></i>
+    </div>
+
+    <div class="chat-widget" id="chatWidget">
+        <div class="chat-header">
+            <h3>¡Hola! 👋</h3>
+            <p>¿En qué podemos ayudarte?</p>
+            <span class="close-chat" id="closeChat">&times;</span>
+        </div>
+        <div class="chat-body">
+            <textarea id="chatMessage" placeholder="Escribe tu mensaje aquí..."></textarea>
+            <div class="chat-actions">
+                <a id="sendWhatsApp" class="chat-button whatsapp-button" target="_blank">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+                <a id="sendEmail" class="chat-button email-button" href="#">
+                    <i class="fas fa-envelope"></i> Correo
+                </a>
+            </div>
+        </div>
+    </div>
+
+        <!-- JavaScript -->
+        <script>
+            // Menú hamburguesa
+            document.addEventListener('DOMContentLoaded', function() {
+                const menuToggle = document.getElementById('menuToggle');
+                const navLinks = document.getElementById('navLinks');
+                const dropdowns = document.querySelectorAll('.dropdown');
+                
+                // Toggle del menú principal
+                menuToggle.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                    this.querySelector('i').classList.toggle('fa-bars');
+                    this.querySelector('i').classList.toggle('fa-times');
+                });
+                
+                // Dropdowns en móvil
+                dropdowns.forEach(dropdown => {
+                    const link = dropdown.querySelector('a');
+                    
+                    link.addEventListener('click', function(e) {
+                        if (window.innerWidth <= 992) {
+                            e.preventDefault();
+                            dropdown.classList.toggle('active');
+                            
+                            // Cerrar otros dropdowns
+                            dropdowns.forEach(otherDropdown => {
+                                if (otherDropdown !== dropdown) {
+                                    otherDropdown.classList.remove('active');
+                                }
+                            });
+                        }
+                    });
+                });
+                
+                // Cerrar menú al hacer clic en un enlace
+                document.querySelectorAll('.nav-links a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        if (window.innerWidth <= 992) {
+                            navLinks.classList.remove('active');
+                            menuToggle.querySelector('i').classList.add('fa-bars');
+                            menuToggle.querySelector('i').classList.remove('fa-times');
+                        }
+                    });
+                });
+                
+                // Cambiar tema
+                const themeToggle = document.getElementById('themeToggle');
+                themeToggle.addEventListener('click', function() {
+                    document.body.classList.toggle('night');
+                    document.body.classList.toggle('day');
+                    
+                    // Cambiar icono
+                    const icon = this.querySelector('i');
+                    if (document.body.classList.contains('night')) {
+                        icon.classList.remove('fa-sun');
+                        icon.classList.add('fa-moon');
+                    } else {
+                        icon.classList.remove('fa-moon');
+                        icon.classList.add('fa-sun');
+                    }
+                    
+                    // Cambiar clase en navbar
+                    document.querySelector('.navbar').classList.toggle('night');
+                    document.querySelector('.navbar').classList.toggle('day');
+                    
+                    // Cambiar clase en enlaces
+                    document.querySelectorAll('.nav-links a').forEach(link => {
+                        link.classList.toggle('night');
+                        link.classList.toggle('day');
+                    });
+                });
+                
+                // Verificar tema al cargar
+                if (document.body.classList.contains('night')) {
+                    themeToggle.querySelector('i').classList.remove('fa-sun');
+                    themeToggle.querySelector('i').classList.add('fa-moon');
+                }
+            });
+            
+            // Control de video
+            document.addEventListener('DOMContentLoaded', function() {
+                const video = document.querySelector('.video');
+                
+                // Pausar/reproducir al hacer clic
+                video.addEventListener('click', function() {
+                    if (this.paused) {
+                        this.play();
+                    } else {
+                        this.pause();
+                    }
+                });
+                
+                // Reproducir automáticamente (con mute)
+                video.play();
+            });
+        </script>
+
+    <script src="JS/ayuda.js"></script>
 </body>
 </html>
