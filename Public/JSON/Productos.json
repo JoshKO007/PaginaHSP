@@ -101,14 +101,4 @@
   "caracteristica2" : "Caractersitica 2",
   "imagen" : "IMG/Prueba_3.png",
   "categoria" : "Mastografos"
-}, {
-  "id" : 10,
-  "nombre" : "Producto Cambiado",
-  "numeroModelo" : "PB-Cambio",
-  "marca" : "SONY",
-  "descripcion" : "Descripción del producto 4",
-  "caracteristica1" : "Caracteristica 1",
-  "caracteristica2" : "Caracteristica 2",
-  "imagen" : "IMG/Producto_4.png",
-  "categoria" : "Accesorios"
 } ]
