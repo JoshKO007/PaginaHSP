@@ -70,4 +70,8 @@
   "id" : 0,
   "nombre" : "Resonancias y tomógrafos",
   "imagen" : "IMG/resonancias.jpeg"
+}, {
+  "id" : 19,
+  "nombre" : "Carros",
+  "imagen" : "IMG/CARROS.png"
 } ]
