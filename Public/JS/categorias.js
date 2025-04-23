@@ -21,7 +21,7 @@ fetch(categoriasJsonUrl)
 
       // Crear el enlace que envolverá la imagen y el texto
       const link = document.createElement('a');
-      link.href = `categorias.html?categoria=${encodeURIComponent(categoria.nombre)}`; // Enlace dinámico
+      link.href = `CAT.html?marca=${encodeURIComponent(categoria.nombre)}`; // Cambiado a CAT.html
       link.className = 'categoria-link'; // Clase para estilos
 
       // Crear la imagen de la categoría
