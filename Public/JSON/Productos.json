@@ -24,18 +24,6 @@
   "categoria" : "Impresoras"
 }, {
   "id" : 3,
-  "nombre" : "Producto 3",
-  "numeroModelo" : "UP-3",
-  "marca" : "BIONET",
-  "Tipo" : "Impresora",
-  "descripcion" : "Impresora térmica con alta resolución de 325 dpi.",
-  "caracteristica1" : "Hibrida analógica y digital",
-  "caracteristica2" : "Digital: 4096 x 1280 pixeles",
-  "caracteristica3" : "Vídeo NTSC: 720 x 1280 pixeles",
-  "imagen" : "IMG/UP-X898MD.png",
-  "categoria" : "Impresoras"
-}, {
-  "id" : 4,
   "nombre" : "Producto 4",
   "numeroModelo" : "UP-4",
   "marca" : "SONY",
@@ -47,7 +35,7 @@
   "imagen" : "IMG/UP-X898MD.png",
   "categoria" : "Impresoras"
 }, {
-  "id" : 5,
+  "id" : 4,
   "nombre" : "Producto 5",
   "numeroModelo" : "UP-5",
   "marca" : "BIONET",
@@ -59,7 +47,7 @@
   "imagen" : "IMG/UP-X898MD.png",
   "categoria" : "Impresoras"
 }, {
-  "id" : 6,
+  "id" : 5,
   "nombre" : "Rayos X",
   "numeroModelo" : "RX-5",
   "marca" : "BIONET",
@@ -71,7 +59,7 @@
   "imagen" : "IMG/UP-X898MD.png",
   "categoria" : "Rayos X"
 }, {
-  "id" : 7,
+  "id" : 6,
   "nombre" : "Producto de prueba",
   "numeroModelo" : "P-001",
   "marca" : "SONY",
@@ -82,7 +70,7 @@
   "imagen" : "IMG/Producto_de_prueba.png",
   "categoria" : "Rayos X"
 }, {
-  "id" : 8,
+  "id" : 7,
   "nombre" : "Prueba 2",
   "numeroModelo" : "PB-02",
   "marca" : "SONY",
@@ -92,7 +80,7 @@
   "imagen" : "IMG/Prueba_2.png",
   "categoria" : "Detectores de Flat Panel"
 }, {
-  "id" : 9,
+  "id" : 8,
   "nombre" : "Prueba 3",
   "numeroModelo" : "PB-03",
   "marca" : "DRGEM",
