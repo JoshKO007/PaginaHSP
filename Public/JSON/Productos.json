@@ -121,16 +121,4 @@
   "caracteristica1" : "asdasdadasdasd",
   "imagen" : "IMG/Producto_12312.png",
   "categoria" : "Sistemas de radiografía"
-}, {
-  "id" : 12,
-  "nombre" : "PASASASS",
-  "numeroModelo" : "ASASSASA",
-  "marca" : "ANKE",
-  "descripcion" : "",
-  "caracteristica1" : "asasasas",
-  "caracteristica2" : "asassaassa",
-  "caracteristica3" : "asassaaaasss",
-  "caracteristica4" : "asasasassas",
-  "imagen" : "IMG/PASASASS.png",
-  "categoria" : "Sistemas de radiografía"
 } ]
