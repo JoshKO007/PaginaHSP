@@ -112,13 +112,4 @@
   "caracteristica3" : "Caracteristica 3",
   "imagen" : "IMG/Producto_4.png",
   "categoria" : "Rayos X"
-}, {
-  "id" : 11,
-  "nombre" : "Producto 12312",
-  "numeroModelo" : "123123",
-  "marca" : "ANKE",
-  "descripcion" : "",
-  "caracteristica1" : "asdasdadasdasd",
-  "imagen" : "IMG/Producto_12312.png",
-  "categoria" : "Sistemas de radiografía"
 } ]
