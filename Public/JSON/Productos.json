@@ -131,4 +131,23 @@
   "caracteristica10" : null,
   "imagen" : "IMG/Producto_de_prueba.png",
   "categoria" : "Rayos X"
+}, {
+  "id" : 8,
+  "nombre" : "Prueba 2",
+  "numeroModelo" : "PB-02",
+  "marca" : "SONY",
+  "Tipo" : null,
+  "descripcion" : null,
+  "caracteristica1" : "Caracteristica 1",
+  "caracteristica2" : "Caracteristica 2",
+  "caracteristica3" : "Característica 3",
+  "caracteristica4" : null,
+  "caracteristica5" : null,
+  "caracteristica6" : null,
+  "caracteristica7" : null,
+  "caracteristica8" : null,
+  "caracteristica9" : null,
+  "caracteristica10" : null,
+  "imagen" : "IMG/Prueba_2.png",
+  "categoria" : "Detectores de Flat Panel"
 } ]
