@@ -1,78 +1,73 @@
-[
-  {
-    "nombre": "Sistemas de radiografía",
-    "imagen": "IMG/radiografia.png"
-  },
-  {
-    "nombre": "Detectores de Flat Panel",
-    "imagen": "IMG/flat.png"
-  },
-  {
-    "nombre": "Mastografos",
-    "imagen": "IMG/mastografo.png"
-  },
-  {
-    "nombre": "Rayos X",
-    "imagen": "IMG/rayosx.jpg"
-  },
-  {
-    "nombre": "Impresoras",
-    "imagen": "IMG/impresoras.png"
-  },
-  {
-    "nombre": "Negatoscopios",
-    "imagen": "IMG/negatoscopio.png"
-  },
-  {
-    "nombre": "Vidrio Emplomado",
-    "imagen": "IMG/vidrio.png"
-  },
-  {
-    "nombre": "Accesorios",
-    "imagen": "IMG/mandil.png"
-  },
-  {
-    "nombre": "Densitometría",
-    "imagen": "IMG/Densitometria.png"
-  },
-  {
-    "nombre": "Nebulizadores",
-    "imagen": "IMG/nebulizador.png"
-  },
-  {
-    "nombre": "Capnografía",
-    "imagen": "IMG/capnografia.png"
-  },
-  {
-    "nombre": "Electrocardiografos",
-    "imagen": "IMG/electrocardiografo.png"
-  },
-  {
-    "nombre": "Veterinaria",
-    "imagen": "IMG/veterinaria.png"
-  },
-  {
-    "nombre": "Desfibriladores",
-    "imagen": "IMG/desfibriladores.png"
-  },
-  {
-    "nombre": "Ginecología",
-    "imagen": "IMG/ginecología.png"
-  },
-  {
-    "nombre": "Mesas de operación",
-    "imagen": "IMG/mesasOperacion.png"
-  },
-  {
-    "nombre": "Lamparas LED",
-    "imagen": "IMG/lampara.png"
-  },
-  {
-    "nombre": "Carros",
-    "imagen": "IMG/carros.png"
-  },
-  {
-    "nombre": "Resonancias y tomógrafos",
-    "imagen": "IMG/resonancias.jpeg"
-  }
-]
+[ {
+  "id" : 0,
+  "nombre" : "Sistemas de radiografía",
+  "imagen" : "IMG/radiografia.png"
+}, {
+  "id" : 0,
+  "nombre" : "Detectores de Flat Panel",
+  "imagen" : "IMG/flat.png"
+}, {
+  "id" : 0,
+  "nombre" : "Mastografos",
+  "imagen" : "IMG/mastografo.png"
+}, {
+  "id" : 0,
+  "nombre" : "Rayos X",
+  "imagen" : "IMG/rayosx.jpg"
+}, {
+  "id" : 0,
+  "nombre" : "Impresoras",
+  "imagen" : "IMG/impresoras.png"
+}, {
+  "id" : 0,
+  "nombre" : "Negatoscopios",
+  "imagen" : "IMG/negatoscopio.png"
+}, {
+  "id" : 0,
+  "nombre" : "Vidrio Emplomado",
+  "imagen" : "IMG/vidrio.png"
+}, {
+  "id" : 0,
+  "nombre" : "Accesorios",
+  "imagen" : "IMG/mandil.png"
+}, {
+  "id" : 0,
+  "nombre" : "Densitometría",
+  "imagen" : "IMG/Densitometria.png"
+}, {
+  "id" : 0,
+  "nombre" : "Nebulizadores",
+  "imagen" : "IMG/nebulizador.png"
+}, {
+  "id" : 0,
+  "nombre" : "Capnografía",
+  "imagen" : "IMG/capnografia.png"
+}, {
+  "id" : 0,
+  "nombre" : "Electrocardiografos",
+  "imagen" : "IMG/electrocardiografo.png"
+}, {
+  "id" : 0,
+  "nombre" : "Veterinaria",
+  "imagen" : "IMG/veterinaria.png"
+}, {
+  "id" : 0,
+  "nombre" : "Desfibriladores",
+  "imagen" : "IMG/desfibriladores.png"
+}, {
+  "id" : 0,
+  "nombre" : "Ginecología",
+  "imagen" : "IMG/ginecología.png"
+}, {
+  "id" : 0,
+  "nombre" : "Mesas de operación",
+  "imagen" : "IMG/mesasOperacion.png"
+}, {
+  "id" : 0,
+  "nombre" : "Lamparas LED",
+  "imagen" : "IMG/lampara.png"
+}, {
+  "id" : 0,
+  "nombre" : "Resonancias y tomógrafos",
+  "imagen" : "IMG/resonancias.jpeg"
+} ]
