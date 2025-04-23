@@ -59,7 +59,7 @@
   "imagen" : "IMG/UP-X898MD.png",
   "categoria" : "Impresoras"
 }, {
-  "id" : 5,
+  "id" : 6,
   "nombre" : "Rayos X",
   "numeroModelo" : "RX-5",
   "marca" : "BIONET",
@@ -132,16 +132,5 @@
   "caracteristica3" : "asassaaaasss",
   "caracteristica4" : "asasasassas",
   "imagen" : "IMG/PASASASS.png",
-  "categoria" : "Sistemas de radiografía"
-}, {
-  "id" : 13,
-  "nombre" : "jnsdaoinoaisdnioasd",
-  "numeroModelo" : "sndiasdipdoiasiod",
-  "marca" : "ANKE",
-  "descripcion" : "iasdioiosdniosadnoas",
-  "caracteristica1" : "sdsdsadsdas",
-  "caracteristica2" : "dssddssdsddsa",
-  "caracteristica3" : "sdsdssdsad",
-  "imagen" : "IMG/jnsdaoinoaisdnioasd.png",
   "categoria" : "Sistemas de radiografía"
 } ]
