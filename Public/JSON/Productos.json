@@ -300,4 +300,12 @@
   "descripcion" : "Accesorio",
   "imagen" : "IMG/UPP-210_S.png",
   "categoria" : "Accesorios"
+}, {
+  "id" : 28,
+  "nombre" : "UPT-210 BL",
+  "numeroModelo" : "UPT-210",
+  "marca" : "ACCESORIOS",
+  "descripcion" : "Accesorio",
+  "imagen" : "IMG/UPT-210_BL.png",
+  "categoria" : "Accesorios"
 } ]
