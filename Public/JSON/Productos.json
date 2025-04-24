@@ -25,4 +25,15 @@
   "caracteristica5" : "Transferencia inalámbrica mas rápida y estable.",
   "imagen" : "IMG/Detectores_de_Flat_Panel.png",
   "categoria" : "Detectores de Flat Panel"
+}, {
+  "id" : 3,
+  "nombre" : "Mastografo",
+  "numeroModelo" : "VIVIX-M 1008S",
+  "marca" : "VIEWORKS",
+  "descripcion" : "Detector de panel plano de área reducida para mamografías con alta resolución.",
+  "caracteristica1" : "Alto rendimiento.",
+  "caracteristica2" : "Calidad máxima.",
+  "caracteristica3" : "Renovación sencilla.",
+  "imagen" : "IMG/Mastografo.png",
+  "categoria" : "Mastografos"
 } ]
