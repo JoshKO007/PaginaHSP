@@ -58,15 +58,4 @@
   "caracteristica3" : "3",
   "imagen" : "IMG/UP-X898MD.png",
   "categoria" : "Rayos X"
-}, {
-  "id" : 6,
-  "nombre" : "Producto de prueba",
-  "numeroModelo" : "P-001",
-  "marca" : "SONY",
-  "caracteristica1" : "Categoria 1",
-  "caracteristica2" : "Categoria 2",
-  "caracteristica3" : "Categoria 3",
-  "caracteristica4" : "Categoria 4",
-  "imagen" : "IMG/Producto_de_prueba.png",
-  "categoria" : "Rayos X"
 } ]
