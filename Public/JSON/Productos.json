@@ -783,4 +783,12 @@
   "descripcion" : "C-Shaped Permanent MRI system",
   "imagen" : "IMG/OPENMARK_III.png",
   "categoria" : "Resonancias y tomógrafos"
+}, {
+  "id" : 70,
+  "nombre" : "ANATOM 16 HD",
+  "numeroModelo" : "A-16",
+  "marca" : "ANKE",
+  "descripcion" : "Plataforma Tecnológica de precisión",
+  "imagen" : "IMG/ANATOM_16_HD.png",
+  "categoria" : "Resonancias y tomógrafos"
 } ]
