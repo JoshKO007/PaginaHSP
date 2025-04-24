@@ -425,4 +425,20 @@
   "caracteristica6" : "Batería integrada (2 Hrs continuas)",
   "imagen" : "IMG/PRO_M12.png",
   "categoria" : "Capnografía"
+}, {
+  "id" : 40,
+  "nombre" : "PRO M15",
+  "numeroModelo" : "M15",
+  "marca" : "PROMISE",
+  "descripcion" : "Sistema de capnogradía PRO M15",
+  "caracteristica1" : "Batería integrada (2 Hrs continuas)",
+  "caracteristica2" : "Temperatura: 2 Canales",
+  "caracteristica3" : "Con múltiples opciones",
+  "caracteristica4" : "Pantalla TFT LCD de alta resolución de 15 \"",
+  "caracteristica5" : "Completo 3 modos de trabajo de diagnóstico, monitorización y operación.",
+  "caracteristica6" : "Gran volumen de tendencias gráficas y tabulares de todos los parámetros.",
+  "caracteristica7" : "Cable de soporte / Sistema de monitoreo central inalámbrico",
+  "caracteristica8" : "Batería de lio desmontable inferior para una instalación conveniente",
+  "imagen" : "IMG/PRO_M15.png",
+  "categoria" : "Capnografía"
 } ]
