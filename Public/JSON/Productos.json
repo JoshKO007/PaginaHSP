@@ -198,4 +198,18 @@
   "caracteristica7" : "Capacidad de almacenamiento de estudios: 10,000 pacientes",
   "imagen" : "IMG/SONOST_3000.png",
   "categoria" : "Densitometría"
+}, {
+  "id" : 19,
+  "nombre" : "Equipo de densitometría ósea DEXXUM-T",
+  "numeroModelo" : "DEXXUM-T",
+  "marca" : "OSTEOSYS",
+  "descripcion" : "Sistema optimizado con la tecnología para el diagnóstico de la osteoporosis y la medición de la DMO.",
+  "caracteristica1" : "Análisis compacto de medio cuerpo",
+  "caracteristica2" : "Excelente reproductibilidad",
+  "caracteristica3" : "El tiempo de escaneo es rápido",
+  "caracteristica4" : "Espina dorsal AP: 1 min. 25 seg.",
+  "caracteristica5" : "Fémur: 1 min. 05 seg.",
+  "caracteristica6" : "Área de escaneo: 580x480 mm",
+  "imagen" : "IMG/Equipo_de_densitometría_ósea_DEXXUM-T.png",
+  "categoria" : "Densitometría"
 } ]
