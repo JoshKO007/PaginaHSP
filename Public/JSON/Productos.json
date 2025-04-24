@@ -276,4 +276,12 @@
   "caracteristica4" : "Impresora térmica con alta resolución de 325 dpi",
   "imagen" : "IMG/Impresora_termica.png",
   "categoria" : "Impresoras"
+}, {
+  "id" : 25,
+  "nombre" : "UPP-110 S",
+  "numeroModelo" : "UPP-110",
+  "marca" : "ACCESORIOS",
+  "descripcion" : "Accesorio",
+  "imagen" : "IMG/UPP-110_S.png",
+  "categoria" : "Accesorios"
 } ]
