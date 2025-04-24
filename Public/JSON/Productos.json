@@ -481,4 +481,16 @@
   "caracteristica5" : "Pantalla de forma de onda de ECG en tiempo real con datos numéricos de respiración monitorización",
   "imagen" : "IMG/VEMO.png",
   "categoria" : "Veterinaria"
+}, {
+  "id" : 44,
+  "nombre" : "Desfibrilador externo automático Extern hearton",
+  "numeroModelo" : "AED-A10",
+  "marca" : "MEDIANA",
+  "descripcion" : "Desfibrilador externo automático Extern hearton AED-A10.",
+  "caracteristica1" : "Soporte gráfico por iconos y comandos de voz para guiar al usuario a realizar el CRP (Resucitación Cardio Pulmonar)",
+  "caracteristica2" : "Por la observación de los indicadores LED, se pueden seguir fácilmente los pasos de las operaciones",
+  "caracteristica3" : "El HeartOn AED A10 incluye una auto prueba automática la cual se ejecuta de forma diaria, semanal y mensual, básica para el equipo, la batería y el estado del suministro de energía.",
+  "caracteristica4" : "Usando la tarjeta SD, el usuario podrá revisar el estado del ECG desde la computadora o actualizar la unidad",
+  "imagen" : "IMG/Desfibrilador_externo_automático_Extern_hearton.png",
+  "categoria" : "Desfibriladores"
 } ]
