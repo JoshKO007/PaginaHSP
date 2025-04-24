@@ -1,1 +1,15 @@
-[  ]
+[ {
+  "id" : 1,
+  "nombre" : "Sistema de radiografía de diagnóstico general",
+  "numeroModelo" : "001",
+  "marca" : "DRGEM",
+  "descripcion" : "Generador de alta frecuencia, bucky WBS, mesa PBT-4, colimador MCR, columna piso/techo TS-FC6 y consola",
+  "caracteristica1" : "500mA 125kVp 40kw",
+  "caracteristica2" : "Generador de alta frecuencia.",
+  "caracteristica3" : "Magnifico funcionamiento y estabilidad.",
+  "caracteristica4" : "Calibración automática.",
+  "caracteristica5" : "Pantalla de control.",
+  "caracteristica6" : "Auto diagnostico en tiempo.",
+  "imagen" : "IMG/Sistema_de_radiografía_de_diagnóstico_general.png",
+  "categoria" : "Sistemas de radiografía"
+} ]
