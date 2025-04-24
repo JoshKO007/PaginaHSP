@@ -713,4 +713,18 @@
   "caracteristica6" : "Toma de corriente",
   "imagen" : "IMG/Carro_rojo.png",
   "categoria" : "Carritos"
+}, {
+  "id" : 63,
+  "nombre" : "Carro médico",
+  "numeroModelo" : "ET-75031B-LT",
+  "marca" : "ACCESORIOS",
+  "descripcion" : "Hechos de material anti-bacterial y resistente a la corrosión y fáciles de limpiar.",
+  "caracteristica1" : "5 cajones ABS (2 chicos, 3 grandes)",
+  "caracteristica2" : "Charola para desfibrilador",
+  "caracteristica3" : "Espacio para tanque de oxigeno",
+  "caracteristica4" : "Tabla CRP / Porta suero",
+  "caracteristica5" : "Contenedores de basura y punzo cortantes",
+  "caracteristica6" : "Toma de corriente",
+  "imagen" : "IMG/Carro_médico.png",
+  "categoria" : "Carritos"
 } ]
