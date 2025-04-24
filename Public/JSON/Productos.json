@@ -503,4 +503,17 @@
   "caracteristica2" : "Cuenta con una pantalla a color que puede dar Nellcor Oximax SPO2 y Monitoreo ECG.",
   "imagen" : "IMG/Desfibrilador_D500.png",
   "categoria" : "Desfibriladores"
+}, {
+  "id" : 46,
+  "nombre" : "Pistola de criocirugía",
+  "numeroModelo" : "CR-201",
+  "marca" : "TOITU",
+  "descripcion" : "Pistola de criocirugía CR-201",
+  "caracteristica1" : "Diseñado para tratamientos de ginecología",
+  "caracteristica2" : "Compacto y fácil de operar con una mano.",
+  "caracteristica3" : "Opera con dióxido de carbono (CO2) -70°C y con óxido nitroso (NO2) -80°C.",
+  "caracteristica4" : "Acepta cilindros chicos y grandes.",
+  "caracteristica5" : "Incluye maletín con accesorios y 3 puntas.",
+  "imagen" : "IMG/Pistola_de_criocirugía.png",
+  "categoria" : "Ginecología"
 } ]
