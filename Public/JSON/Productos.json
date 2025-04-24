@@ -12,4 +12,17 @@
   "caracteristica6" : "Auto diagnostico en tiempo.",
   "imagen" : "IMG/Sistema_de_radiografía_de_diagnóstico_general.png",
   "categoria" : "Sistemas de radiografía"
+}, {
+  "id" : 2,
+  "nombre" : "Detectores de Flat Panel",
+  "numeroModelo" : "VIVIX-S",
+  "marca" : "VIEWORKS",
+  "descripcion" : "La nueva serie será la opción más adecuada con respecto al flujo de trabajo, la calidad y la economía al respaldar la atención al paciente de alta calidad en el entorno médico que cambia rápidamente.\n\nLa serie VIVIX-S ”V” es una solución total económica basada en los años de experiencia en el desarrollo de dispositivos de imágenes médicas de Vieworks y en la tecnología de imagen mas avanzada.",
+  "caracteristica1" : "IP56 - Resistente al agua y al polvo.",
+  "caracteristica2" : "Soporta caídas desde 100 cm.",
+  "caracteristica3" : "Carga local (díametro central de 40 mm) máximo 300 kg.",
+  "caracteristica4" : "Temperatura de funcionamiento: 10°C a 35°C.",
+  "caracteristica5" : "Transferencia inalámbrica mas rápida y estable.",
+  "imagen" : "IMG/Detectores_de_Flat_Panel.png",
+  "categoria" : "Sistemas de radiografía"
 } ]
