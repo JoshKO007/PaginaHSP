@@ -75,4 +75,17 @@
   "caracteristica5" : "Sistema de enfriamiento - Enfriamiento por aire natural",
   "imagen" : "IMG/Rayos_X_portátil.png",
   "categoria" : "Rayos X"
+}, {
+  "id" : 7,
+  "nombre" : "Flat Panel inalámbrico",
+  "numeroModelo" : "001",
+  "marca" : "CARERAY",
+  "descripcion" : "Detector inalámbrico tamaño 14x17; cabe fácilmente en bandejas de bucky estándar.",
+  "caracteristica1" : "Sin sistema de cableado, con tecnología patentada full.field de exposición automática.",
+  "caracteristica2" : "Transferencia de imagen de 4 segundos en resolución completa y banda dual (2.4/5 Ghx) a una velocidad express de 300 mega bits por segundo.",
+  "caracteristica3" : "Calidad de imagen superior con tecnología de nueva generación TFT/PIN PD e imagen con bajo ruido.",
+  "caracteristica4" : "Duración de batería de hasta 1400 disparos (con intervalo de 10 segundos entre cada disparo) y 7 horas de tiempo de espera.",
+  "caracteristica5" : "Diseño liviano y delgado con asa plegable incorporada.",
+  "imagen" : "IMG/Flat_Panel_inalámbrico.png",
+  "categoria" : "Detectores de Flat Panel"
 } ]
