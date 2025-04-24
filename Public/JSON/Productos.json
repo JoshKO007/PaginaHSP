@@ -135,4 +135,12 @@
   "caracteristica4" : "El cuadro de visualización es en primer lugar para la mamografía, pero puede ser utilizado también para radiología general.",
   "imagen" : "IMG/Negatoscopio_FILM_SLIM_VIEWER_XR4.png",
   "categoria" : "Negatoscopios"
+}, {
+  "id" : 12,
+  "nombre" : "Collarín Emplomado",
+  "numeroModelo" : "002",
+  "marca" : "ACCESORIOS",
+  "descripcion" : "Collarín Emplomado",
+  "imagen" : "IMG/Collarín_Emplomado.png",
+  "categoria" : "Sistemas de radiografía"
 } ]
