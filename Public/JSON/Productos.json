@@ -560,4 +560,17 @@
   "caracteristica4" : "Elevador de riñón: max 120 mm",
   "imagen" : "IMG/Mesa_de_operación_HW-503A.png",
   "categoria" : "Mesas de operación"
+}, {
+  "id" : 50,
+  "nombre" : "Mesa de operación HW-503B",
+  "numeroModelo" : "HW-503B",
+  "marca" : "HEALTHHOME",
+  "descripcion" : "Mesa de operación HW-503B",
+  "caracteristica1" : "Longitud y ancho de la cubierta: 2050 mm x 520 mm",
+  "caracteristica2" : "Ángulo de la cubierta (inclinación) hacia delante: ≥25°, hacia atrás >25°",
+  "caracteristica3" : "Elevador de riñón: max. 120mm",
+  "caracteristica4" : "Ángulo de ajuste del soporte de piernas descendiente >60°, ascendente >15°",
+  "caracteristica5" : "Abatible: 75°",
+  "imagen" : "IMG/Mesa_de_operación_HW-503B.png",
+  "categoria" : "Mesas de operación"
 } ]
