@@ -675,4 +675,14 @@
   "caracteristica2" : "80,000 LUXES",
   "imagen" : "IMG/Lámpara_de_operación.png",
   "categoria" : "Lamparas LED"
+}, {
+  "id" : 60,
+  "nombre" : "Lámpara LED económica",
+  "numeroModelo" : "KD-202",
+  "marca" : "MEDICAL",
+  "descripcion" : "Lampara de LED para pedestal, pared o mesa de parto",
+  "caracteristica1" : "6,000°K, 25,000 LUXES",
+  "caracteristica2" : "Se puede adaptar a la mesa ginecológica",
+  "imagen" : "IMG/Lámpara_LED_económica.png",
+  "categoria" : "Lamparas LED"
 } ]
