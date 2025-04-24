@@ -345,4 +345,15 @@
   "caracteristica4" : "No. De impresiones: 193",
   "imagen" : "IMG/Papel_térmico_alto_brillo.png",
   "categoria" : "Accesorios"
+}, {
+  "id" : 33,
+  "nombre" : "Papel térmico de alta densidad",
+  "numeroModelo" : "Zeit",
+  "marca" : "ACCESORIOS",
+  "descripcion" : "Medios de Impresión Térmica",
+  "caracteristica1" : "Tipo V: Alta Densidad",
+  "caracteristica2" : "Tamaño: 110 mm x 28 mm",
+  "caracteristica3" : "No. de impresiones: 295",
+  "imagen" : "IMG/Papel_térmico_de_alta_densidad.png",
+  "categoria" : "Accesorios"
 } ]
