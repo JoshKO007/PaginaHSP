@@ -600,4 +600,19 @@
   "caracteristica7" : "Abatible: 75°",
   "imagen" : "IMG/Mesa_eléctrica_para_diagnostico.png",
   "categoria" : "Mesas de operación"
+}, {
+  "id" : 53,
+  "nombre" : "Lámpara LED",
+  "numeroModelo" : "MI-1000",
+  "marca" : "MEDICAL",
+  "descripcion" : "Lámpara LED MI-1000",
+  "caracteristica1" : "100,000 luxes a 1 metro",
+  "caracteristica2" : "Valorado en 50,000 horas",
+  "caracteristica3" : "100,000 luxes por luminaria",
+  "caracteristica4" : "4,300° Kelvin",
+  "caracteristica5" : "Reflector de 16’’",
+  "caracteristica6" : "Profundidad de campo a 36’’",
+  "caracteristica7" : "Larga duración LED",
+  "imagen" : "IMG/Lámpara_LED.png",
+  "categoria" : "Lamparas LED"
 } ]
