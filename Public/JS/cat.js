@@ -140,6 +140,14 @@ function getQueryParam(param) {
           // Agregar la tarjeta al contenedor principal
           contenedorProductos.appendChild(productoCard);
         });
+
+        // Limitar el tamaño de las imágenes de los productos
+        const productoImgs = document.querySelectorAll('.producto-img');
+        productoImgs.forEach(img => {
+            img.style.maxWidth = '800px'; // Ancho máximo
+            img.style.maxHeight = '300px'; // Alto máximo
+            img.style.objectFit = 'contain'; // Ajustar la imagen dentro del contenedor
+        });
       } else {
         // Mostrar mensaje si no hay productos para la marca seleccionada
         const mensaje = document.createElement('p');
