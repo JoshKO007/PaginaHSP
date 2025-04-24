@@ -453,4 +453,19 @@
   "caracteristica4" : "Pantalla táctil para una fácil operación",
   "imagen" : "IMG/ECG_TOUCH_3000.png",
   "categoria" : "Electrocardiografos"
+}, {
+  "id" : 42,
+  "nombre" : "Cardio 7",
+  "numeroModelo" : "ECG 7",
+  "marca" : "BIONET",
+  "descripcion" : "CARDIO 7 ECG Interpretativo de 12 CANALES con pantalla a color LCD TFT",
+  "caracteristica1" : "LCD TFT a color de pantalla táctil completa de 7 Pulgadas",
+  "caracteristica2" : "ESPIROMETRIA (opcional)",
+  "caracteristica3" : "Tabla en papel tamaño A4 con referencia gráfica",
+  "caracteristica4" : "No necesita limpieza o esterilización con boquillas desechables",
+  "caracteristica5" : "Comparación PRE-POST broncodilatador",
+  "caracteristica6" : "Selección Automática para mejores resultados.",
+  "caracteristica7" : "Almacenamiento interno (200 estudios)",
+  "imagen" : "IMG/Cardio_7.png",
+  "categoria" : "Electrocardiografos"
 } ]
