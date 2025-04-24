@@ -378,4 +378,15 @@
   "caracteristica3" : "Sistemas vasculares",
   "imagen" : "IMG/Papel_para_registro.png",
   "categoria" : "Accesorios"
+}, {
+  "id" : 36,
+  "nombre" : "Electrodos desechables",
+  "numeroModelo" : "T716",
+  "marca" : "LESSA",
+  "descripcion" : "Bio Protech Inc. produce electrodos de ECG llamados “Telectrodes”, que se utilizan para varias pruebas de ECG.",
+  "caracteristica1" : "T716 Oval 43 x 45",
+  "caracteristica2" : "PE Foam Adulto",
+  "caracteristica3" : "Monitoreo / 2 días",
+  "imagen" : "IMG/Electrodos_desechables.png",
+  "categoria" : "Accesorios"
 } ]
