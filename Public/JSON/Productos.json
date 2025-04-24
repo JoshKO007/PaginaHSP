@@ -227,4 +227,13 @@
   "caracteristica7" : "Incluye computadora",
   "imagen" : "IMG/Equipo_de_densitometría_ósea_PRIMUS.png",
   "categoria" : "Densitometría"
+}, {
+  "id" : 21,
+  "nombre" : "Nebulizador ultrasónico WH-802",
+  "numeroModelo" : "WH-802",
+  "marca" : "YHMED",
+  "descripcion" : "Nebulizador ultrasónico",
+  "caracteristica1" : "Accesorios incluidos.",
+  "imagen" : "IMG/Nebulizador_ultrasónico_WH-802.png",
+  "categoria" : "Nebulizadores"
 } ]
