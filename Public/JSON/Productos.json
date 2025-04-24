@@ -317,4 +317,12 @@
   "caracteristica1" : "Esta poderosa combinación proporciona la excelente calidad de imagen exigida por los profesionales de la medicina.",
   "imagen" : "IMG/Impresora_Sony.png",
   "categoria" : "Impresoras"
+}, {
+  "id" : 30,
+  "nombre" : "UPC-R80MD (Carta)",
+  "numeroModelo" : "UPC-R80MD",
+  "marca" : "SONY",
+  "descripcion" : "Repuesto para impresora.",
+  "imagen" : "IMG/UPC-R80MD_(Carta).png",
+  "categoria" : "Accesorios"
 } ]
