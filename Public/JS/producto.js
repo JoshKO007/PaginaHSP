@@ -124,6 +124,7 @@ correoBtn.addEventListener('click', () => {
     }
 
     // Generar la URL completa de la imagen
+    
     const imagenUrl = `https://www.yolotech.com.mx/${producto.imagen || 'No disponible'}`;
     const asunto = `Cotización del producto: ${producto.nombre}`;
     const cuerpo = `Hola, estoy interesado en el siguiente producto:\n\n` +
