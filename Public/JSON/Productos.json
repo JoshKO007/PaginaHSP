@@ -51,4 +51,15 @@
   "caracteristica7" : "Ángulo del objetivo: 16 grados",
   "imagen" : "IMG/Rayos_X_JOB_HF100.png",
   "categoria" : "Rayos X"
+}, {
+  "id" : 5,
+  "nombre" : "Impresora de rayos X DRYPIX lite",
+  "numeroModelo" : "DRYPIX 2000",
+  "marca" : "FUJIFILM",
+  "descripcion" : "La impresora DRYPIX lite es un nuevo concepto en impresión térmica de escritorio, que combina escalabilidad y versatilidad.",
+  "caracteristica1" : "Soporta varios tamaños de película.",
+  "caracteristica2" : "Expandible a dos charolas.",
+  "caracteristica3" : "Calidad que satisface sus necesidades en imagenología.",
+  "imagen" : "IMG/Impresora_de_rayos_X_DRYPIX_lite.png",
+  "categoria" : "Rayos X"
 } ]
