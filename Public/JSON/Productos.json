@@ -665,4 +665,14 @@
   "caracteristica2" : "16,000 Luxes",
   "imagen" : "IMG/Lampara_de_apoyo.png",
   "categoria" : "Lamparas LED"
+}, {
+  "id" : 59,
+  "nombre" : "Lámpara de operación",
+  "numeroModelo" : "KD-2036D-3",
+  "marca" : "MEDICAL",
+  "descripcion" : "Lámpara LED de pedestal.",
+  "caracteristica1" : "batería 6,000°K",
+  "caracteristica2" : "80,000 LUXES",
+  "imagen" : "IMG/Lámpara_de_operación.png",
+  "categoria" : "Lamparas LED"
 } ]
