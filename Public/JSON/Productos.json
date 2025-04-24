@@ -397,4 +397,18 @@
   "descripcion" : "Utiliza un elemento de detección de Ag / AgCl y Hydro-gel para la adhesión",
   "imagen" : "IMG/Paquete_de_50_electrodos.png",
   "categoria" : "Accesorios"
+}, {
+  "id" : 38,
+  "nombre" : "PRO M8",
+  "numeroModelo" : "M8",
+  "marca" : "PROMISE",
+  "descripcion" : "Sisrema de capnografía PRO M8",
+  "caracteristica1" : "Con múltiples opciones",
+  "caracteristica2" : "Pantalla a color de 8 \", adecuada para uso en interiores y exteriores",
+  "caracteristica3" : "Menú de operación fácil de usar con iconos simples",
+  "caracteristica4" : "Gran volumen de tendencias gráficas y tabulares de todos los parámetros.",
+  "caracteristica5" : "Indicación precisa de mal funcionamiento",
+  "caracteristica6" : "Batería de lio desmontable inferior para una instalación conveniente",
+  "imagen" : "IMG/PRO_M8.png",
+  "categoria" : "Capnografía"
 } ]
