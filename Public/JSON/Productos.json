@@ -143,4 +143,12 @@
   "descripcion" : "Collarín Emplomado",
   "imagen" : "IMG/Collarín_Emplomado.png",
   "categoria" : "Accesorios"
+}, {
+  "id" : 13,
+  "nombre" : "Mandiles emplomados",
+  "numeroModelo" : "003",
+  "marca" : "ACCESORIOS",
+  "descripcion" : "Mandiles emplomados",
+  "imagen" : "IMG/Mandiles_emplomados.png",
+  "categoria" : "Accesorios"
 } ]
