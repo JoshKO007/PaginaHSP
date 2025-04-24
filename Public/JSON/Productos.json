@@ -236,4 +236,18 @@
   "caracteristica1" : "Accesorios incluidos.",
   "imagen" : "IMG/Nebulizador_ultrasónico_WH-802.png",
   "categoria" : "Nebulizadores"
+}, {
+  "id" : 22,
+  "nombre" : "Nebulizador ultrasónico WH-2000",
+  "numeroModelo" : "WH-2000",
+  "marca" : "YHMED",
+  "descripcion" : "Nebulizador ultrasónico",
+  "caracteristica1" : "Mascarilla",
+  "caracteristica2" : "Sensor ultrasónico extra",
+  "caracteristica3" : "Manguera",
+  "caracteristica4" : "Boquillas desechables",
+  "caracteristica5" : "Tubo conector",
+  "caracteristica6" : "Deposito para medicamento",
+  "imagen" : "IMG/Nebulizador_ultrasónico_WH-2000.png",
+  "categoria" : "Nebulizadores"
 } ]
