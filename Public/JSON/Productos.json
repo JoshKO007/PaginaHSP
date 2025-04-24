@@ -175,4 +175,12 @@
   "descripcion" : "Mamparas",
   "imagen" : "IMG/Mamparas.png",
   "categoria" : "Accesorios"
+}, {
+  "id" : 17,
+  "nombre" : "Guantes emplomados",
+  "numeroModelo" : "007",
+  "marca" : "ACCESORIOS",
+  "descripcion" : "Guantes emplomados",
+  "imagen" : "IMG/Guantes_emplomados.png",
+  "categoria" : "Accesorios"
 } ]
