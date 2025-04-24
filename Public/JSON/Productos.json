@@ -441,4 +441,16 @@
   "caracteristica8" : "Batería de lio desmontable inferior para una instalación conveniente",
   "imagen" : "IMG/PRO_M15.png",
   "categoria" : "Capnografía"
+}, {
+  "id" : 41,
+  "nombre" : "ECG TOUCH 3000",
+  "numeroModelo" : "ECG 3000",
+  "marca" : "BIONET",
+  "descripcion" : "Más de 120 tipos de resultados de interpretación, basado en el código avanzado de Minnesota",
+  "caracteristica1" : "Memoria hasta 200 EKG",
+  "caracteristica2" : "Pantalla simultánea de 12 canales",
+  "caracteristica3" : "Pantalla ancha y clara de color TFT LCD",
+  "caracteristica4" : "Pantalla táctil para una fácil operación",
+  "imagen" : "IMG/ECG_TOUCH_3000.png",
+  "categoria" : "Electrocardiografos"
 } ]
