@@ -78,4 +78,8 @@
   "id" : 20,
   "nombre" : "EMM",
   "imagen" : "IMG/EMM.png"
+}, {
+  "id" : 21,
+  "nombre" : "ACCESORIOS",
+  "imagen" : "IMG/ACCESORIOS.png"
 } ]
