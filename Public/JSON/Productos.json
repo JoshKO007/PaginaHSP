@@ -308,4 +308,13 @@
   "descripcion" : "Accesorio",
   "imagen" : "IMG/UPT-210_BL.png",
   "categoria" : "Accesorios"
+}, {
+  "id" : 29,
+  "nombre" : "Impresora Sony",
+  "numeroModelo" : "UP-DR80MD",
+  "marca" : "SONY",
+  "descripcion" : "La UP-DR80MD realiza impresiones de calidad fotográfica en tamaños Carta y opcionales A4 y A4plus que, al imprimirse sobre un soporte de laminación Sony, son resistentes al agua y a las huellas dactilares y le ofrecen una duradera calidad de impresión.",
+  "caracteristica1" : "Esta poderosa combinación proporciona la excelente calidad de imagen exigida por los profesionales de la medicina.",
+  "imagen" : "IMG/Impresora_Sony.png",
+  "categoria" : "Impresoras"
 } ]
