@@ -635,4 +635,14 @@
   "caracteristica2" : "Lampara LED de techo sencilla",
   "imagen" : "IMG/Lampara_de_techo_KD-2036D-2.png",
   "categoria" : "Lamparas LED"
+}, {
+  "id" : 56,
+  "nombre" : "Lámpara de operación KD-2036D-3B",
+  "numeroModelo" : "KD-2036D-3B",
+  "marca" : "MEDICAL",
+  "descripcion" : "Lampara de LED de Emergencia de pedestal",
+  "caracteristica1" : "batería 6,000°k",
+  "caracteristica2" : "80,000 LUXES",
+  "imagen" : "IMG/Lámpara_de_operación_KD-2036D-3B.png",
+  "categoria" : "Lamparas LED"
 } ]
