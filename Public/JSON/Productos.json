@@ -159,4 +159,12 @@
   "descripcion" : "Lentes Emplomados",
   "imagen" : "IMG/Lentes_Emplomados.png",
   "categoria" : "Accesorios"
+}, {
+  "id" : 15,
+  "nombre" : "Portachasis",
+  "numeroModelo" : "005",
+  "marca" : "ACCESORIOS",
+  "descripcion" : "Portachasis",
+  "imagen" : "IMG/Portachasis.png",
+  "categoria" : "Accesorios"
 } ]
