@@ -411,4 +411,18 @@
   "caracteristica6" : "Batería de lio desmontable inferior para una instalación conveniente",
   "imagen" : "IMG/PRO_M8.png",
   "categoria" : "Capnografía"
+}, {
+  "id" : 39,
+  "nombre" : "PRO M12",
+  "numeroModelo" : "M12",
+  "marca" : "PROMISE",
+  "descripcion" : "Sistema de capnografía PRO M12",
+  "caracteristica1" : "Con múltiples Opciones",
+  "caracteristica2" : "Diseño interno patentado, aspecto elegante.",
+  "caracteristica3" : "Monitor constante de 12.1 pulgadas, adecuado para la cabecera y la transferencia",
+  "caracteristica4" : "Menú sencillo y fácil de usar, preferible para pantalla LCD normal y pantalla táctil",
+  "caracteristica5" : "Temperatura: 2 Canales",
+  "caracteristica6" : "Batería integrada (2 Hrs continuas)",
+  "imagen" : "IMG/PRO_M12.png",
+  "categoria" : "Capnografía"
 } ]
