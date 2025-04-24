@@ -1647,6 +1647,15 @@ img {
   margin: 0; /* Elimina cualquier margen adicional */
 }
 
+/* Ajustar el centrado vertical de las imágenes de productos */
+.producto-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    object-fit: contain;
+}
+
 /* Contenedor de texto */
 .producto-card .producto-texto {
   flex: 1; /* Ocupa el resto del espacio disponible */
@@ -2794,8 +2803,8 @@ img {
     padding: 15px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 200px;
-    height: 300px; /* Asegurar que el contenedor tenga una altura fija */
+    width: 250px; /* Increased width */
+    height: 400px; /* Increased height */
     display: flex;
     flex-direction: column; /* Alinear el contenido en columna */
     justify-content: space-between; /* Espaciar los elementos dentro del contenedor */
