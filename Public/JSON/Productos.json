@@ -493,4 +493,14 @@
   "caracteristica4" : "Usando la tarjeta SD, el usuario podrá revisar el estado del ECG desde la computadora o actualizar la unidad",
   "imagen" : "IMG/Desfibrilador_externo_automático_Extern_hearton.png",
   "categoria" : "Desfibriladores"
+}, {
+  "id" : 45,
+  "nombre" : "Desfibrilador D500",
+  "numeroModelo" : "D500",
+  "marca" : "MEDIANA",
+  "descripcion" : "Mediana D500 es un sistema desfibrilador bifásico y monitoreo de alta gama que cumple con las últimas normas de la American Heart Association para la tecnología de desfibrilación y el seguimiento de los parámetros del paciente.",
+  "caracteristica1" : "El producto tiene la función manual y AED marcapasos externo (no -invasive). Puede entrega 0-360 Joules de energía durante la crisis paciente.",
+  "caracteristica2" : "Cuenta con una pantalla a color que puede dar Nellcor Oximax SPO2 y Monitoreo ECG.",
+  "imagen" : "IMG/Desfibrilador_D500.png",
+  "categoria" : "Desfibriladores"
 } ]
