@@ -548,4 +548,16 @@
   "caracteristica8" : "Puente kindey: 120mm",
   "imagen" : "IMG/Mesa_de_operación.png",
   "categoria" : "Mesas de operación"
+}, {
+  "id" : 49,
+  "nombre" : "Mesa de operación HW-503A",
+  "numeroModelo" : "HW-503A",
+  "marca" : "HEALTHHOME",
+  "descripcion" : "Mesa de operación HW-503A",
+  "caracteristica1" : "Longitud y ancho de la cubierta: 2050 mm x 520 mm",
+  "caracteristica2" : "Ángulo de la cubierta (inclinación) hacia delante: ≥25°, hacia atrás >25°",
+  "caracteristica3" : "Movimiento horizontal de la cubierta: 400mm a 600 mm",
+  "caracteristica4" : "Elevador de riñón: max 120 mm",
+  "imagen" : "IMG/Mesa_de_operación_HW-503A.png",
+  "categoria" : "Mesas de operación"
 } ]
