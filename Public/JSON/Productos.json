@@ -264,4 +264,16 @@
   "caracteristica6" : "Deposito para medicamento",
   "imagen" : "IMG/Nebulizador_ultrasónico_WH-203.png",
   "categoria" : "Nebulizadores"
+}, {
+  "id" : 24,
+  "nombre" : "Impresora termica",
+  "numeroModelo" : "UP-X898MD",
+  "marca" : "SONY",
+  "descripcion" : "Impresora térmica con alta resolución de 325 dpi, con tiempo de impresión: 1.9 seg.",
+  "caracteristica1" : "Hibrida analógica / digital",
+  "caracteristica2" : "Digital: 4096 x 1280 pixeles",
+  "caracteristica3" : "Vídeo NTSC: 720 x 504 pixeles",
+  "caracteristica4" : "Impresora térmica con alta resolución de 325 dpi",
+  "imagen" : "IMG/Impresora_termica.png",
+  "categoria" : "Impresoras"
 } ]
