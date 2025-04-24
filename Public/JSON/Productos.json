@@ -573,4 +573,16 @@
   "caracteristica5" : "Abatible: 75°",
   "imagen" : "IMG/Mesa_de_operación_HW-503B.png",
   "categoria" : "Mesas de operación"
+}, {
+  "id" : 51,
+  "nombre" : "Mesa de operación MT400",
+  "numeroModelo" : "MT400",
+  "marca" : "TECHARTMED",
+  "descripcion" : "Mesa de operación MT400",
+  "caracteristica1" : "Largo/ancho de tablero: 1760/60mm",
+  "caracteristica2" : "Elevación de la mesa (arriba/abajo):\n920/680 mm",
+  "caracteristica3" : "Trendelenburg / anti-trendelenburg: 15°/24°",
+  "caracteristica4" : "Ajuste de la placa trasera: Arriba: 62°/Abajo:15°",
+  "imagen" : "IMG/Mesa_de_operación_MT400.png",
+  "categoria" : "Mesas de operación"
 } ]
