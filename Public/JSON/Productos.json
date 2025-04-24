@@ -645,4 +645,14 @@
   "caracteristica2" : "80,000 LUXES",
   "imagen" : "IMG/Lámpara_de_operación_KD-2036D-3B.png",
   "categoria" : "Lamparas LED"
+}, {
+  "id" : 57,
+  "nombre" : "Lámpara de apoyo KD-202D-3B",
+  "numeroModelo" : "KD-202D-3B",
+  "marca" : "MEDICAL",
+  "descripcion" : "Lampara LED de pedestal",
+  "caracteristica1" : "6,000°K",
+  "caracteristica2" : "16,000 Luxes",
+  "imagen" : "IMG/Lámpara_de_apoyo_KD-202D-3B.png",
+  "categoria" : "Lamparas LED"
 } ]
