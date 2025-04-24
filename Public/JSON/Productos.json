@@ -767,4 +767,12 @@
   "descripcion" : "Boundless visión, endless care",
   "imagen" : "IMG/OPENMARK_5000.png",
   "categoria" : "Resonancias y tomógrafos"
+}, {
+  "id" : 68,
+  "nombre" : "ANATOM 64 precisión",
+  "numeroModelo" : "A-64",
+  "marca" : "ANKE",
+  "descripcion" : "Insight Into life.",
+  "imagen" : "IMG/ANATOM_64_precisión.png",
+  "categoria" : "Resonancias y tomógrafos"
 } ]
