@@ -82,4 +82,8 @@
   "id" : 21,
   "nombre" : "ACCESORIOS",
   "imagen" : "IMG/ACCESORIOS.png"
+}, {
+  "id" : 22,
+  "nombre" : "YHMED",
+  "imagen" : "IMG/YHMED.png"
 } ]
