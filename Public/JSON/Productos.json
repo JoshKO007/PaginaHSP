@@ -759,4 +759,12 @@
   "descripcion" : "A-combi & Al Technologies Available MRI System Redefined for Your Concerns",
   "imagen" : "IMG/SuperMark_1.5T.png",
   "categoria" : "Resonancias y tomógrafos"
+}, {
+  "id" : 67,
+  "nombre" : "OPENMARK 5000",
+  "numeroModelo" : "O-5000",
+  "marca" : "ANKE",
+  "descripcion" : "Boundless visión, endless care",
+  "imagen" : "IMG/OPENMARK_5000.png",
+  "categoria" : "Resonancias y tomógrafos"
 } ]
