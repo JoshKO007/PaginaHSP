@@ -167,4 +167,12 @@
   "descripcion" : "Portachasis",
   "imagen" : "IMG/Portachasis.png",
   "categoria" : "Accesorios"
+}, {
+  "id" : 16,
+  "nombre" : "Mamparas",
+  "numeroModelo" : "006",
+  "marca" : "ACCESORIOS",
+  "descripcion" : "Mamparas",
+  "imagen" : "IMG/Mamparas.png",
+  "categoria" : "Accesorios"
 } ]
