@@ -183,4 +183,19 @@
   "descripcion" : "Guantes emplomados",
   "imagen" : "IMG/Guantes_emplomados.png",
   "categoria" : "Accesorios"
+}, {
+  "id" : 18,
+  "nombre" : "SONOST 3000",
+  "numeroModelo" : "3000",
+  "marca" : "OSTEOSYS",
+  "descripcion" : "Método de medición calcáneo, método no invasivo que elimina los riesgos asociados a otros sistemas",
+  "caracteristica1" : "Método de medición calcáneo",
+  "caracteristica2" : "Tecnología QUS",
+  "caracteristica3" : "Tiempo de estudio 15 segundos",
+  "caracteristica4" : "Medición BMD/BQI/BUA/SOS",
+  "caracteristica5" : "Transductor 25mm-100mm",
+  "caracteristica6" : "Rango de separación de ajuste automático",
+  "caracteristica7" : "Capacidad de almacenamiento de estudios: 10,000 pacientes",
+  "imagen" : "IMG/SONOST_3000.png",
+  "categoria" : "Densitometría"
 } ]
