@@ -284,4 +284,12 @@
   "descripcion" : "Accesorio",
   "imagen" : "IMG/UPP-110_S.png",
   "categoria" : "Accesorios"
+}, {
+  "id" : 26,
+  "nombre" : "UPP-210 HD",
+  "numeroModelo" : "UPP-210",
+  "marca" : "ACCESORIOS",
+  "descripcion" : "Accesorio",
+  "imagen" : "IMG/UPP-210_HD.png",
+  "categoria" : "Accesorios"
 } ]
