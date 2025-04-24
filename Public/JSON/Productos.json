@@ -775,4 +775,12 @@
   "descripcion" : "Insight Into life.",
   "imagen" : "IMG/ANATOM_64_precisión.png",
   "categoria" : "Resonancias y tomógrafos"
+}, {
+  "id" : 69,
+  "nombre" : "OPENMARK III",
+  "numeroModelo" : "O-III",
+  "marca" : "ANKE",
+  "descripcion" : "C-Shaped Permanent MRI system",
+  "imagen" : "IMG/OPENMARK_III.png",
+  "categoria" : "Resonancias y tomógrafos"
 } ]
