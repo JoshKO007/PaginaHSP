@@ -727,4 +727,13 @@
   "caracteristica6" : "Toma de corriente",
   "imagen" : "IMG/Carro_médico.png",
   "categoria" : "Carritos"
+}, {
+  "id" : 64,
+  "nombre" : "Carro cuna",
+  "numeroModelo" : "QYB105-1",
+  "marca" : "ACCESORIOS",
+  "descripcion" : "Columna de aluminio, capacete transparente y resistente",
+  "caracteristica1" : "Altura 780-980 mm",
+  "imagen" : "IMG/Carro_cuna.png",
+  "categoria" : "Carritos"
 } ]
