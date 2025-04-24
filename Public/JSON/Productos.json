@@ -333,4 +333,16 @@
   "descripcion" : "Repuesto de impresora",
   "imagen" : "IMG/UP-21L_126x96mm.png",
   "categoria" : "Accesorios"
+}, {
+  "id" : 32,
+  "nombre" : "Papel térmico alto brillo",
+  "numeroModelo" : "Zeit",
+  "marca" : "ACCESORIOS",
+  "descripcion" : "Papel térmico para ultrasonido",
+  "caracteristica1" : "Medios de Impresión Térmica",
+  "caracteristica2" : "Tipo V: Alto Brillo",
+  "caracteristica3" : "Tamaño: 110 mm x 18 mm",
+  "caracteristica4" : "No. De impresiones: 193",
+  "imagen" : "IMG/Papel_térmico_alto_brillo.png",
+  "categoria" : "Accesorios"
 } ]
