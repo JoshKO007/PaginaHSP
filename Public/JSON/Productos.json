@@ -325,4 +325,12 @@
   "descripcion" : "Repuesto para impresora.",
   "imagen" : "IMG/UPC-R80MD_(Carta).png",
   "categoria" : "Accesorios"
+}, {
+  "id" : 31,
+  "nombre" : "UP-21L 126x96mm",
+  "numeroModelo" : "UP-21L",
+  "marca" : "SONY",
+  "descripcion" : "Repuesto de impresora",
+  "imagen" : "IMG/UP-21L_126x96mm.png",
+  "categoria" : "Accesorios"
 } ]
