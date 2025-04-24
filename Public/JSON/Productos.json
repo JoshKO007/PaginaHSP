@@ -751,4 +751,12 @@
   "caracteristica7" : "Se utiliza con electrodos sin gel.",
   "imagen" : "IMG/Gel_Electrocardiografía.png",
   "categoria" : "Electrocardiografos"
+}, {
+  "id" : 66,
+  "nombre" : "SuperMark 1.5T",
+  "numeroModelo" : "S-15",
+  "marca" : "ANKE",
+  "descripcion" : "A-combi & Al Technologies Available MRI System Redefined for Your Concerns",
+  "imagen" : "IMG/SuperMark_1.5T.png",
+  "categoria" : "Resonancias y tomógrafos"
 } ]
