@@ -685,4 +685,18 @@
   "caracteristica2" : "Se puede adaptar a la mesa ginecológica",
   "imagen" : "IMG/Lámpara_LED_económica.png",
   "categoria" : "Lamparas LED"
+}, {
+  "id" : 61,
+  "nombre" : "Carro Rojo",
+  "numeroModelo" : "ET-75001B",
+  "marca" : "ACCESORIOS",
+  "descripcion" : "Hechos de material anti-bacterial y resistente a la corrosión y fáciles de limpiar.",
+  "caracteristica1" : "5 cajones ABS (2 chicos, 3 grandes)",
+  "caracteristica2" : "Charola para desfibrilador",
+  "caracteristica3" : "Espacio para tanque de oxigeno",
+  "caracteristica4" : "Tabla CRP / Porta suero",
+  "caracteristica5" : "Contenedores de basura y punzo cortantes",
+  "caracteristica6" : "Toma de corriente",
+  "imagen" : "IMG/Carro_Rojo.png",
+  "categoria" : "Carritos"
 } ]
