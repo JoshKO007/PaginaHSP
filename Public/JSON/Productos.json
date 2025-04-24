@@ -516,4 +516,20 @@
   "caracteristica5" : "Incluye maletín con accesorios y 3 puntas.",
   "imagen" : "IMG/Pistola_de_criocirugía.png",
   "categoria" : "Ginecología"
+}, {
+  "id" : 47,
+  "nombre" : "Mesa de operación",
+  "numeroModelo" : "MT300S",
+  "marca" : "TECHARTMED",
+  "descripcion" : "Mesa de operación MT300S",
+  "caracteristica1" : "Largo/ancho del tablero 1940 mm / 480 mm",
+  "caracteristica2" : "Elevación de la mesa (arriba/abajo):| 1020/770 mm",
+  "caracteristica3" : "Tendelenburg / anti-tredelenburg: 25° / 25°",
+  "caracteristica4" : "Inclinación lateral: 20°",
+  "caracteristica5" : "Ajuste de la placa de cabeza: Arriba: 60° Abajo: 90°",
+  "caracteristica6" : "Ajuste de la placa de piernas: Arriba: 60° Abajo: 90° Hacia afuera: 90°",
+  "caracteristica7" : "Ajuste de la placa trasera: Arriba: 80° / Abajo: 10°",
+  "caracteristica8" : "Puente kindey: 120mm",
+  "imagen" : "IMG/Mesa_de_operación.png",
+  "categoria" : "Mesas de operación"
 } ]
