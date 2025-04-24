@@ -615,4 +615,14 @@
   "caracteristica7" : "Larga duración LED",
   "imagen" : "IMG/Lámpara_LED.png",
   "categoria" : "Lamparas LED"
+}, {
+  "id" : 54,
+  "nombre" : "Lámpara de techo KD-2072D-2",
+  "numeroModelo" : "KD-2072D-2",
+  "marca" : "MEDICAL",
+  "descripcion" : "Lampara LED de techo doble",
+  "caracteristica1" : "6,000° K, 80,000 LUXES por luminaria",
+  "caracteristica2" : "Lampara LED de techo doble",
+  "imagen" : "IMG/Lámpara_de_techo_KD-2072D-2.png",
+  "categoria" : "Lamparas LED"
 } ]
