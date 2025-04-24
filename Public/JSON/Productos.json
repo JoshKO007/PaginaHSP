@@ -97,4 +97,17 @@
   "caracteristica1" : "Con sistema iFast technology de encendido automático al insertar placa y apagado",
   "imagen" : "IMG/Negatoscopio_FILM_SLIM_VIEWER_XR1.png",
   "categoria" : "Negatoscopios"
+}, {
+  "id" : 9,
+  "nombre" : "Negatoscopio FILM SLIM VIEWER",
+  "numeroModelo" : "XR2",
+  "marca" : "EMM",
+  "descripcion" : "Negatoscopios super delgados XR2",
+  "caracteristica1" : "Iluminación LED",
+  "caracteristica2" : "Brillantez ajustable: Desde 300 – 6,500 lux",
+  "caracteristica3" : "Temperatura de color: 10,000°K (muy blanco).",
+  "caracteristica4" : "El cuadro de visualización es en primer lugar para la mamografía, pero puede ser utilizado también para radiología general.",
+  "caracteristica5" : "La luz se enciende una vez que la película se inserta debajo del agarre.",
+  "imagen" : "IMG/Negatoscopio_FILM_SLIM_VIEWER.png",
+  "categoria" : "Negatoscopios"
 } ]
