@@ -62,4 +62,17 @@
   "caracteristica3" : "Calidad que satisface sus necesidades en imagenología.",
   "imagen" : "IMG/Impresora_de_rayos_X_DRYPIX_lite.png",
   "categoria" : "Impresoras"
+}, {
+  "id" : 6,
+  "nombre" : "Rayos X portátil",
+  "numeroModelo" : "MSLAB1353",
+  "marca" : "INCARE",
+  "descripcion" : "Rayos X portátil MSLAB de alta frecuecia.",
+  "caracteristica1" : "Aplicación - Radiografía",
+  "caracteristica2" : "Tipo - Rayos X",
+  "caracteristica3" : "Frecuencia de trabajo - 80kHz - 200kHz",
+  "caracteristica4" : "Capacidad termica - 40kJ",
+  "caracteristica5" : "Sistema de enfriamiento - Enfriamiento por aire natural",
+  "imagen" : "IMG/Rayos_X_portátil.png",
+  "categoria" : "Rayos X"
 } ]
