@@ -585,4 +585,19 @@
   "caracteristica4" : "Ajuste de la placa trasera: Arriba: 62°/Abajo:15°",
   "imagen" : "IMG/Mesa_de_operación_MT400.png",
   "categoria" : "Mesas de operación"
+}, {
+  "id" : 52,
+  "nombre" : "Mesa eléctrica para diagnostico",
+  "numeroModelo" : "HW-502A",
+  "marca" : "HEALTHHOME",
+  "descripcion" : "Mesa Eléctrica para diagnóstico parto, ginecología, cirugía, emergencia, cesárea, etc.",
+  "caracteristica1" : "Largo de la mesa (incluye el largo de 600mm mesa auxiliar) 1950mm",
+  "caracteristica2" : "Cama altura mín. de 700mm y max. de 950mm de altura",
+  "caracteristica3" : "Longitud y ancho de la cubierta: 2050 mm x 520 mm",
+  "caracteristica4" : "Ángulo de la cubierta (inclinación) hacia delante: ≥25°, hacia atrás >25°",
+  "caracteristica5" : "Elevador de riñón: max. 120mm",
+  "caracteristica6" : "Ángulo de ajuste del soporte de piernas descendiente >60°, ascendente >15°",
+  "caracteristica7" : "Abatible: 75°",
+  "imagen" : "IMG/Mesa_eléctrica_para_diagnostico.png",
+  "categoria" : "Mesas de operación"
 } ]
