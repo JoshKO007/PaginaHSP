@@ -212,4 +212,19 @@
   "caracteristica6" : "Área de escaneo: 580x480 mm",
   "imagen" : "IMG/Equipo_de_densitometría_ósea_DEXXUM-T.png",
   "categoria" : "Densitometría"
+}, {
+  "id" : 20,
+  "nombre" : "Equipo de densitometría ósea PRIMUS",
+  "numeroModelo" : "PRIMUS",
+  "marca" : "OSTEOSYS",
+  "descripcion" : "Equipo de densitometría ósea basado en la DXA tecnología de FAN BEAM",
+  "caracteristica1" : "Basado en la DXA tecnología de FAN BEAM",
+  "caracteristica2" : "Tiempo de escaneo corto: Fémur (19 seg.)",
+  "caracteristica3" : "Evaluación corporal total: DMO, LVA",
+  "caracteristica4" : "Análisis de cadera",
+  "caracteristica5" : "Función pediátrica",
+  "caracteristica6" : "Función ortopédica",
+  "caracteristica7" : "Incluye computadora",
+  "imagen" : "IMG/Equipo_de_densitometría_ósea_PRIMUS.png",
+  "categoria" : "Densitometría"
 } ]
