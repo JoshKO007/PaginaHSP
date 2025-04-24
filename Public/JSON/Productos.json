@@ -367,4 +367,15 @@
   "caracteristica3" : "No. de impresiones: 215",
   "imagen" : "IMG/Papel_térmico_de_alta_calidad.png",
   "categoria" : "Accesorios"
+}, {
+  "id" : 35,
+  "nombre" : "Papel para registro",
+  "numeroModelo" : "ECG",
+  "marca" : "LESSA",
+  "descripcion" : "Papel para registro",
+  "caracteristica1" : "Fukuda, bionet, edan.",
+  "caracteristica2" : "tococardiografo bionet, mediana.",
+  "caracteristica3" : "Sistemas vasculares",
+  "imagen" : "IMG/Papel_para_registro.png",
+  "categoria" : "Accesorios"
 } ]
