@@ -791,4 +791,12 @@
   "descripcion" : "Plataforma Tecnológica de precisión",
   "imagen" : "IMG/ANATOM_16_HD.png",
   "categoria" : "Resonancias y tomógrafos"
+}, {
+  "id" : 71,
+  "nombre" : "ANATOM FIT",
+  "numeroModelo" : "A-FIT",
+  "marca" : "ANKE",
+  "descripcion" : "Excelente CT solución",
+  "imagen" : "IMG/ANATOM_FIT.png",
+  "categoria" : "Resonancias y tomógrafos"
 } ]
