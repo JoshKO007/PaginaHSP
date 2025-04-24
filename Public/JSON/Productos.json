@@ -88,4 +88,13 @@
   "caracteristica5" : "Diseño liviano y delgado con asa plegable incorporada.",
   "imagen" : "IMG/Flat_Panel_inalámbrico.png",
   "categoria" : "Detectores de Flat Panel"
+}, {
+  "id" : 8,
+  "nombre" : "Negatoscopio FILM SLIM VIEWER XR1",
+  "numeroModelo" : "XR1",
+  "marca" : "EMM",
+  "descripcion" : "NEGATOSCOPIOS SUPER DELGADOS | RAYOS X",
+  "caracteristica1" : "Con sistema iFast technology de encendido automático al insertar placa y apagado",
+  "imagen" : "IMG/Negatoscopio_FILM_SLIM_VIEWER_XR1.png",
+  "categoria" : "Negatoscopios"
 } ]
