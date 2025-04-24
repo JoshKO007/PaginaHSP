@@ -151,4 +151,12 @@
   "descripcion" : "Mandiles emplomados",
   "imagen" : "IMG/Mandiles_emplomados.png",
   "categoria" : "Accesorios"
+}, {
+  "id" : 14,
+  "nombre" : "Lentes Emplomados",
+  "numeroModelo" : "004",
+  "marca" : "ACCESORIOS",
+  "descripcion" : "Lentes Emplomados",
+  "imagen" : "IMG/Lentes_Emplomados.png",
+  "categoria" : "Accesorios"
 } ]
