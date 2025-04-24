@@ -736,4 +736,19 @@
   "caracteristica1" : "Altura 780-980 mm",
   "imagen" : "IMG/Carro_cuna.png",
   "categoria" : "Carritos"
+}, {
+  "id" : 65,
+  "nombre" : "Gel Electrocardiografía",
+  "numeroModelo" : "G-001",
+  "marca" : "KONIX",
+  "descripcion" : "Gel Electrocardiografía hipoalergénico",
+  "caracteristica1" : "5 litros",
+  "caracteristica2" : "1 litro",
+  "caracteristica3" : "250 ml",
+  "caracteristica4" : "Sin olor",
+  "caracteristica5" : "Sin manchas en la ropa o piel",
+  "caracteristica6" : "La mejor calidad mundial",
+  "caracteristica7" : "Se utiliza con electrodos sin gel.",
+  "imagen" : "IMG/Gel_Electrocardiografía.png",
+  "categoria" : "Electrocardiografos"
 } ]
