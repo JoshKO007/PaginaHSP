@@ -36,4 +36,19 @@
   "caracteristica3" : "Renovación sencilla.",
   "imagen" : "IMG/Mastografo.png",
   "categoria" : "Mastografos"
+}, {
+  "id" : 4,
+  "nombre" : "Rayos X JOB HF100",
+  "numeroModelo" : "HF100",
+  "marca" : "FUJIFILM",
+  "descripcion" : "Tamaño: 160 mm (alto) x 161 mm (ancho) x 291 mm (largo) o 6.29 pulgadas (alto) x 6.33 pulgadas (ancho) x 11.45 pulgadas (largo) Peso: 8,8 kg o 19,4 libras.\nLos selectores de kV y mAs adoptaron un sistema de interruptor giratorio para una selección fácil y rápida de kV y mAs.",
+  "caracteristica1" : "Tipo de control invertido, salida 2kW",
+  "caracteristica2" : "De 40 a 100kV (en pasos de 2kV)",
+  "caracteristica3" : "Interruptor giratorio para la pantalla digital con LED de 7 segmentos Selección de mAs.",
+  "caracteristica4" : "Tubo de Rayos X",
+  "caracteristica5" : "Puno focal: 1.2 x 1.2mm",
+  "caracteristica6" : "Unidad de calor: 20KHU",
+  "caracteristica7" : "Ángulo del objetivo: 16 grados",
+  "imagen" : "IMG/Rayos_X_JOB_HF100.png",
+  "categoria" : "Rayos X"
 } ]
