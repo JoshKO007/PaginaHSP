@@ -468,4 +468,17 @@
   "caracteristica7" : "Almacenamiento interno (200 estudios)",
   "imagen" : "IMG/Cardio_7.png",
   "categoria" : "Electrocardiografos"
+}, {
+  "id" : 43,
+  "nombre" : "VEMO",
+  "numeroModelo" : "VEMO",
+  "marca" : "BIONET",
+  "descripcion" : "VEMO es un sensor de monitorización de ECG continuo y portátil para aplicaciones veterinarias.",
+  "caracteristica1" : "Utilizado con la VEMO-APP",
+  "caracteristica2" : "VEMO es la solución de monitorización continua optimizada de 72 horas preferida para los puntos de atención preoperatorios",
+  "caracteristica3" : "Sincronización automática",
+  "caracteristica4" : "Gestión sencilla de datos de pacientes con aplicaciones caninas y felinas",
+  "caracteristica5" : "Pantalla de forma de onda de ECG en tiempo real con datos numéricos de respiración monitorización",
+  "imagen" : "IMG/VEMO.png",
+  "categoria" : "Veterinaria"
 } ]
