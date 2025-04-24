@@ -389,4 +389,12 @@
   "caracteristica3" : "Monitoreo / 2 días",
   "imagen" : "IMG/Electrodos_desechables.png",
   "categoria" : "Accesorios"
+}, {
+  "id" : 37,
+  "nombre" : "Paquete de 50 electrodos",
+  "numeroModelo" : "ECG",
+  "marca" : "LESSA",
+  "descripcion" : "Utiliza un elemento de detección de Ag / AgCl y Hydro-gel para la adhesión",
+  "imagen" : "IMG/Paquete_de_50_electrodos.png",
+  "categoria" : "Accesorios"
 } ]
