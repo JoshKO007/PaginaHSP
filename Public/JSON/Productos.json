@@ -11,7 +11,7 @@
   "caracteristica5" : "Pantalla de control.",
   "caracteristica6" : "Auto diagnostico en tiempo.",
   "imagen" : "IMG/Sistema_de_radiografía_de_diagnóstico_general.png",
-  "categoria" : "Sistemas de radiografía"
+  "categoria" : "Rayos X"
 }, {
   "id" : 2,
   "nombre" : "Detectores de Flat Panel",
