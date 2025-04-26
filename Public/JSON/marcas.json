@@ -3,10 +3,6 @@
   "nombre" : "ANKE",
   "imagen" : "IMG/ANKE.png"
 }, {
-  "id" : 2,
-  "nombre" : "BIONET",
-  "imagen" : "IMG/BIONET.png"
-}, {
   "id" : 3,
   "nombre" : "CARERAY",
   "imagen" : "IMG/CARERAY.png"
