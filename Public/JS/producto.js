@@ -112,7 +112,7 @@ whatsappBtn.addEventListener('click', () => {
 - *Marca*: ${producto.marca}
 - *Descripción*: ${producto.descripcion}
 `;
-    const whatsappUrl = `https://wa.me/5531715149?text=${encodeURIComponent(mensaje)}`;
+    const whatsappUrl = `https://wa.me/5521726585?text=${encodeURIComponent(mensaje)}`;
     window.open(whatsappUrl, '_blank'); // Abrir WhatsApp en una nueva pestaña
 });
 
@@ -124,7 +124,6 @@ correoBtn.addEventListener('click', () => {
     }
 
     // Generar la URL completa de la imagen
-    
     const imagenUrl = `https://www.yolotech.com.mx/${producto.imagen || 'No disponible'}`;
     const asunto = `Cotización del producto: ${producto.nombre}`;
     const cuerpo = `Hola, estoy interesado en el siguiente producto:\n\n` +
@@ -133,6 +132,6 @@ correoBtn.addEventListener('click', () => {
         `- Modelo: ${producto.numeroModelo}\n` +
         `- Marca: ${producto.marca}\n` +
         `- Descripción: ${producto.descripcion}\n`;
-        const correoUrl = `mailto:correo@ejemplo.com?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+        const correoUrl = `mailto:rafael_torres@yolotech.com.mx?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
     window.location.href = correoUrl; // Abrir el cliente de correo
 });

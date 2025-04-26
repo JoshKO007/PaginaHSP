@@ -41,14 +41,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // Enviar mensaje por WhatsApp
     sendWhatsApp.addEventListener('click', function () {
         const message = encodeURIComponent(chatMessage.value.trim());
-        const whatsappUrl = `https://wa.me/5215512345678?text=${message}`;
+        const whatsappUrl = `https://wa.me/5521726585?text=${message}`;
         sendWhatsApp.href = whatsappUrl;
     });
 
     // Enviar mensaje por correo
     sendEmail.addEventListener('click', function () {
         const message = encodeURIComponent(chatMessage.value.trim());
-        const emailUrl = `mailto:contacto@yolotech.com?subject=Consulta&body=${message}`;
+        const emailUrl = `mailto:rafael_torres@yolotech.com.mx?subject=Consulta&body=${message}`;
         sendEmail.href = emailUrl;
     });
 });
