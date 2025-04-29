@@ -799,13 +799,4 @@
   "descripcion" : "Excelente CT solución",
   "imagen" : "IMG/ANATOM_FIT.png",
   "categoria" : "Resonancias y tomógrafos"
-}, {
-  "id" : 72,
-  "nombre" : "TOPAZ",
-  "numeroModelo" : "40D",
-  "marca" : "DRGEM",
-  "descripcion" : "Integrando alta tecnología y más de una década de experiencia en sistemas de radiografía convencional y digital, TOPAZ de DRGEM es un sistema de radiografía digital móvil de última generación, diseñado con el máximo comodidad para los pacientes y usuarios en mente.\nDesde su software fácil de usar hasta movimientos suaves, TOPAZ está diseñado para mejorar su flujo de trabajo y proporcionarle imágenes de alta calidad.",
-  "caracteristica1" : "Generador de rayos X de alta frecuencia para imágenes de alta calidad.\n Diseño móvil motorizado con velocidad máxima de 5 km/h.\n Columna ajustable:\n\nTipo básico\nTipo plegable (opcional)\n✔ Detector Flat Panel de Cesio 17×17’’ para capturas precisas y de alta resolución.\n✔ Colimador con lámpara LED de 30 segundos de duración.\n✔ Estación de trabajo con pantalla táctil de 21.5 pulgadas y software intuitivo.\n✔ APR programable por el usuario para optimización de exámenes.\n✔ Interruptor manual de exposición (opcional versión inalámbrica).\n✔ Mando a distancia por infrarrojos para control de exposición y colimador.",
-  "imagen" : "IMG/TOPAZ.png",
-  "categoria" : "Rayos X"
 } ]
