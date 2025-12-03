@@ -799,4 +799,13 @@
   "descripcion" : "Excelente CT solución",
   "imagen" : "IMG/ANATOM_FIT.png",
   "categoria" : "Resonancias y tomógrafos"
+}, {
+  "id" : 72,
+  "nombre" : "prueba",
+  "numeroModelo" : "001",
+  "marca" : "ANKE",
+  "descripcion" : "Prueba de subida",
+  "caracteristica1" : "Prueba",
+  "imagen" : "IMG/prueba.png",
+  "categoria" : "Sistemas de Radiografía"
 } ]
