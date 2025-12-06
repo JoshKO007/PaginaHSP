@@ -234,6 +234,34 @@
     <script src="JS/script.js"></script>
     <script type="module" src="JS/categorias.js"></script>
     <script type="module" src="JS/marcas.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const grid = document.getElementById("marcas-grid");
+
+    // Esperar a que marcas.js termine de cargar las marcas
+    const observer = new MutationObserver(() => {
+        const items = Array.from(grid.children);
+
+        if (items.length > 5) {
+            // Mezclar aleatorio
+            const mezclados = items.sort(() => Math.random() - 0.5);
+
+            // Dejar solo 5
+            const cinco = mezclados.slice(0, 5);
+
+            // Limpiar contenedor
+            grid.innerHTML = "";
+
+            // Insertar solo los 5 seleccionados
+            cinco.forEach(item => grid.appendChild(item));
+
+            observer.disconnect(); // Dejar de observar
+        }
+    });
+
+    observer.observe(grid, { childList: true });
+});
+</script>
     <script src="JS/ayuda.js"></script>
     <script type="module">
         import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
