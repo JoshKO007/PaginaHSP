@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Agregar Marca - Administrador</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Iconos -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    :root {
+      --accent: #0077cc;
+      --accent-soft: rgba(0, 119, 204, 0.15);
+      --bg-light: #f4f6fb;
+      --card-bg: rgba(255, 255, 255, 0.86);
+      --text-main: #111827;
+      --text-soft: #6b7280;
+      --radius-xl: 22px;
+      --shadow-soft: 0 14px 40px rgba(15, 23, 42, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 40px 16px;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #e0f2fe, #ffffff 50%, #e5e7eb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    /* Canvas de fondo */
+    #bgCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.3;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-soft);
+      padding: 32px 26px 26px;
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      animation: fadeIn 0.7s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .card-header-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-soft);
+      margin-bottom: 12px;
+    }
+
+    .card-header-icon i {
+      font-size: 30px;
+      color: var(--accent);
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 4px;
+      color: var(--text-main);
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+    }
+
+    form {
+      margin-top: 10px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: var(--text-soft);
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      font-size: 0.96rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent-soft);
+      transform: translateY(-1px);
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      margin-top: 3px;
+    }
+
+    .btn-primary {
+      width: 100%;
+      margin-top: 8px;
+      padding: 11px 14px;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.98rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.35);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .btn-primary i {
+      font-size: 0.9rem;
+    }
+
+    .btn-primary:hover {
+      background: #005fa3;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(37, 99, 235, 0.45);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.3);
+    }
+
+    .footer-links {
+      margin-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+    }
+
+    .footer-links a {
+      color: var(--accent);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    .status-text {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 24px 12px;
+      }
+
+      .card {
+        padding: 24px 18px 20px;
+      }
+
+      h1 {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Fondo animado -->
+  <canvas id="bgCanvas"></canvas>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-header-icon">
+        <i class="fa-solid fa-tags"></i>
+      </div>
+      <h1>Agregar Marca</h1>
+      <p class="subtitle">Registra una nueva marca para usarla en el catálogo de productos.</p>
+    </div>
+
+    <form id="formMarca">
+      <div class="field">
+        <label for="nombre">Nombre de la marca</label>
+        <input type="text" id="nombre" placeholder="Ej. ANKE" required />
+      </div>
+
+      <div class="field">
+        <label for="imagen">Ruta / URL del logo</label>
+        <input type="text" id="imagen" placeholder="Ej. IMG/ANKE.png" required />
+        <p class="hint">Usa la ruta relativa a la carpeta IMG o una URL completa.</p>
+      </div>
+
+      <button type="submit" class="btn-primary">
+        <i class="fa-solid fa-floppy-disk"></i>
+        Guardar marca
+      </button>
+    </form>
+
+    <div class="footer-links">
+      <a href="admin.html">
+        <i class="fa-solid fa-arrow-left"></i>
+        Volver al panel
+      </a>
+      <span class="status-text">Los cambios se guardan en Supabase</span>
+    </div>
+  </div>
+
+  <script>
+    // Fondo Canvas animado (similar al admin principal)
+    if (typeof canvas === 'undefined') {
+      const canvas = document.getElementById("bgCanvas");
+    }
+    if (typeof ctx === 'undefined') {
+      const ctx = canvas.getContext("2d");
+    }
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    const circles = Array.from({ length: 40 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 8 + 3,
+      dx: (Math.random() - 0.5) * 0.4,
+      dy: (Math.random() - 0.5) * 0.4,
+      alpha: Math.random() * 0.45 + 0.15,
+    }));
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      circles.forEach((c) => {
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 119, 204, ${c.alpha})`;
+        ctx.fill();
+
+        c.x += c.dx;
+        c.y += c.dy;
+
+        if (c.x < 0 || c.x > canvas.width) c.dx *= -1;
+        if (c.y < 0 || c.y > canvas.height) c.dy *= -1;
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    async function setupCamera() {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { width: 640, height: 480 },
+        audio: false,
+      });
+      video.srcObject = stream;
+      return new Promise((resolve) => {
+        video.onloadedmetadata = () => {
+          resolve(video);
+        };
+      });
+    }
+
+    async function loadModel() {
+      return await cocoSsd.load();
+    }
+
+    async function detectFrame(video, model) {
+      model.detect(video).then(predictions => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        predictions.forEach(prediction => {
+          ctx.beginPath();
+          ctx.rect(...prediction.bbox);
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = 'red';
+          ctx.fillStyle = 'red';
+          ctx.stroke();
+          ctx.fillText(
+            `${prediction.class} - ${Math.round(prediction.score * 100)}%`,
+            prediction.bbox[0],
+            prediction.bbox[1] > 10 ? prediction.bbox[1] - 5 : 10
+          );
+        });
+        requestAnimationFrame(() => {
+          detectFrame(video, model);
+        });
+      });
+    }
+
+    async function main() {
+      await setupCamera();
+      video.play();
+      const model = await loadModel();
+      detectFrame(video, model);
+    }
+
+    main();
+  </script>
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+    if (typeof SUPABASE_URL === 'undefined') {
+      const SUPABASE_URL = "https://zgjzensxrftkwnojvjqw.supabase.co";
+    }
+    if (typeof SUPABASE_ANON_KEY === 'undefined') {
+      const SUPABASE_ANON_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnanplbnN4cmZ0a3dub2p2anF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTIwNjgsImV4cCI6MjA4MDU2ODA2OH0.vPJBa0xwr90bYxbNr2jw9ZodJMglKdYUaGjQrnfzeTg";
+    }
+    if (typeof supabase === 'undefined') {
+      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+    if (typeof form === 'undefined') {
+      const form = document.getElementById("formMarca");
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const nombre = document.getElementById("nombre").value.trim();
+      const imagen = document.getElementById("imagen").value.trim();
+
+      if (!nombre || !imagen) {
+        alert("Por favor completa todos los campos.");
+        return;
+      }
+
+      const { error } = await supabase
+        .from("marcas")
+        .insert([{ nombre: nombre, imagen: imagen, activa: true }]);
+
+      if (error) {
+        console.error("Error al insertar marca:", error);
+        alert("Hubo un error al guardar la marca.");
+        return;
+      }
+
+      alert("Marca agregada correctamente 🎉");
+      form.reset();
+    });
+  </script>
+</body>
+</html>
