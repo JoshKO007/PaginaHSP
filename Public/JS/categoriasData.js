@@ -1,11 +1,13 @@
-// --- Importar Supabase desde CDN ---
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/esm/supabase.js";
+// --- CARGA DE CATEGORÍAS DESDE SUPABASE ---
 
-// --- Inicializar Supabase ---
-const supabaseUrl = "https://hdebqfgepatvfecmygqe.supabase.co";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+// Credenciales de Supabase
+const SUPABASE_URL = "https://zgjzensxrftkwnojvjqw.supabase.co";
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnanplbnN4cmZ0a3dub2p2anF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTIwNjgsImV4cCI6MjA4MDU2ODA2OH0.vPJBa0xwr90bYxbNr2jw9ZodJMglKdYUaGjQrnfzeTg";
-const supabase = createClient(supabaseUrl, supabaseKey);
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // --- Obtener contenedor correcto ---
 const contenedor = document.getElementById("categorias-grid");
