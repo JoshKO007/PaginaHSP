@@ -15,20 +15,29 @@
             color: #333; /* Color del texto */
         }
 
-        /* --- Estilo moderno para marcas en el inicio --- */
+        /* --- Estilo moderno sin contenedor ni borde --- */
+        #marcas-grid {
+            display: flex;
+            gap: 32px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
         #marcas-grid img {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(6px);
-            padding: 16px;
-            border-radius: 14px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            width: 120px;
+            max-width: 150px;
+            max-height: 80px;
+            width: auto;
             height: auto;
+            object-fit: contain;
+            background: none !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            transition: transform 0.2s ease;
         }
 
         #marcas-grid img:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.18);
+            transform: scale(1.08);
         }
     </style>
 </head>
