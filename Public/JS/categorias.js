@@ -1,47 +1,57 @@
-// URL del JSON de categorías
-const categoriasJsonUrl = `JSON/categorias.json?nocache=${new Date().getTime()}`;
+// --- CARGA DE CATEGORÍAS DESDE SUPABASE ---
 
-// Cargar las categorías y mostrarlas en el contenedor
-fetch(categoriasJsonUrl)
-  .then(response => response.json())
-  .then(categorias => {
-    const categoriasGrid = document.querySelector('.categorias-grid');
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-    // Ordenar las categorías alfabéticamente por el atributo "nombre"
-    categorias.sort((a, b) => a.nombre.localeCompare(b.nombre));
+// Credenciales de Supabase
+const SUPABASE_URL = "https://zgjzensxrftkwnojvjqw.supabase.co";
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnanplbnN4cmZ0a3dub2p2anF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTIwNjgsImV4cCI6MjA4MDU2ODA2OH0.vPJBa0xwr90bYxbNr2jw9ZodJMglKdYUaGjQrnfzeTg";
 
-    // Tomar solo las primeras 7 categorías
-    const primerasCategorias = categorias.slice(0, 6);
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // Generar dinámicamente las primeras 7 categorías
-    primerasCategorias.forEach(categoria => {
-      // Crear un contenedor para la categoría
-      const categoriaItem = document.createElement('div');
-      categoriaItem.className = 'categoria-item'; // Clase para estilos
+// Función principal para cargar categorías
+async function cargarCategorias() {
+  const categoriasGrid = document.querySelector(".categorias-grid");
+  if (!categoriasGrid) return;
 
-      // Crear el enlace que envolverá la imagen y el texto
-      const link = document.createElement('a');
-      link.href = `CAT.html?marca=${encodeURIComponent(categoria.nombre)}`; // Cambiado a CAT.html
-      link.className = 'categoria-link'; // Clase para estilos
+  // Obtener categorías activas desde Supabase
+  const { data, error } = await supabase
+    .from("categorias")
+    .select("id, nombre, imagen")
+    .eq("activa", true)
+    .order("nombre", { ascending: true });
 
-      // Crear la imagen de la categoría
-      const img = document.createElement('img');
-      img.src = categoria.imagen; // Ruta de la imagen desde el JSON
-      img.alt = categoria.nombre; // Texto alternativo
+  if (error) {
+    console.error("Error cargando categorías desde Supabase:", error);
+    return;
+  }
 
-      // Crear el texto del nombre de la categoría
-      const nombre = document.createElement('p');
-      nombre.textContent = categoria.nombre; // Nombre de la categoría
+  categoriasGrid.innerHTML = "";
 
-      // Agregar la imagen y el texto al enlace
-      link.appendChild(img);
-      link.appendChild(nombre);
+  // Mostrar solo las primeras 6
+  const primerasCategorias = data.slice(0, 6);
 
-      // Agregar el enlace al contenedor
-      categoriaItem.appendChild(link);
+  primerasCategorias.forEach((categoria) => {
+    const categoriaItem = document.createElement("div");
+    categoriaItem.className = "categoria-item";
 
-      // Agregar el contenedor al grid
-      categoriasGrid.appendChild(categoriaItem);
-    });
-  })
-  .catch(error => console.error('Error al cargar el JSON de categorías:', error));
+    const link = document.createElement("a");
+    link.href = `CAT.html?categoria=${encodeURIComponent(categoria.nombre)}`;
+    link.className = "categoria-link";
+
+    const img = document.createElement("img");
+    img.src = categoria.imagen;
+    img.alt = categoria.nombre;
+
+    const nombre = document.createElement("p");
+    nombre.textContent = categoria.nombre;
+
+    link.appendChild(img);
+    link.appendChild(nombre);
+    categoriaItem.appendChild(link);
+
+    categoriasGrid.appendChild(categoriaItem);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", cargarCategorias);

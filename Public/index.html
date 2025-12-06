@@ -240,5 +240,13 @@
     <script src="JS/script.js"></script>
     <script src="JS/categorias.js"></script>
     <script src="JS/ayuda.js"></script>
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+        const SUPABASE_URL = 'https://zgjzensxrftkwnojvjqw.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnanplbnN4cmZ0a3dub2p2anF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTIwNjgsImV4cCI6MjA4MDU2ODA2OH0.vPJBa0xwr90bYxbNr2jw9ZodJMglKdYUaGjQrnfzeTg';
+
+        window.supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    </script>
 </body>
 </html>
