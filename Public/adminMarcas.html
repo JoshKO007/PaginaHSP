@@ -475,9 +475,13 @@
           <p class="hint">Puedes desactivar una marca sin eliminarla.</p>
         </div>
 
+        <div id="formStatus" class="status-text" style="display:none; margin-top:4px; text-align:center;">
+          <i class="fa-solid fa-circle-notch fa-spin"></i>
+          <span>Guardando cambios...</span>
+        </div>
+
         <button type="submit" class="btn-primary">
-          <i class="fa-solid fa-floppy-disk"></i>
-          Guardar marca
+          <i class="fa-solid fa-floppy-disk"></i><span style="margin-left:6px;">Guardar marca</span>
         </button>
       </form>
 
@@ -546,6 +550,8 @@
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+  const formStatus = document.getElementById("formStatus");
+
   const form = document.getElementById("formMarca");
   const fileInput = document.getElementById("imagen");
   const previewCanvas = document.getElementById("previewCanvas");
@@ -557,6 +563,27 @@
   const subtitleEl = cardForm.querySelector(".subtitle");
   const submitBtn = cardForm.querySelector(".btn-primary");
   const activaSwitch = document.getElementById("activaSwitch");
+  function setSubmitLoading(isLoading, isEditing) {
+    if (!submitBtn) return;
+
+    if (isLoading) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i><span style="margin-left:6px;">Guardando...</span>';
+      if (formStatus) {
+        formStatus.style.display = "block";
+        formStatus.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i><span style="margin-left:6px;">Guardando cambios...</span>';
+      }
+    } else {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = isEditing
+        ? '<i class="fa-solid fa-floppy-disk"></i><span style="margin-left:6px;">Guardar cambios</span>'
+        : '<i class="fa-solid fa-floppy-disk"></i><span style="margin-left:6px;">Guardar marca</span>';
+
+      if (formStatus) {
+        formStatus.style.display = "none";
+      }
+    }
+  }
 
   let currentEditId = null;
   let currentEditImageUrl = null;
@@ -642,6 +669,8 @@
   async function loadMarcas() {
     if (!listContainer) return;
 
+    listContainer.innerHTML = '<div class="status-text" style="display:flex; align-items:center; gap:6px; justify-content:flex-start; padding:4px 2px;"><i class="fa-solid fa-circle-notch fa-spin"></i><span>Cargando marcas...</span></div>';
+
     const { data, error } = await supabase
       .from("marcas")
       .select("id, nombre, imagen, activa")
@@ -716,9 +745,12 @@
     cardForm.classList.remove("card-form-editing");
     titleEl.textContent = "Agregar Marca";
     subtitleEl.textContent = "Registra una nueva marca para usarla en el catálogo de productos.";
-    submitBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>\n        Guardar marca';
+    submitBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i><span style="margin-left:6px;">Guardar marca</span>';
     form.reset();
     previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+    if (formStatus) {
+      formStatus.style.display = "none";
+    }
   }
 
   function startEditMarca(marca) {
@@ -730,7 +762,7 @@
     cardForm.classList.add("card-form-editing");
     titleEl.textContent = "Editar Marca";
     subtitleEl.textContent = "Actualiza el nombre o el logo de una marca existente.";
-    submitBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>\n        Guardar cambios';
+    submitBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i><span style="margin-left:6px;">Guardar cambios</span>';
 
     document.getElementById("nombre").value = marca.nombre || "";
 
@@ -773,6 +805,8 @@
       alert("Selecciona un logo para la nueva marca.");
       return;
     }
+
+    setSubmitLoading(true, !!currentEditId);
 
     try {
       let imageUrl = currentEditImageUrl || null;
@@ -828,6 +862,8 @@
     } catch (err) {
       console.error(err);
       alert("Ocurrió un error. Consulta la consola.");
+    } finally {
+      setSubmitLoading(false, !!currentEditId);
     }
   });
 

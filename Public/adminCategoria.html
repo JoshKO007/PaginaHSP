@@ -2,344 +2,949 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Panel Admin – Categorías</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agregar Categoría - Administrador</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Iconos -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
 
   <style>
     :root {
-      --primary: #2563eb;
-      --primary-soft: rgba(37, 99, 235, 0.12);
-      --primary-strong: #1d4ed8;
-      --accent: #22c55e;
-      --accent-soft: rgba(34, 197, 94, 0.14);
-      --danger: #ef4444;
-      --bg: #f5f7fb;
-      --card-bg: #ffffff;
-      --border: #e5e7eb;
+      --accent: #0077cc;
+      --accent-soft: rgba(0, 119, 204, 0.15);
+      --bg-light: #f4f6fb;
+      --card-bg: rgba(255, 255, 255, 0.86);
       --text-main: #111827;
       --text-soft: #6b7280;
-      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.12);
-      --radius-lg: 24px;
-      --radius-md: 999px;
-      --transition: 180ms ease-out;
+      --radius-xl: 22px;
+      --shadow-soft: 0 14px 40px rgba(15, 23, 42, 0.18);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
-      font-family: "Poppins", sans-serif;
-      background: radial-gradient(circle at top left, #e0edff 0, #f5f7fb 42%, #f9fafb 100%);
+      margin: 0;
+      padding: 40px 16px;
       min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #e0f2fe, #ffffff 50%, #e5e7eb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      color: var(--text-main);
       overflow-x: hidden;
-      padding-bottom: 60px;
     }
 
-    canvas#bg-orbit {
-      position: fixed;
-      inset: 0;
-      width: 100%; height: 100%;
-      z-index: -1;
-      opacity: 0.7;
-      pointer-events: none;
+    .admin-layout {
+      width: 100%;
+      max-width: 1120px;
+      display: flex;
+      gap: 26px;
+      align-items: stretch;
+      justify-content: center;
     }
 
-    .container { max-width: 1200px; margin: auto; padding: 32px 16px; }
-    h1 { text-align: center; margin-bottom: 25px; font-weight: 600; }
-
-    .layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 28px;
+    .card.card-list {
+      max-width: 520px;
+      flex: 1 1 0;
     }
 
-    @media (max-width: 900px) {
-      .layout { grid-template-columns: 1fr; }
+    .card.card-form {
+      max-width: 520px;
+      flex: 1 1 0;
     }
 
-    .card {
-      background: white;
-      border-radius: var(--radius-lg);
-      padding: 22px;
-      box-shadow: var(--shadow-soft);
+    .categorias-list {
+      margin-top: 6px;
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 4px;
     }
 
-    .list-item {
+    .categoria-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      margin-bottom: 10px;
+      padding: 9px 10px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(209, 213, 219, 0.7);
+      margin-bottom: 8px;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    }
+
+    .categoria-row:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.15);
+      background: #ffffff;
+    }
+
+    .categoria-main {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .categoria-thumb {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #4b5563;
+    }
+
+    .categoria-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
       background: white;
     }
 
-    .list-item img {
-      width: 55px; height: 55px;
-      object-fit: contain;
-      border-radius: 10px;
-      margin-right: 12px;
+    .categoria-name {
+      font-size: 0.94rem;
+      font-weight: 600;
+      color: var(--text-main);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
 
-    .edit-btn {
-      padding: 6px 12px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
+    .categoria-badge {
+      font-size: 0.74rem;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: #ecfdf3;
+      color: #15803d;
+      margin-left: 6px;
+      white-space: nowrap;
     }
 
-    .form-group { margin-bottom: 16px; }
-    label { font-weight: 500; }
-    input[type="text"], input[type="file"] {
-      width: 100%; padding: 12px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
+    .categoria-badge.inactive {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .switch-field {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
       margin-top: 6px;
     }
 
-    .preview-img {
-      width: 140px; height: 140px;
-      object-fit: contain;
-      background: #f0f0f0;
-      border-radius: 16px;
-      margin-top: 12px;
-      display: none;
+    .switch-label {
+      font-size: 0.9rem;
+      color: var(--text-soft);
     }
 
     .switch {
       position: relative;
-      width: 52px; height: 28px;
       display: inline-block;
+      width: 44px;
+      height: 24px;
     }
 
-    .switch input { display: none; }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
 
     .slider {
       position: absolute;
       cursor: pointer;
-      top: 0; left: 0;
-      right: 0; bottom: 0;
-      background: #ccc;
-      transition: .4s;
-      border-radius: 34px;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #d1d5db;
+      transition: 0.2s;
+      border-radius: 999px;
     }
 
     .slider:before {
       position: absolute;
       content: "";
-      height: 22px; width: 22px;
-      left: 3px; bottom: 3px;
-      background: white;
-      transition: .4s;
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.2s;
       border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.35);
     }
 
-    input:checked + .slider { background: var(--primary); }
-    input:checked + .slider:before { transform: translateX(24px); }
+    .switch input:checked + .slider {
+      background-color: var(--accent);
+    }
 
-    .submit-btn {
-      padding: 12px;
-      background: var(--primary);
-      color: white;
-      width: 100%;
-      font-size: 16px;
-      border-radius: 12px;
+    .switch input:checked + .slider:before {
+      transform: translateX(18px);
+    }
+
+    .btn-secondary {
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      background: white;
+      padding: 7px 12px;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #374151;
+      transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-secondary i {
+      font-size: 0.78rem;
+    }
+
+    .btn-secondary:hover {
+      background: #eff6ff;
+      border-color: #93c5fd;
+      box-shadow: 0 8px 18px rgba(59, 130, 246, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);
+    }
+
+    .card-form-editing h1::after {
+      content: " (edición)";
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    /* Canvas de fondo */
+    #bgCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.3;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-soft);
+      padding: 32px 26px 26px;
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      animation: fadeIn 0.7s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .card-header-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-soft);
+      margin-bottom: 12px;
+    }
+
+    .card-header-icon i {
+      font-size: 30px;
+      color: var(--accent);
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 4px;
+      color: var(--text-main);
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+    }
+
+    form {
+      margin-top: 10px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: var(--text-soft);
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      font-size: 0.96rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent-soft);
+      transform: translateY(-1px);
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      margin-top: 3px;
+    }
+
+    .btn-primary {
+      width: 100%;
+      margin-top: 8px;
+      padding: 11px 14px;
+      border-radius: 999px;
       border: none;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.98rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.35);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .btn-primary i {
+      font-size: 0.9rem;
+    }
+
+    .btn-primary:hover {
+      background: #005fa3;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(37, 99, 235, 0.45);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.3);
+    }
+
+    #cancelEditBtn {
+      width: 100%;
+      margin-top: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      background: rgba(255, 255, 255, 0.95);
+      color: #374151;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+    }
+
+    #cancelEditBtn i {
+      font-size: 0.9rem;
+    }
+
+    #cancelEditBtn:hover {
+      background: #f3f4f6;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.15);
+      transform: translateY(-1px);
+    }
+
+    #cancelEditBtn:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
+    }
+
+    .card-form-editing #cancelEditBtn {
+      display: flex;
+    }
+
+    /* Loading overlay styles */
+    .loading-overlay {
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-xl);
+      background: rgba(255, 255, 255, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      backdrop-filter: blur(2px);
+    }
+
+    .card-form.loading .loading-overlay {
+      display: flex;
+    }
+
+    .loading-spinner {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 3px solid rgba(37, 99, 235, 0.2);
+      border-top-color: var(--accent);
+      animation: spin 0.7s linear infinite;
+    }
+
+    .loading-text {
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      text-align: center;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .footer-links {
+      margin-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+    }
+
+    .footer-links a {
+      color: var(--accent);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    .status-text {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    @media (max-width: 900px) {
+      .admin-layout {
+        flex-direction: column;
+        max-width: 640px;
+      }
+
+      .card.card-list,
+      .card.card-form {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 24px 12px;
+      }
+
+      .card {
+        padding: 24px 18px 20px;
+      }
+
+      h1 {
+        font-size: 1.4rem;
+      }
     }
   </style>
 </head>
+
 <body>
+  <!-- Fondo animado -->
+  <canvas id="bgCanvas"></canvas>
 
-<canvas id="bg-orbit"></canvas>
-<div class="container">
-  <h1>Administrar Categorías</h1>
-
-  <div class="layout">
-
+  <div class="admin-layout">
     <!-- LISTA DE CATEGORÍAS -->
-    <div class="card">
-      <h2 style="margin-bottom:16px;">Categorías existentes</h2>
-      <div id="categoriaLista"></div>
+    <div class="card card-list">
+      <div class="card-header">
+        <div class="card-header-icon">
+          <i class="fa-solid fa-table-cells-large"></i>
+        </div>
+        <h1>Categorías actuales</h1>
+        <p class="subtitle">Administra las categorías ya registradas y edítalas cuando lo necesites.</p>
+      </div>
+      <div id="categoriasList" class="categorias-list"></div>
     </div>
 
     <!-- FORMULARIO -->
-    <div class="card">
-      <h2 style="margin-bottom:16px;">Agregar / Editar Categoría</h2>
-
-      <div class="form-group">
-        <label>ID (auto)</label>
-        <input type="text" id="catId" disabled />
+    <div class="card card-form">
+      <div class="loading-overlay">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div class="loading-spinner"></div>
+          <div class="loading-text">Guardando cambios...</div>
+        </div>
+      </div>
+      <div class="card-header">
+        <div class="card-header-icon">
+          <i class="fa-solid fa-folder-plus"></i>
+        </div>
+        <h1>Agregar Categoría</h1>
+        <p class="subtitle">Registra una nueva categoría para usarla en el catálogo de productos.</p>
       </div>
 
-      <div class="form-group">
-        <label>Nombre</label>
-        <input type="text" id="catNombre" placeholder="Nombre de categoría" />
-      </div>
+      <form id="formCategoria">
+        <div class="field">
+          <label for="nombre">Nombre de la categoría</label>
+          <input type="text" id="nombre" placeholder="Ej. Rayos X" required />
+        </div>
 
-      <div class="form-group">
-        <label>Imagen</label>
-        <input type="file" id="catImagen" accept="image/*" />
-        <img id="previewImg" class="preview-img" />
-      </div>
+        <div class="field">
+          <label for="imagen">Seleccionar imagen desde tu equipo</label>
+          <input type="file" id="imagen" accept="image/*" />
+        </div>
 
-      <div class="form-group">
-        <label>Activa</label><br>
-        <label class="switch">
-          <input type="checkbox" id="catActiva">
-          <span class="slider"></span>
-        </label>
-      </div>
+        <div class="field">
+          <label>Vista previa de la imagen</label>
+          <canvas id="previewCanvas" width="260" height="140" style="border-radius: 12px; border: 1px dashed #cbd5f5; background: rgba(255,255,255,0.9);"></canvas>
+          <p class="hint">Selecciona una imagen.</p>
+        </div>
 
-      <button class="submit-btn" id="guardarBtn">Guardar Categoría</button>
+        <div class="field">
+          <div class="switch-field">
+            <span class="switch-label">Categoría activa</span>
+            <label class="switch">
+              <input type="checkbox" id="activaSwitch" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <p class="hint">Puedes desactivar una categoría sin eliminarla.</p>
+        </div>
+
+        <button type="submit" class="btn-primary">
+          <i class="fa-solid fa-floppy-disk"></i>
+          Guardar categoría
+        </button>
+        <button type="button" id="cancelEditBtn">
+          <i class="fa-solid fa-xmark"></i>
+          Cancelar edición
+        </button>
+      </form>
+
+      <div class="footer-links">
+        <a href="admin.html">
+          <i class="fa-solid fa-arrow-left"></i>
+          Volver al panel
+        </a>
+        <span class="status-text">Los cambios se guardan en Supabase</span>
+      </div>
     </div>
-
   </div>
-</div>
 
-<script src="https://esm.sh/@supabase/supabase-js@2"></script>
+  <!-- Fondo canvas animado -->
 <script>
-// SUPABASE CONFIG
-const SUPABASE_URL = "https://zgjzensxrftkwnojvjqw.supabase.co";
-const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnanplbnN4cmZ0a3dub2p2anF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTIwNjgsImV4cCI6MjA4MDU2ODA2OH0.vPJBa0xwr90bYxbNr2jw9ZodJMglKdYUaGjQrnfzeTg";
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    // Fondo Canvas animado (similar al admin principal)
+    const bgCanvas = document.getElementById("bgCanvas");
+    const bgCtx = bgCanvas.getContext("2d");
 
-// IMGBB CONFIG
-const IMGBB_KEY = "18d7825e6b190dcaac01e42053affc61";
+    function resizeCanvas() {
+      bgCanvas.width = window.innerWidth;
+      bgCanvas.height = window.innerHeight;
+    }
 
-// ELEMENTOS
-const lista = document.getElementById("categoriaLista");
-const previewImg = document.getElementById("previewImg");
-const fileInput = document.getElementById("catImagen");
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
 
-let editando = null;
+    const circles = Array.from({ length: 40 }, () => ({
+      x: Math.random() * bgCanvas.width,
+      y: Math.random() * bgCanvas.height,
+      r: Math.random() * 8 + 3,
+      dx: (Math.random() - 0.5) * 0.4,
+      dy: (Math.random() - 0.5) * 0.4,
+      alpha: Math.random() * 0.45 + 0.15,
+    }));
 
-fileInput.addEventListener("change", () => {
-  const file = fileInput.files[0];
-  if (file) {
-    previewImg.src = URL.createObjectURL(file);
-    previewImg.style.display = "block";
-  }
-});
+    function animateBg() {
+      bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
 
-async function cargarCategorias() {
-  const { data, error } = await supabase.from("categorias").select("*").order("id");
-  if (error) return console.error(error);
+      circles.forEach((c) => {
+        bgCtx.beginPath();
+        bgCtx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+        bgCtx.fillStyle = `rgba(0, 119, 204, ${c.alpha})`;
+        bgCtx.fill();
 
-  lista.innerHTML = "";
+        c.x += c.dx;
+        c.y += c.dy;
 
-  data.forEach(cat => {
-    const div = document.createElement("div");
-    div.className = "list-item";
+        if (c.x < 0 || c.x > bgCanvas.width) c.dx *= -1;
+        if (c.y < 0 || c.y > bgCanvas.height) c.dy *= -1;
+      });
 
-    div.innerHTML = `
-      <div style="display:flex; align-items:center; gap:10px;">
-        <img src="${cat.imagen || ''}" />
-        <strong>${cat.nombre}</strong>
-      </div>
-      <button class="edit-btn" onclick='editar(${JSON.stringify(cat)})'>Editar</button>
-    `;
+      requestAnimationFrame(animateBg);
+    }
 
-    lista.appendChild(div);
-  });
-}
+    animateBg();
+  </script>
 
-window.editar = function(cat) {
-  editando = cat.id;
-  document.getElementById("catId").value = cat.id;
-  document.getElementById("catNombre").value = cat.nombre;
-  document.getElementById("catActiva").checked = cat.activa;
-  previewImg.src = cat.imagen;
-  previewImg.style.display = "block";
-};
+  <!-- LÓGICA SUPABASE + IMGBB -->
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-async function subirImagenImgBB(file) {
-  const form = new FormData();
-  form.append("image", file);
+    const SUPABASE_URL = "https://zgjzensxrftkwnojvjqw.supabase.co";
+    const SUPABASE_ANON_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnanplbnN4cmZ0a3dub2p2anF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTIwNjgsImV4cCI6MjA4MDU2ODA2OH0.vPJBa0xwr90bYxbNr2jw9ZodJMglKdYUaGjQrnfzeTg";
 
-  const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {
-    method: "POST",
-    body: form
-  });
+    const IMGBB_API_KEY = "18d7825e6b190dcaac01e42053affc61";
 
-  const json = await res.json();
-  return json.data.url;
-}
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-async function guardarCategoria() {
-  const nombre = document.getElementById("catNombre").value;
-  const activa = document.getElementById("catActiva").checked;
-  let imagenURL = null;
+    const form = document.getElementById("formCategoria");
+    const fileInput = document.getElementById("imagen");
+    const previewCanvas = document.getElementById("previewCanvas");
+    const previewCtx = previewCanvas.getContext("2d");
 
-  const file = fileInput.files[0];
-  if (file) imagenURL = await subirImagenImgBB(file);
+    const listContainer = document.getElementById("categoriasList");
+    const cardForm = document.querySelector(".card-form");
+    const titleEl = cardForm.querySelector("h1");
+    const subtitleEl = cardForm.querySelector(".subtitle");
+    const submitBtn = cardForm.querySelector(".btn-primary");
+    const activaSwitch = document.getElementById("activaSwitch");
+    const cancelEditBtn = document.getElementById("cancelEditBtn");
+    const loadingOverlay = cardForm.querySelector(".loading-overlay");
 
-  if (!editando) {
-    // INSERTAR
-    const { error } = await supabase.from("categorias").insert({
-      nombre,
-      activa,
-      imagen: imagenURL
+    let currentEditId = null;
+    let currentEditImageUrl = null;
+
+    /* -------- PREVIEW DE LA IMAGEN -------- */
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files[0];
+      if (!file) {
+        previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+          const scale = Math.min(
+            previewCanvas.width / img.width,
+            previewCanvas.height / img.height
+          );
+          const drawWidth = img.width * scale;
+          const drawHeight = img.height * scale;
+          const offsetX = (previewCanvas.width - drawWidth) / 2;
+          const offsetY = (previewCanvas.height - drawHeight) / 2;
+          previewCtx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
     });
 
-    if (error) alert("Error al guardar");
-  } else {
-    // ACTUALIZAR
-    const datos = {
-      nombre,
-      activa
-    };
-    if (imagenURL) datos.imagen = imagenURL;
+    /* -------- FILE → BASE64 -------- */
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64 = reader.result.split(",")[1];
+          resolve(base64);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
 
-    const { error } = await supabase.from("categorias").update(datos).eq("id", editando);
+    /* -------- SUBIR A IMGBB -------- */
+    async function uploadToImgbb(file) {
+      const base64Image = await fileToBase64(file);
+      const formData = new FormData();
+      formData.append("image", base64Image);
 
-    if (error) alert("Error al actualizar");
-  }
+      const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+        method: "POST",
+        body: formData,
+      });
 
-  editando = null;
-  fileInput.value = "";
-  previewImg.style.display = "none";
+      const data = await res.json();
 
-  cargarCategorias();
-}
+      if (!data.success) throw new Error("Error subiendo imagen a imgBB");
 
-document.getElementById("guardarBtn").addEventListener("click", guardarCategoria);
+      return data.data.url;
+    }
 
-cargarCategorias();
-</script>
+    /* -------- OBTENER SIGUIENTE ID -------- */
+    async function getNextId() {
+      const { data, error } = await supabase
+        .from("categorias")
+        .select("id")
+        .order("id", { ascending: false })
+        .limit(1);
 
-<script>
-// SIMPLE CANVAS
-const canvas = document.getElementById("bg-orbit");
-const ctx = canvas.getContext("2d");
-canvas.width = innerWidth;
-canvas.height = innerHeight;
+      if (error) {
+        console.error(error);
+        throw new Error("No se pudo obtener el último ID");
+      }
 
-let orbs = [];
-for (let i = 0; i < 40; i++) {
-  orbs.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*3+1, s: Math.random()*0.8+0.2 });
-}
+      if (!data || data.length === 0) return 1;
 
-function draw() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle = "rgba(37,99,235,0.35)";
-  orbs.forEach(o=>{
-    ctx.beginPath(); ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
-    ctx.fill();
-    o.y += o.s;
-    if (o.y > canvas.height) o.y = 0;
-  });
-  requestAnimationFrame(draw);
-}
+      return data[0].id + 1;
+    }
 
-draw();
-</script>
+    /* -------- CARGAR CATEGORÍAS -------- */
+    async function loadCategorias() {
+      if (!listContainer) return;
 
+      const { data, error } = await supabase
+        .from("categorias")
+        .select("id, nombre, imagen, activa")
+        .order("nombre", { ascending: true });
+
+      if (error) {
+        console.error("Error cargando categorías:", error);
+        return;
+      }
+
+      listContainer.innerHTML = "";
+
+      data.forEach((cat) => {
+        const row = document.createElement("div");
+        row.className = "categoria-row";
+
+        const main = document.createElement("div");
+        main.className = "categoria-main";
+
+        const thumb = document.createElement("div");
+        thumb.className = "categoria-thumb";
+
+        if (cat.imagen && (cat.imagen.startsWith("http://") || cat.imagen.startsWith("https://"))) {
+          const img = document.createElement("img");
+          img.src = cat.imagen;
+          img.alt = cat.nombre;
+          thumb.appendChild(img);
+        } else {
+          thumb.textContent = (cat.nombre || "?").charAt(0).toUpperCase();
+        }
+
+        const nameWrap = document.createElement("div");
+        const nameEl = document.createElement("div");
+        nameEl.className = "categoria-name";
+        nameEl.textContent = cat.nombre;
+        nameWrap.appendChild(nameEl);
+
+        if (cat.activa === true) {
+          const badge = document.createElement("span");
+          badge.className = "categoria-badge";
+          badge.textContent = "Activa";
+          nameWrap.appendChild(badge);
+        } else if (cat.activa === false) {
+          const badge = document.createElement("span");
+          badge.className = "categoria-badge inactive";
+          badge.textContent = "Inactiva";
+          nameWrap.appendChild(badge);
+        }
+
+        main.appendChild(thumb);
+        main.appendChild(nameWrap);
+
+        const editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.className = "btn-secondary";
+        editBtn.innerHTML = '<i class="fa-solid fa-pen"></i><span>Editar</span>';
+        editBtn.addEventListener("click", () => startEditCategoria(cat));
+
+        row.appendChild(main);
+        row.appendChild(editBtn);
+
+        listContainer.appendChild(row);
+      });
+    }
+
+    function setLoading(isLoading) {
+      if (!cardForm || !submitBtn) return;
+      if (isLoading) {
+        cardForm.classList.add("loading");
+        submitBtn.disabled = true;
+        cancelEditBtn.disabled = true;
+        submitBtn.style.opacity = "0.7";
+      } else {
+        cardForm.classList.remove("loading");
+        submitBtn.disabled = false;
+        cancelEditBtn.disabled = false;
+        submitBtn.style.opacity = "1";
+      }
+    }
+
+    function resetFormState() {
+      currentEditId = null;
+      currentEditImageUrl = null;
+      if (activaSwitch) {
+        activaSwitch.checked = true;
+      }
+      cardForm.classList.remove("card-form-editing");
+      titleEl.textContent = "Agregar Categoría";
+      subtitleEl.textContent = "Registra una nueva categoría para usarla en el catálogo de productos.";
+      submitBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>\n          Guardar categoría';
+      form.reset();
+      previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+      setLoading(false);
+    }
+
+    function startEditCategoria(cat) {
+      currentEditId = cat.id;
+      currentEditImageUrl = cat.imagen || null;
+      if (activaSwitch) {
+        activaSwitch.checked = cat.activa !== false;
+      }
+      cardForm.classList.add("card-form-editing");
+      titleEl.textContent = "Editar Categoría";
+      subtitleEl.textContent = "Actualiza el nombre o la imagen de una categoría existente.";
+      submitBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>\n          Guardar cambios';
+
+      document.getElementById("nombre").value = cat.nombre || "";
+
+      previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+      if (cat.imagen && (cat.imagen.startsWith("http://") || cat.imagen.startsWith("https://"))) {
+        const img = new Image();
+        img.onload = () => {
+          const scale = Math.min(
+            previewCanvas.width / img.width,
+            previewCanvas.height / img.height
+          );
+          const drawWidth = img.width * scale;
+          const drawHeight = img.height * scale;
+          const offsetX = (previewCanvas.width - drawWidth) / 2;
+          const offsetY = (previewCanvas.height - drawHeight) / 2;
+          previewCtx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        };
+        img.src = cat.imagen;
+      }
+
+      cardForm.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    if (cancelEditBtn) {
+      cancelEditBtn.addEventListener("click", () => {
+        resetFormState();
+      });
+    }
+
+    /* -------- SUBMIT FORM -------- */
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const nombre = document.getElementById("nombre").value.trim();
+      const file = fileInput.files[0];
+
+      if (!nombre) {
+        alert("Escribe el nombre de la categoría.");
+        return;
+      }
+
+      if (!currentEditId && !file) {
+        alert("Selecciona una imagen para la nueva categoría.");
+        return;
+      }
+
+      try {
+        setLoading(true);
+        let imageUrl = currentEditImageUrl || null;
+        const activa = activaSwitch ? !!activaSwitch.checked : true;
+
+        if (file) {
+          imageUrl = await uploadToImgbb(file);
+        }
+
+        if (currentEditId) {
+          const { error } = await supabase
+            .from("categorias")
+            .update({
+              nombre,
+              imagen: imageUrl,
+              activa,
+            })
+            .eq("id", currentEditId);
+
+          if (error) {
+            console.error("Error al actualizar categoría:", error);
+            alert("Ocurrió un error al actualizar la categoría.");
+            return;
+          }
+
+          alert("Categoría actualizada correctamente ✔️");
+        } else {
+          const newId = await getNextId();
+
+          const { error } = await supabase.from("categorias").insert([
+            {
+              id: newId,
+              nombre,
+              imagen: imageUrl,
+              activa,
+            },
+          ]);
+
+          if (error) {
+            console.error("Error al insertar categoría:", error);
+            alert("Ocurrió un error al guardar en la base de datos.");
+            return;
+          }
+
+          alert("Categoría guardada correctamente 🎉");
+        }
+
+        await loadCategorias();
+        resetFormState();
+      } catch (err) {
+        console.error(err);
+        alert("Ocurrió un error. Consulta la consola.");
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    // Inicializar
+    loadCategorias();
+    resetFormState();
+  </script>
 </body>
 </html>
