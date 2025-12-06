@@ -309,131 +309,143 @@
   </script>
 
   <script type="module">
-    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+  import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-    const SUPABASE_URL = "https://zgjzensxrftkwnojvjqw.supabase.co";
-    const SUPABASE_ANON_KEY =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnanplbnN4cmZ0a3dub2p2anF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTIwNjgsImV4cCI6MjA4MDU2ODA2OH0.vPJBa0xwr90bYxbNr2jw9ZodJMglKdYUaGjQrnfzeTg";
+  const SUPABASE_URL = "https://zgjzensxrftkwnojvjqw.supabase.co";
+  const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnanplbnN4cmZ0a3dub2p2anF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTIwNjgsImV4cCI6MjA4MDU2ODA2OH0.vPJBa0xwr90bYxbNr2jw9ZodJMglKdYUaGjQrnfzeTg";
 
-    // ⚠️ IMPORTANTE: Reemplaza esto por TU API KEY de imgBB
-    const IMGBB_API_KEY = "18d7825e6b190dcaac01e42053affc61";
+  const IMGBB_API_KEY = "18d7825e6b190dcaac01e42053affc61";
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const form = document.getElementById("formMarca");
-    const fileInput = document.getElementById("imagen");
-    const previewCanvas = document.getElementById("previewCanvas");
-    const previewCtx = previewCanvas.getContext("2d");
+  const form = document.getElementById("formMarca");
+  const fileInput = document.getElementById("imagen");
+  const previewCanvas = document.getElementById("previewCanvas");
+  const previewCtx = previewCanvas.getContext("2d");
 
-    // Vista previa de la imagen seleccionada
-    fileInput.addEventListener("change", () => {
-      const file = fileInput.files[0];
-      if (!file) {
+  /* -------------------------- PREVIEW DEL LOGO -------------------------- */
+  fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    if (!file) {
+      previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
         previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          // Limpiar
-          previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
-          // Calcular escala para encajar manteniendo proporción
-          const scale = Math.min(
-            previewCanvas.width / img.width,
-            previewCanvas.height / img.height
-          );
-          const drawWidth = img.width * scale;
-          const drawHeight = img.height * scale;
-          const offsetX = (previewCanvas.width - drawWidth) / 2;
-          const offsetY = (previewCanvas.height - drawHeight) / 2;
-          previewCtx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-        };
-        img.src = e.target.result;
+        const scale = Math.min(
+          previewCanvas.width / img.width,
+          previewCanvas.height / img.height
+        );
+        const drawWidth = img.width * scale;
+        const drawHeight = img.height * scale;
+        const offsetX = (previewCanvas.width - drawWidth) / 2;
+        const offsetY = (previewCanvas.height - drawHeight) / 2;
+        previewCtx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
       };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  /* -------------------------- IMG → BASE64 -------------------------- */
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = reader.result.split(",")[1];
+        resolve(base64);
+      };
+      reader.onerror = reject;
       reader.readAsDataURL(file);
     });
+  }
 
-    // Convierte el archivo a base64 (sin el prefijo data:...)
-    function fileToBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const result = reader.result; // data:image/png;base64,AAAA...
-          const base64 = result.split(",")[1]; // nos quedamos solo con la parte base64
-          resolve(base64);
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
+  /* -------------------------- SUBIR A IMGBB -------------------------- */
+  async function uploadToImgbb(file) {
+    const base64Image = await fileToBase64(file);
+    const formData = new FormData();
+    formData.append("image", base64Image);
+
+    const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+
+    if (!data.success) throw new Error("Error subiendo imagen a imgBB");
+
+    return data.data.url;
+  }
+
+  /* -------------------------- GENERAR SIGUIENTE ID -------------------------- */
+  async function getNextId() {
+    const { data, error } = await supabase
+      .from("marcas")
+      .select("id")
+      .order("id", { ascending: false })
+      .limit(1);
+
+    if (error) {
+      console.error(error);
+      throw new Error("No se pudo obtener el último ID");
     }
 
-    // Sube la imagen a imgBB y regresa la URL pública
-    async function uploadToImgbb(file) {
-      if (!IMGBB_API_KEY || IMGBB_API_KEY === "TU_API_KEY_DE_IMGBB_AQUI") {
-        throw new Error("Configura tu API key de imgBB en IMGBB_API_KEY");
-      }
+    if (!data || data.length === 0) return 1; // Si no hay marcas, empezamos en 1
 
-      const base64Image = await fileToBase64(file);
-      const formData = new FormData();
-      formData.append("image", base64Image);
+    return data[0].id + 1;
+  }
 
-      const response = await fetch(
-        `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,
+  /* -------------------------- SUBMIT FORM -------------------------- */
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const nombre = document.getElementById("nombre").value.trim();
+    const file = fileInput.files[0];
+
+    if (!nombre || !file) {
+      alert("Completa el nombre y selecciona una imagen.");
+      return;
+    }
+
+    try {
+      // 1. Subir imagen
+      const imageUrl = await uploadToImgbb(file);
+
+      // 2. Obtener el siguiente ID
+      const newId = await getNextId();
+
+      // 3. Insertar en Supabase
+      const { error } = await supabase.from("marcas").insert([
         {
-          method: "POST",
-          body: formData,
-        }
-      );
+          id: newId,
+          nombre: nombre,
+          imagen: imageUrl,
+          activa: true,
+        },
+      ]);
 
-      const data = await response.json();
-
-      if (!response.ok || !data.success) {
-        console.error("Respuesta de imgBB:", data);
-        throw new Error("Error al subir la imagen a imgBB");
-      }
-
-      // Puedes usar data.data.url o data.data.display_url (ambas son públicas)
-      return data.data.url;
-    }
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const nombre = document.getElementById("nombre").value.trim();
-      const file = fileInput.files[0];
-
-      if (!nombre || !file) {
-        alert("Por favor completa el nombre y selecciona un logo.");
+      if (error) {
+        console.error("Error al insertar marca:", error);
+        alert("Ocurrió un error al guardar en la base de datos.");
         return;
       }
 
-      try {
-        // 1) Subir la imagen a imgBB
-        const imageUrl = await uploadToImgbb(file);
+      alert("Marca guardada correctamente 🎉");
 
-        // 2) Guardar la marca en Supabase con la URL de imgBB
-        const { error } = await supabase
-          .from("marcas")
-          .insert([{ nombre: nombre, imagen: imageUrl, activa: true }]);
+      form.reset();
+      previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
 
-        if (error) {
-          console.error("Error al insertar marca:", error);
-          alert("Hubo un error al guardar la marca en Supabase.");
-          return;
-        }
-
-        alert("Marca agregada correctamente 🎉\nLa imagen se guardó en imgBB.");
-        form.reset();
-        previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
-      } catch (err) {
-        console.error(err);
-        alert(
-          "Ocurrió un error al subir la imagen o guardar la marca. Revisa la consola."
-        );
-      }
-    });
-  </script>
+    } catch (err) {
+      console.error(err);
+      alert("Ocurrió un error. Consulta la consola.");
+    }
+  });
+</script>
 </body>
 </html>
