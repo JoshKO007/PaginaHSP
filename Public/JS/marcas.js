@@ -30,7 +30,15 @@ async function cargarMarcas() {
 
   contenedor.innerHTML = "";
 
-  data.forEach((item) => {
+  // Omitir la marca ACCESORIOS
+  let marcasFiltradas = data.filter(m => m.nombre.toUpperCase() !== "ACCESORIOS");
+
+  // Seleccionar 5 marcas aleatorias
+  marcasFiltradas = marcasFiltradas
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 5);
+
+  marcasFiltradas.forEach((item) => {
     const elemento = document.createElement("div");
     elemento.className = "marca-item";
 
