@@ -1,0 +1,195 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Panel de Administración | HSP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    :root {
+      --color-bg: #050816;
+      --color-bg-soft: rgba(15, 23, 42, 0.9);
+      --color-accent: #00bcd4;
+      --color-accent-soft: rgba(0, 188, 212, 0.2);
+      --color-text: #e5e7eb;
+      --color-text-soft: #9ca3af;
+      --color-danger: #f97373;
+      --radius-xl: 24px;
+      --transition-fast: 0.2s ease-out;
+      --transition-med: 0.35s ease-out;
+      --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.55);
+      --border-glass: 1px solid rgba(148, 163, 184, 0.35);
+      --blur-level: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Roboto", sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #020617, #0f172a 60%, #0ea5e9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      color: var(--color-text);
+    }
+
+    .login-box, .admin-panel {
+      width: 100%;
+      max-width: 480px;
+      padding: 40px;
+      background: var(--color-bg-soft);
+      backdrop-filter: blur(var(--blur-level));
+      border: var(--border-glass);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-soft);
+      display: none;
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    .login-box.active, .admin-panel.active {
+      display: block;
+    }
+
+    h2 {
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 25px;
+      color: var(--color-accent);
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: none;
+      background: rgba(255,255,255,0.08);
+      color: var(--color-text);
+      font-size: 16px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
+      border-radius: 12px;
+      background: var(--color-accent);
+      color: #000;
+      text-align: center;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .btn:hover {
+      background: #06d2eb;
+      transform: scale(1.03);
+    }
+
+    .admin-options {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .option-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.08);
+      cursor: pointer;
+      transition: transform var(--transition-fast), background var(--transition-fast);
+    }
+
+    .option-card i {
+      font-size: 28px;
+      color: var(--color-accent);
+    }
+
+    .option-card:hover {
+      transform: translateY(-4px);
+      background: rgba(255,255,255,0.15);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LOGIN -->
+  <div class="login-box active" id="loginBox">
+    <h2>Acceso Administrador</h2>
+
+    <div class="input-group">
+      <input type="password" id="passwordInput" placeholder="Ingresa la contraseña" />
+    </div>
+
+    <div class="btn" onclick="login()">Entrar</div>
+  </div>
+
+  <!-- PANEL ADMIN -->
+  <div class="admin-panel" id="adminPanel">
+    <h2>Panel de Administración</h2>
+
+    <div class="admin-options">
+      <div class="option-card" onclick="goTo('agregar_marca.html')">
+        <i class="fa-solid fa-tags"></i>
+        <span>Agregar Marca</span>
+      </div>
+
+      <div class="option-card" onclick="goTo('agregar_categoria.html')">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>Agregar Categoría</span>
+      </div>
+
+      <div class="option-card" onclick="goTo('agregar_producto.html')">
+        <i class="fa-solid fa-boxes-stacked"></i>
+        <span>Agregar Producto</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ADMIN_PASSWORD = "HSP2025"; // <-- CAMBIA ESTA CONTRASEÑA
+
+    function login() {
+      const pass = document.getElementById("passwordInput").value;
+
+      if (pass === ADMIN_PASSWORD) {
+        document.getElementById("loginBox").classList.remove("active");
+        document.getElementById("adminPanel").classList.add("active");
+      } else {
+        alert("Contraseña incorrecta");
+      }
+    }
+
+    function goTo(page) {
+      window.location.href = page;
+    }
+  </script>
+
+</body>
+</html>
