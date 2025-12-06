@@ -53,6 +53,36 @@
             align-items: center;
             gap: 12px;
         }
+
+        /* --- Alinear imágenes y botones de marcas uniformemente --- */
+
+        /* Tamaño proporcional de las imágenes */
+        .marca-item img,
+        .modern-item img {
+            max-width: 150px;
+            max-height: 80px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* Altura fija para el contenedor, para alinear botones */
+        .marca-item,
+        .modern-item {
+            height: 160px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        /* Forzar que el botón siempre quede alineado abajo */
+        .marca-item button,
+        .modern-item button,
+        .ver-productos-btn,
+        .modern-btn {
+            margin-top: auto;
+        }
     </style>
 </head>
 <body>
