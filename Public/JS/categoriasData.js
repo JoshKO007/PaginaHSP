@@ -28,10 +28,7 @@ async function cargarCategorias() {
 
   categoriasGrid.innerHTML = "";
 
-  // Mostrar solo las primeras 6
-  const primerasCategorias = data.slice(0, 6);
-
-  primerasCategorias.forEach((categoria) => {
+  data.forEach((categoria) => {
     const categoriaItem = document.createElement("div");
     categoriaItem.className = "categoria-item";
 
