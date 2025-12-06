@@ -1,12 +1,16 @@
-// Inicializar Supabase
+// --- Importar Supabase desde CDN ---
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/esm/supabase.js";
+
+// --- Inicializar Supabase ---
 const supabaseUrl = "https://hdebqfgepatvfecmygqe.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnanplbnN4cmZ0a3dub2p2anF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTIwNjgsImV4cCI6MjA4MDU2ODA2OH0.vPJBa0xwr90bYxbNr2jw9ZodJMglKdYUaGjQrnfzeTg";
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnanplbnN4cmZ0a3dub2p2anF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTIwNjgsImV4cCI6MjA4MDU2ODA2OH0.vPJBa0xwr90bYxbNr2jw9ZodJMglKdYUaGjQrnfzeTg";
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Obtener contenedor correcto
-const contenedor = document.getElementById('categorias-grid');
+// --- Obtener contenedor correcto ---
+const contenedor = document.getElementById("categorias-grid");
 
-// Cargar las categorías desde Supabase
+// --- Cargar categorías desde la base de datos ---
 async function cargarCategorias() {
   const { data, error } = await supabase
     .from("categorias")
@@ -18,32 +22,32 @@ async function cargarCategorias() {
     return;
   }
 
-  contenedor.innerHTML = ""; // limpiar antes de renderizar
+  contenedor.innerHTML = "";
 
   data.forEach(item => {
-    const elemento = document.createElement('div');
-    elemento.className = 'categoria-item';
+    const elemento = document.createElement("div");
+    elemento.className = "categoria-item";
 
-    // Imagen de categoría
+    // Imagen
     if (item.imagen) {
-      const imagen = document.createElement('img');
+      const imagen = document.createElement("img");
       imagen.src = item.imagen;
       imagen.alt = item.nombre;
-      imagen.className = 'categoria-img';
+      imagen.className = "categoria-img";
       elemento.appendChild(imagen);
     }
 
     // Nombre
-    const nombre = document.createElement('h5');
+    const nombre = document.createElement("h5");
     nombre.textContent = item.nombre;
-    nombre.className = 'categoria-nombre';
+    nombre.className = "categoria-nombre";
     elemento.appendChild(nombre);
 
     // Botón
-    const boton = document.createElement('button');
-    boton.className = 'ver-productos-btn';
-    boton.textContent = 'Ver productos';
-    boton.addEventListener('click', () => {
+    const boton = document.createElement("button");
+    boton.className = "ver-productos-btn";
+    boton.textContent = "Ver productos";
+    boton.addEventListener("click", () => {
       window.location.href = `CAT.html?categoria=${encodeURIComponent(item.nombre)}`;
     });
     elemento.appendChild(boton);
