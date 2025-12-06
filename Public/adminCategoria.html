@@ -28,21 +28,318 @@
       --transition: 180ms ease-out;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: "Poppins", system-ui, sans-serif;
+      font-family: "Poppins", sans-serif;
       background: radial-gradient(circle at top left, #e0edff 0, #f5f7fb 42%, #f9fafb 100%);
-      color: var(--text-main);
       min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: 60px;
+    }
+
+    canvas#bg-orbit {
+      position: fixed;
+      inset: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .container { max-width: 1200px; margin: auto; padding: 32px 16px; }
+    h1 { text-align: center; margin-bottom: 25px; font-weight: 600; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .list-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      background: white;
+    }
+
+    .list-item img {
+      width: 55px; height: 55px;
+      object-fit: contain;
+      border-radius: 10px;
+      margin-right: 12px;
+    }
+
+    .edit-btn {
+      padding: 6px 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .form-group { margin-bottom: 16px; }
+    label { font-weight: 500; }
+    input[type="text"], input[type="file"] {
+      width: 100%; padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin-top: 6px;
+    }
+
+    .preview-img {
+      width: 140px; height: 140px;
+      object-fit: contain;
+      background: #f0f0f0;
+      border-radius: 16px;
+      margin-top: 12px;
+      display: none;
+    }
+
+    .switch {
+      position: relative;
+      width: 52px; height: 28px;
+      display: inline-block;
+    }
+
+    .switch input { display: none; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0;
+      right: 0; bottom: 0;
+      background: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 22px; width: 22px;
+      left: 3px; bottom: 3px;
+      background: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider { background: var(--primary); }
+    input:checked + .slider:before { transform: translateX(24px); }
+
+    .submit-btn {
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      width: 100%;
+      font-size: 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      border: none;
     }
   </style>
 </head>
 <body>
-  <h1 style="padding:40px; text-align:center; font-size:32px; font-weight:600;">Admin Categorías</h1>
+
+<canvas id="bg-orbit"></canvas>
+<div class="container">
+  <h1>Administrar Categorías</h1>
+
+  <div class="layout">
+
+    <!-- LISTA DE CATEGORÍAS -->
+    <div class="card">
+      <h2 style="margin-bottom:16px;">Categorías existentes</h2>
+      <div id="categoriaLista"></div>
+    </div>
+
+    <!-- FORMULARIO -->
+    <div class="card">
+      <h2 style="margin-bottom:16px;">Agregar / Editar Categoría</h2>
+
+      <div class="form-group">
+        <label>ID (auto)</label>
+        <input type="text" id="catId" disabled />
+      </div>
+
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" id="catNombre" placeholder="Nombre de categoría" />
+      </div>
+
+      <div class="form-group">
+        <label>Imagen</label>
+        <input type="file" id="catImagen" accept="image/*" />
+        <img id="previewImg" class="preview-img" />
+      </div>
+
+      <div class="form-group">
+        <label>Activa</label><br>
+        <label class="switch">
+          <input type="checkbox" id="catActiva">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <button class="submit-btn" id="guardarBtn">Guardar Categoría</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://esm.sh/@supabase/supabase-js@2"></script>
+<script>
+// SUPABASE CONFIG
+const SUPABASE_URL = "https://zgjzensxrftkwnojvjqw.supabase.co";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnanplbnN4cmZ0a3dub2p2anF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTIwNjgsImV4cCI6MjA4MDU2ODA2OH0.vPJBa0xwr90bYxbNr2jw9ZodJMglKdYUaGjQrnfzeTg";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+// IMGBB CONFIG
+const IMGBB_KEY = "18d7825e6b190dcaac01e42053affc61";
+
+// ELEMENTOS
+const lista = document.getElementById("categoriaLista");
+const previewImg = document.getElementById("previewImg");
+const fileInput = document.getElementById("catImagen");
+
+let editando = null;
+
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files[0];
+  if (file) {
+    previewImg.src = URL.createObjectURL(file);
+    previewImg.style.display = "block";
+  }
+});
+
+async function cargarCategorias() {
+  const { data, error } = await supabase.from("categorias").select("*").order("id");
+  if (error) return console.error(error);
+
+  lista.innerHTML = "";
+
+  data.forEach(cat => {
+    const div = document.createElement("div");
+    div.className = "list-item";
+
+    div.innerHTML = `
+      <div style="display:flex; align-items:center; gap:10px;">
+        <img src="${cat.imagen || ''}" />
+        <strong>${cat.nombre}</strong>
+      </div>
+      <button class="edit-btn" onclick='editar(${JSON.stringify(cat)})'>Editar</button>
+    `;
+
+    lista.appendChild(div);
+  });
+}
+
+window.editar = function(cat) {
+  editando = cat.id;
+  document.getElementById("catId").value = cat.id;
+  document.getElementById("catNombre").value = cat.nombre;
+  document.getElementById("catActiva").checked = cat.activa;
+  previewImg.src = cat.imagen;
+  previewImg.style.display = "block";
+};
+
+async function subirImagenImgBB(file) {
+  const form = new FormData();
+  form.append("image", file);
+
+  const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {
+    method: "POST",
+    body: form
+  });
+
+  const json = await res.json();
+  return json.data.url;
+}
+
+async function guardarCategoria() {
+  const nombre = document.getElementById("catNombre").value;
+  const activa = document.getElementById("catActiva").checked;
+  let imagenURL = null;
+
+  const file = fileInput.files[0];
+  if (file) imagenURL = await subirImagenImgBB(file);
+
+  if (!editando) {
+    // INSERTAR
+    const { error } = await supabase.from("categorias").insert({
+      nombre,
+      activa,
+      imagen: imagenURL
+    });
+
+    if (error) alert("Error al guardar");
+  } else {
+    // ACTUALIZAR
+    const datos = {
+      nombre,
+      activa
+    };
+    if (imagenURL) datos.imagen = imagenURL;
+
+    const { error } = await supabase.from("categorias").update(datos).eq("id", editando);
+
+    if (error) alert("Error al actualizar");
+  }
+
+  editando = null;
+  fileInput.value = "";
+  previewImg.style.display = "none";
+
+  cargarCategorias();
+}
+
+document.getElementById("guardarBtn").addEventListener("click", guardarCategoria);
+
+cargarCategorias();
+</script>
+
+<script>
+// SIMPLE CANVAS
+const canvas = document.getElementById("bg-orbit");
+const ctx = canvas.getContext("2d");
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+let orbs = [];
+for (let i = 0; i < 40; i++) {
+  orbs.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*3+1, s: Math.random()*0.8+0.2 });
+}
+
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = "rgba(37,99,235,0.35)";
+  orbs.forEach(o=>{
+    ctx.beginPath(); ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
+    ctx.fill();
+    o.y += o.s;
+    if (o.y > canvas.height) o.y = 0;
+  });
+  requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+
 </body>
 </html>
