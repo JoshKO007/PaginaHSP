@@ -28,15 +28,13 @@ async function cargarCategorias() {
 
   categoriasGrid.innerHTML = "";
 
-  // Mostrar solo las primeras 6
-  const primerasCategorias = data.slice(0, 6);
-
-  primerasCategorias.forEach((categoria) => {
+  // Recorrer todas las categorías activas
+  data.forEach((categoria) => {
     const categoriaItem = document.createElement("div");
     categoriaItem.className = "categoria-item";
 
     const link = document.createElement("a");
-    link.href = `CAT.html?categoria=${encodeURIComponent(categoria.nombre)}`;
+    link.href = `CAT.html?categoria_id=${encodeURIComponent(categoria.id)}`;
     link.className = "categoria-link";
 
     const img = document.createElement("img");
