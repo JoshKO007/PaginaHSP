@@ -45,6 +45,135 @@
       overflow-x: hidden;
     }
 
+    .admin-layout {
+      width: 100%;
+      max-width: 1120px;
+      display: flex;
+      gap: 26px;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .card.card-list {
+      max-width: 520px;
+      flex: 1 1 0;
+    }
+
+    .card.card-form {
+      max-width: 520px;
+      flex: 1 1 0;
+    }
+
+    .marcas-list {
+      margin-top: 6px;
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .marca-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 10px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(209, 213, 219, 0.7);
+      margin-bottom: 8px;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    }
+
+    .marca-row:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.15);
+      background: #ffffff;
+    }
+
+    .marca-main {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .marca-thumb {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #4b5563;
+    }
+
+    .marca-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: white;
+    }
+
+    .marca-name {
+      font-size: 0.94rem;
+      font-weight: 600;
+      color: var(--text-main);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .marca-badge {
+      font-size: 0.74rem;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: #ecfdf3;
+      color: #15803d;
+      margin-left: 6px;
+      white-space: nowrap;
+    }
+
+    .btn-secondary {
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      background: white;
+      padding: 7px 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #374151;
+      transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-secondary i {
+      font-size: 0.78rem;
+    }
+
+    .btn-secondary:hover {
+      background: #eff6ff;
+      border-color: #93c5fd;
+      box-shadow: 0 8px 18px rgba(59, 130, 246, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);
+    }
+
+    .card-form-editing h1::after {
+      content: " (edición)";
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
     /* Canvas de fondo */
     #bgCanvas {
       position: fixed;
@@ -202,6 +331,18 @@
       color: var(--text-soft);
     }
 
+    @media (max-width: 900px) {
+      .admin-layout {
+        flex-direction: column;
+        max-width: 640px;
+      }
+
+      .card.card-list,
+      .card.card-form {
+        max-width: 100%;
+      }
+    }
+
     @media (max-width: 600px) {
       body {
         padding: 24px 12px;
@@ -222,45 +363,57 @@
   <!-- Fondo animado -->
   <canvas id="bgCanvas"></canvas>
 
-  <div class="card">
-    <div class="card-header">
-      <div class="card-header-icon">
-        <i class="fa-solid fa-tags"></i>
+  <div class="admin-layout">
+    <div class="card card-list">
+      <div class="card-header">
+        <div class="card-header-icon">
+          <i class="fa-solid fa-layer-group"></i>
+        </div>
+        <h1>Marcas actuales</h1>
+        <p class="subtitle">Administra las marcas ya registradas y edítalas cuando lo necesites.</p>
       </div>
-      <h1>Agregar Marca</h1>
-      <p class="subtitle">Registra una nueva marca para usarla en el catálogo de productos.</p>
+      <div id="marcasList" class="marcas-list"></div>
     </div>
-
-    <form id="formMarca">
-      <div class="field">
-        <label for="nombre">Nombre de la marca</label>
-        <input type="text" id="nombre" placeholder="Ej. ANKE" required />
+    <div class="card card-form">
+      <div class="card-header">
+        <div class="card-header-icon">
+          <i class="fa-solid fa-tags"></i>
+        </div>
+        <h1>Agregar Marca</h1>
+        <p class="subtitle">Registra una nueva marca para usarla en el catálogo de productos.</p>
       </div>
 
-      <div class="field">
-        <label for="imagen">Seleccionar logo desde tu equipo</label>
-        <input type="file" id="imagen" accept="image/*" />
-        <p class="hint">La imagen se subirá a imgBB y se guardará la URL pública en la base de datos.</p>
+      <form id="formMarca">
+        <div class="field">
+          <label for="nombre">Nombre de la marca</label>
+          <input type="text" id="nombre" placeholder="Ej. ANKE" required />
+        </div>
+
+        <div class="field">
+          <label for="imagen">Seleccionar logo desde tu equipo</label>
+          <input type="file" id="imagen" accept="image/*" />
+          <p class="hint">La imagen se subirá a imgBB y se guardará la URL pública en la base de datos.</p>
+        </div>
+
+        <div class="field">
+          <label>Vista previa del logo</label>
+          <canvas id="previewCanvas" width="260" height="140" style="border-radius: 12px; border: 1px dashed #cbd5f5; background: rgba(255,255,255,0.9);"></canvas>
+          <p class="hint">Selecciona una imagen para ver cómo se mostrará el logo.</p>
+        </div>
+
+        <button type="submit" class="btn-primary">
+          <i class="fa-solid fa-floppy-disk"></i>
+          Guardar marca
+        </button>
+      </form>
+
+      <div class="footer-links">
+        <a href="admin.html">
+          <i class="fa-solid fa-arrow-left"></i>
+          Volver al panel
+        </a>
+        <span class="status-text">Los cambios se guardan en Supabase</span>
       </div>
-
-      <div class="field">
-        <label>Vista previa del logo</label>
-        <canvas id="previewCanvas" width="260" height="140" style="border-radius: 12px; border: 1px dashed #cbd5f5; background: rgba(255,255,255,0.9);"></canvas>
-        <p class="hint">Selecciona una imagen para ver cómo se mostrará el logo.</p>
-      </div>
-
-      <button type="submit" class="btn-primary">
-        <i class="fa-solid fa-floppy-disk"></i>
-        Guardar marca
-      </button>
-    </form>
-
-    <div class="footer-links">
-      <a href="admin.html">
-        <i class="fa-solid fa-arrow-left"></i>
-        Volver al panel
-      </a>
-      <span class="status-text">Los cambios se guardan en Supabase</span>
     </div>
   </div>
 
@@ -323,6 +476,15 @@
   const fileInput = document.getElementById("imagen");
   const previewCanvas = document.getElementById("previewCanvas");
   const previewCtx = previewCanvas.getContext("2d");
+
+  const listContainer = document.getElementById("marcasList");
+  const cardForm = document.querySelector(".card-form");
+  const titleEl = cardForm.querySelector("h1");
+  const subtitleEl = cardForm.querySelector(".subtitle");
+  const submitBtn = cardForm.querySelector(".btn-primary");
+
+  let currentEditId = null;
+  let currentEditImageUrl = null;
 
   /* -------------------------- PREVIEW DEL LOGO -------------------------- */
   fileInput.addEventListener("change", () => {
@@ -401,6 +563,113 @@
     return data[0].id + 1;
   }
 
+  /* -------------------------- CARGAR Y RENDERIZAR MARCAS -------------------------- */
+  async function loadMarcas() {
+    if (!listContainer) return;
+
+    const { data, error } = await supabase
+      .from("marcas")
+      .select("id, nombre, imagen, activa")
+      .order("nombre", { ascending: true });
+
+    if (error) {
+      console.error("Error cargando marcas:", error);
+      return;
+    }
+
+    listContainer.innerHTML = "";
+
+    data.forEach((marca) => {
+      const row = document.createElement("div");
+      row.className = "marca-row";
+
+      const main = document.createElement("div");
+      main.className = "marca-main";
+
+      const thumb = document.createElement("div");
+      thumb.className = "marca-thumb";
+
+      if (marca.imagen && (marca.imagen.startsWith("http://") || marca.imagen.startsWith("https://"))) {
+        const img = document.createElement("img");
+        img.src = marca.imagen;
+        img.alt = marca.nombre;
+        thumb.appendChild(img);
+      } else {
+        thumb.textContent = (marca.nombre || "?").charAt(0).toUpperCase();
+      }
+
+      const nameWrap = document.createElement("div");
+      const nameEl = document.createElement("div");
+      nameEl.className = "marca-name";
+      nameEl.textContent = marca.nombre;
+      nameWrap.appendChild(nameEl);
+
+      if (marca.activa) {
+        const badge = document.createElement("span");
+        badge.className = "marca-badge";
+        badge.textContent = "Activa";
+        nameWrap.appendChild(badge);
+      }
+
+      main.appendChild(thumb);
+      main.appendChild(nameWrap);
+
+      const editBtn = document.createElement("button");
+      editBtn.type = "button";
+      editBtn.className = "btn-secondary";
+      editBtn.innerHTML = '<i class="fa-solid fa-pen"></i><span>Editar</span>';
+      editBtn.addEventListener("click", () => startEditMarca(marca));
+
+      row.appendChild(main);
+      row.appendChild(editBtn);
+
+      listContainer.appendChild(row);
+    });
+  }
+
+  function resetFormState() {
+    currentEditId = null;
+    currentEditImageUrl = null;
+    cardForm.classList.remove("card-form-editing");
+    titleEl.textContent = "Agregar Marca";
+    subtitleEl.textContent = "Registra una nueva marca para usarla en el catálogo de productos.";
+    submitBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>\n        Guardar marca';
+    form.reset();
+    previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+  }
+
+  function startEditMarca(marca) {
+    currentEditId = marca.id;
+    currentEditImageUrl = marca.imagen || null;
+    cardForm.classList.add("card-form-editing");
+    titleEl.textContent = "Editar Marca";
+    subtitleEl.textContent = "Actualiza el nombre o el logo de una marca existente.";
+    submitBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>\n        Guardar cambios';
+
+    document.getElementById("nombre").value = marca.nombre || "";
+
+    // Dibujar vista previa sólo si la imagen es una URL pública
+    previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+    if (marca.imagen && (marca.imagen.startsWith("http://") || marca.imagen.startsWith("https://"))) {
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(
+          previewCanvas.width / img.width,
+          previewCanvas.height / img.height
+        );
+        const drawWidth = img.width * scale;
+        const drawHeight = img.height * scale;
+        const offsetX = (previewCanvas.width - drawWidth) / 2;
+        const offsetY = (previewCanvas.height - drawHeight) / 2;
+        previewCtx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+      };
+      img.src = marca.imagen;
+    }
+
+    // Llevar el foco al formulario
+    cardForm.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   /* -------------------------- SUBMIT FORM -------------------------- */
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -408,44 +677,77 @@
     const nombre = document.getElementById("nombre").value.trim();
     const file = fileInput.files[0];
 
-    if (!nombre || !file) {
-      alert("Completa el nombre y selecciona una imagen.");
+    if (!nombre) {
+      alert("Escribe el nombre de la marca.");
+      return;
+    }
+
+    // Para nuevas marcas exigimos imagen; para edición, es opcional
+    if (!currentEditId && !file) {
+      alert("Selecciona un logo para la nueva marca.");
       return;
     }
 
     try {
-      // 1. Subir imagen
-      const imageUrl = await uploadToImgbb(file);
+      let imageUrl = currentEditImageUrl || null;
 
-      // 2. Obtener el siguiente ID
-      const newId = await getNextId();
-
-      // 3. Insertar en Supabase
-      const { error } = await supabase.from("marcas").insert([
-        {
-          id: newId,
-          nombre: nombre,
-          imagen: imageUrl,
-          activa: true,
-        },
-      ]);
-
-      if (error) {
-        console.error("Error al insertar marca:", error);
-        alert("Ocurrió un error al guardar en la base de datos.");
-        return;
+      if (file) {
+        // Si hay un archivo nuevo, siempre subimos a imgBB
+        imageUrl = await uploadToImgbb(file);
       }
 
-      alert("Marca guardada correctamente 🎉");
+      if (currentEditId) {
+        // Actualizar marca existente
+        const { error } = await supabase
+          .from("marcas")
+          .update({
+            nombre,
+            imagen: imageUrl,
+            activa: true,
+          })
+          .eq("id", currentEditId);
 
-      form.reset();
-      previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+        if (error) {
+          console.error("Error al actualizar marca:", error);
+          alert("Ocurrió un error al actualizar la marca.");
+          return;
+        }
 
+        alert("Marca actualizada correctamente ✔️");
+      } else {
+        // Crear nueva marca
+        const newId = await getNextId();
+
+        const { error } = await supabase.from("marcas").insert([
+          {
+            id: newId,
+            nombre,
+            imagen: imageUrl,
+            activa: true,
+          },
+        ]);
+
+        if (error) {
+          console.error("Error al insertar marca:", error);
+          alert("Ocurrió un error al guardar en la base de datos.");
+          return;
+        }
+
+        alert("Marca guardada correctamente 🎉");
+      }
+
+      await loadMarcas();
+      resetFormState();
     } catch (err) {
       console.error(err);
       alert("Ocurrió un error. Consulta la consola.");
     }
   });
-</script>
+
+  // Cargar marcas y resetear formulario al iniciar
+  loadMarcas();
+  resetFormState();
+
+  </script>
 </body>
 </html>
