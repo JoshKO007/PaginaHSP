@@ -1,94 +1,63 @@
+// --- CARGA DE MARCAS DESDE SUPABASE ---
 
-const marcas = [
-    {
-      "id": 1,
-      "nombre": "ANKE",
-      "imagen": "IMG/ANKE.png"
-    },
-    {
-      "id": 2,
-      "nombre": "BIONET",
-      "imagen": "IMG/BIONET.png"
-    },
-    {
-      "id": 3,
-      "nombre": "CARERAY",
-      "imagen": "IMG/CARERAY.png"
-    },
-    {
-      "id": 4,
-      "nombre": "COMEN",
-      "imagen": "IMG/COMEN.png"
-    },
-    {
-      "id": 5,
-      "nombre": "DRGEM",
-      "imagen": "IMG/DRGEM.png"
-    },
-    {
-      "id": 6,
-      "nombre": "ECLERIS",
-      "imagen": "IMG/ECLERIS.webp"
-    },
-    {
-      "id": 7,
-      "nombre": "FUJIFILM",
-      "imagen": "IMG/FUJIFILM.svg"
-    },
-    {
-      "id": 8,
-      "nombre": "HEALTHHOME",
-      "imagen": "IMG/HEALTHHOME.png"
-    },
-    {
-      "id": 9,
-      "nombre": "KONIX",
-      "imagen": "IMG/KONIX.webp"
-    },
-    {
-      "id": 10,
-      "nombre": "LESSA",
-      "imagen": "IMG/LESSA.png"
-    },
-    {
-      "id": 11,
-      "nombre": "MEDIANA",
-      "imagen": "IMG/MEDIANA.png"
-    },
-    {
-      "id": 12,
-      "nombre": "MEDICAL",
-      "imagen": "IMG/Medical.png"
-    },
-    {
-      "id": 13,
-      "nombre": "OSTEOSYS",
-      "imagen": "IMG/OSTEOSYS.png"
-    },
-    {
-      "id": 14,
-      "nombre": "PROMISE",
-      "imagen": "IMG/PROMISE.png"
-    },
-    {
-      "id": 15,
-      "nombre": "SONY",
-      "imagen": "IMG/SONY.png"
-    },
-    {
-      "id": 16,
-      "nombre": "TECHARTMED",
-      "imagen": "IMG/TECHARTMED.png"
-    },
-    {
-      "id": 17,
-      "nombre": "TOITU",
-      "imagen": "IMG/TOITU.png"
-    },
-    {
-      "id": 18,
-      "nombre": "VIEWORKS",
-      "imagen": "IMG/VIEWORKS.png"
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+// Credenciales de Supabase
+const SUPABASE_URL = "https://zgjzensxrftkwnojvjqw.supabase.co";
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnanplbnN4cmZ0a3dub2p2anF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTIwNjgsImV4cCI6MjA4MDU2ODA2OH0.vPJBa0xwr90bYxbNr2jw9ZodJMglKdYUaGjQrnfzeTg";
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Contenedor donde se mostrarán las marcas
+const contenedor = document.getElementById("marcas-grid");
+
+// Función para cargar las marcas desde Supabase
+async function cargarMarcas() {
+  if (!contenedor) return;
+
+  // Consulta a la tabla "marcas"
+  const { data, error } = await supabase
+    .from("marcas")
+    .select("id, nombre, imagen, activa")
+    .eq("activa", true)
+    .order("nombre", { ascending: true });
+
+  if (error) {
+    console.error("Error al cargar las marcas desde Supabase:", error);
+    return;
+  }
+
+  contenedor.innerHTML = "";
+
+  // Omitir la marca ACCESORIOS
+  let marcasFiltradas = data.filter(m => m.nombre.toUpperCase() !== "ACCESORIOS");
+
+  marcasFiltradas.forEach((item) => {
+    const elemento = document.createElement("div");
+    elemento.className = "marca-item";
+
+    // Imagen de la marca
+    if (item.imagen) {
+      const imagen = document.createElement("img");
+      imagen.src = item.imagen;
+      imagen.alt = item.nombre;
+      imagen.className = "marca-img";
+      elemento.appendChild(imagen);
     }
-  ];
-  
+
+    // Botón para ver productos de esa marca
+    const boton = document.createElement("button");
+    boton.className = "ver-productos-btn";
+    boton.textContent = "Ver productos";
+    boton.addEventListener("click", () => {
+      window.location.href = `PM.html?marca=${encodeURIComponent(item.nombre)}`;
+    });
+    elemento.appendChild(boton);
+
+    // Agregar elemento al contenedor
+    contenedor.appendChild(elemento);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", cargarMarcas);
