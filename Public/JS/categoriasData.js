@@ -27,6 +27,31 @@ async function cargarCategorias() {
   }
 
   categoriasGrid.innerHTML = "";
+
+  // Mostrar solo las primeras 6
+  const primerasCategorias = data.slice(0, 6);
+
+  primerasCategorias.forEach((categoria) => {
+    const categoriaItem = document.createElement("div");
+    categoriaItem.className = "categoria-item";
+
+    const link = document.createElement("a");
+    link.href = `CAT.html?categoria=${encodeURIComponent(categoria.nombre)}`;
+    link.className = "categoria-link";
+
+    const img = document.createElement("img");
+    img.src = categoria.imagen;
+    img.alt = categoria.nombre;
+
+    const nombre = document.createElement("p");
+    nombre.textContent = categoria.nombre;
+
+    link.appendChild(img);
+    link.appendChild(nombre);
+    categoriaItem.appendChild(link);
+
+    categoriasGrid.appendChild(categoriaItem);
+  });
 }
 
 document.addEventListener("DOMContentLoaded", cargarCategorias);
