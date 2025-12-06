@@ -29,7 +29,8 @@ async function cargarCategorias() {
   categoriasGrid.innerHTML = "";
 
   // Recorrer todas las categorías activas
-  data.forEach((categoria) => {
+  const categoriasMostradas = data.slice(0, 5);
+  categoriasMostradas.forEach((categoria) => {
     const categoriaItem = document.createElement("div");
     categoriaItem.className = "categoria-item";
 
