@@ -238,9 +238,15 @@
       </div>
 
       <div class="field">
-        <label for="imagen">Ruta / URL del logo</label>
-        <input type="text" id="imagen" placeholder="Ej. IMG/ANKE.png" required />
-        <p class="hint">Usa la ruta relativa a la carpeta IMG o una URL completa.</p>
+        <label for="imagen">Seleccionar logo desde tu equipo</label>
+        <input type="file" id="imagen" accept="image/*" />
+        <p class="hint">El sistema usará el nombre del archivo como ruta, por ejemplo: IMG/tu_logo.png</p>
+      </div>
+
+      <div class="field">
+        <label>Vista previa del logo</label>
+        <canvas id="previewCanvas" width="260" height="140" style="border-radius: 12px; border: 1px dashed #cbd5f5; background: rgba(255,255,255,0.9);"></canvas>
+        <p class="hint">Selecciona una imagen para ver cómo se mostrará el logo.</p>
       </div>
 
       <button type="submit" class="btn-primary">
@@ -260,139 +266,109 @@
 
   <script>
     // Fondo Canvas animado (similar al admin principal)
-    if (typeof canvas === 'undefined') {
-      const canvas = document.getElementById("bgCanvas");
-    }
-    if (typeof ctx === 'undefined') {
-      const ctx = canvas.getContext("2d");
-    }
+    const bgCanvas = document.getElementById("bgCanvas");
+    const bgCtx = bgCanvas.getContext("2d");
 
     function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      bgCanvas.width = window.innerWidth;
+      bgCanvas.height = window.innerHeight;
     }
 
     window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
 
     const circles = Array.from({ length: 40 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
+      x: Math.random() * bgCanvas.width,
+      y: Math.random() * bgCanvas.height,
       r: Math.random() * 8 + 3,
       dx: (Math.random() - 0.5) * 0.4,
       dy: (Math.random() - 0.5) * 0.4,
       alpha: Math.random() * 0.45 + 0.15,
     }));
 
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    function animateBg() {
+      bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
 
       circles.forEach((c) => {
-        ctx.beginPath();
-        ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 119, 204, ${c.alpha})`;
-        ctx.fill();
+        bgCtx.beginPath();
+        bgCtx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+        bgCtx.fillStyle = `rgba(0, 119, 204, ${c.alpha})`;
+        bgCtx.fill();
 
         c.x += c.dx;
         c.y += c.dy;
 
-        if (c.x < 0 || c.x > canvas.width) c.dx *= -1;
-        if (c.y < 0 || c.y > canvas.height) c.dy *= -1;
+        if (c.x < 0 || c.x > bgCanvas.width) c.dx *= -1;
+        if (c.y < 0 || c.y > bgCanvas.height) c.dy *= -1;
       });
 
-      requestAnimationFrame(animate);
+      requestAnimationFrame(animateBg);
     }
 
-    animate();
+    animateBg();
   </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
-  <script>
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-
-    async function setupCamera() {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { width: 640, height: 480 },
-        audio: false,
-      });
-      video.srcObject = stream;
-      return new Promise((resolve) => {
-        video.onloadedmetadata = () => {
-          resolve(video);
-        };
-      });
-    }
-
-    async function loadModel() {
-      return await cocoSsd.load();
-    }
-
-    async function detectFrame(video, model) {
-      model.detect(video).then(predictions => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        predictions.forEach(prediction => {
-          ctx.beginPath();
-          ctx.rect(...prediction.bbox);
-          ctx.lineWidth = 2;
-          ctx.strokeStyle = 'red';
-          ctx.fillStyle = 'red';
-          ctx.stroke();
-          ctx.fillText(
-            `${prediction.class} - ${Math.round(prediction.score * 100)}%`,
-            prediction.bbox[0],
-            prediction.bbox[1] > 10 ? prediction.bbox[1] - 5 : 10
-          );
-        });
-        requestAnimationFrame(() => {
-          detectFrame(video, model);
-        });
-      });
-    }
-
-    async function main() {
-      await setupCamera();
-      video.play();
-      const model = await loadModel();
-      detectFrame(video, model);
-    }
-
-    main();
-  </script>
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-    if (typeof SUPABASE_URL === 'undefined') {
-      const SUPABASE_URL = "https://zgjzensxrftkwnojvjqw.supabase.co";
-    }
-    if (typeof SUPABASE_ANON_KEY === 'undefined') {
-      const SUPABASE_ANON_KEY =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnanplbnN4cmZ0a3dub2p2anF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTIwNjgsImV4cCI6MjA4MDU2ODA2OH0.vPJBa0xwr90bYxbNr2jw9ZodJMglKdYUaGjQrnfzeTg";
-    }
-    if (typeof supabase === 'undefined') {
-      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    }
-    if (typeof form === 'undefined') {
-      const form = document.getElementById("formMarca");
-    }
+    const SUPABASE_URL = "https://zgjzensxrftkwnojvjqw.supabase.co";
+    const SUPABASE_ANON_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnanplbnN4cmZ0a3dub2p2anF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTIwNjgsImV4cCI6MjA4MDU2ODA2OH0.vPJBa0xwr90bYxbNr2jw9ZodJMglKdYUaGjQrnfzeTg";
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const form = document.getElementById("formMarca");
+    const fileInput = document.getElementById("imagen");
+    const previewCanvas = document.getElementById("previewCanvas");
+    const previewCtx = previewCanvas.getContext("2d");
+
+    // Vista previa de la imagen seleccionada
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files[0];
+      if (!file) {
+        previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          // Limpiar
+          previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+          // Calcular escala para encajar manteniendo proporción
+          const scale = Math.min(
+            previewCanvas.width / img.width,
+            previewCanvas.height / img.height
+          );
+          const drawWidth = img.width * scale;
+          const drawHeight = img.height * scale;
+          const offsetX = (previewCanvas.width - drawWidth) / 2;
+          const offsetY = (previewCanvas.height - drawHeight) / 2;
+          previewCtx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const nombre = document.getElementById("nombre").value.trim();
-      const imagen = document.getElementById("imagen").value.trim();
+      const file = fileInput.files[0];
 
-      if (!nombre || !imagen) {
-        alert("Por favor completa todos los campos.");
+      if (!nombre || !file) {
+        alert("Por favor completa el nombre y selecciona un logo.");
         return;
       }
 
+      // Usamos el nombre del archivo como ruta relativa sugerida
+      const imagenRuta = `IMG/${file.name}`;
+
       const { error } = await supabase
         .from("marcas")
-        .insert([{ nombre: nombre, imagen: imagen, activa: true }]);
+        .insert([{ nombre: nombre, imagen: imagenRuta, activa: true }]);
 
       if (error) {
         console.error("Error al insertar marca:", error);
@@ -400,8 +376,9 @@
         return;
       }
 
-      alert("Marca agregada correctamente 🎉");
+      alert("Marca agregada correctamente 🎉\nRecuerda copiar el archivo de imagen a la carpeta IMG con el mismo nombre.");
       form.reset();
+      previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
     });
   </script>
 </body>
