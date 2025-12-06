@@ -9,53 +9,24 @@ const SUPABASE_ANON_KEY =
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// --- Obtener contenedor correcto ---
-const contenedor = document.getElementById("categorias-grid");
-
-// --- Cargar categorías desde la base de datos ---
+// Función principal para cargar categorías
 async function cargarCategorias() {
+  const categoriasGrid = document.querySelector(".categorias-grid");
+  if (!categoriasGrid) return;
+
+  // Obtener categorías activas desde Supabase
   const { data, error } = await supabase
     .from("categorias")
-    .select("*")
-    .eq("visible", true);
+    .select("id, nombre, imagen")
+    .eq("activa", true)
+    .order("nombre", { ascending: true });
 
   if (error) {
-    console.error("Error cargando categorías:", error);
+    console.error("Error cargando categorías desde Supabase:", error);
     return;
   }
 
-  contenedor.innerHTML = "";
-
-  data.forEach(item => {
-    const elemento = document.createElement("div");
-    elemento.className = "categoria-item";
-
-    // Imagen
-    if (item.imagen) {
-      const imagen = document.createElement("img");
-      imagen.src = item.imagen;
-      imagen.alt = item.nombre;
-      imagen.className = "categoria-img";
-      elemento.appendChild(imagen);
-    }
-
-    // Nombre
-    const nombre = document.createElement("h5");
-    nombre.textContent = item.nombre;
-    nombre.className = "categoria-nombre";
-    elemento.appendChild(nombre);
-
-    // Botón
-    const boton = document.createElement("button");
-    boton.className = "ver-productos-btn";
-    boton.textContent = "Ver productos";
-    boton.addEventListener("click", () => {
-      window.location.href = `CAT.html?categoria=${encodeURIComponent(item.nombre)}`;
-    });
-    elemento.appendChild(boton);
-
-    contenedor.appendChild(elemento);
-  });
+  categoriasGrid.innerHTML = "";
 }
 
-cargarCategorias();
+document.addEventListener("DOMContentLoaded", cargarCategorias);
