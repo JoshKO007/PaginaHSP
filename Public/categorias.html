@@ -160,32 +160,6 @@
                 });
             });
             
-            // Cambiar tema
-            const themeToggle = document.getElementById('themeToggle');
-            themeToggle.addEventListener('click', function() {
-                document.body.classList.toggle('night');
-                document.body.classList.toggle('day');
-                
-                // Cambiar icono
-                const icon = this.querySelector('i');
-                if (document.body.classList.contains('night')) {
-                    icon.classList.remove('fa-sun');
-                    icon.classList.add('fa-moon');
-                } else {
-                    icon.classList.remove('fa-moon');
-                    icon.classList.add('fa-sun');
-                }
-                
-                // Cambiar clase en navbar
-                document.querySelector('.navbar').classList.toggle('night');
-                document.querySelector('.navbar').classList.toggle('day');
-                
-                // Cambiar clase en enlaces
-                document.querySelectorAll('.nav-links a').forEach(link => {
-                    link.classList.toggle('night');
-                    link.classList.toggle('day');
-                });
-            });
             
             // Verificar tema al cargar
             if (document.body.classList.contains('night')) {
