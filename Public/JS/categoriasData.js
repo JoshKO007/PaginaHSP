@@ -1,41 +1,55 @@
-// Obtener el contenedor
-const contenedor = document.getElementById('marcas-grid'); // Cambiado de contenedor-items a marcas-grid
+// Inicializar Supabase
+const supabaseUrl = "https://hdebqfgepatvfecmygqe.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnanplbnN4cmZ0a3dub2p2anF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTIwNjgsImV4cCI6MjA4MDU2ODA2OH0.vPJBa0xwr90bYxbNr2jw9ZodJMglKdYUaGjQrnfzeTg";
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-// Cargar y procesar el JSON
-fetch('JSON/categorias.json') 
-  .then(response => response.json())
-  .then(data => {
-    data.forEach(item => {
-      // Crear un elemento para cada marca
-      const elemento = document.createElement('div');
-      elemento.className = 'marca-item'; // Clase para estilos CSS
+// Obtener contenedor correcto
+const contenedor = document.getElementById('categorias-grid');
 
-      // Agregar la imagen (si existe la URL)
-      if (item.imagen) {
-        const imagen = document.createElement('img');
-        imagen.src = item.imagen;
-        imagen.alt = item.nombre;
-        imagen.className = 'marca-img'; // Clase para estilos de la imagen
-        elemento.appendChild(imagen);
-      }
+// Cargar las categorías desde Supabase
+async function cargarCategorias() {
+  const { data, error } = await supabase
+    .from("categorias")
+    .select("*")
+    .eq("visible", true);
 
-      const nombre = document.createElement('h5');
-      nombre.textContent = item.nombre;
-      nombre.className = 'categoria-nombre'; // Clase para estilos del nombre
-      elemento.appendChild(nombre);
+  if (error) {
+    console.error("Error cargando categorías:", error);
+    return;
+  }
 
-      // Agregar un botón "Ver productos"
-      const boton = document.createElement('button');
-      boton.className = 'ver-productos-btn';
-      boton.textContent = 'Ver productos';
-      boton.addEventListener('click', () => {
-        // Redirigir a PM.html con el nombre de la marca como parámetro
-        window.location.href = `CAT.html?marca=${encodeURIComponent(item.nombre)}`;
-      });
-      elemento.appendChild(boton);
+  contenedor.innerHTML = ""; // limpiar antes de renderizar
 
-      // Añadir el elemento al contenedor
-      contenedor.appendChild(elemento);
+  data.forEach(item => {
+    const elemento = document.createElement('div');
+    elemento.className = 'categoria-item';
+
+    // Imagen de categoría
+    if (item.imagen) {
+      const imagen = document.createElement('img');
+      imagen.src = item.imagen;
+      imagen.alt = item.nombre;
+      imagen.className = 'categoria-img';
+      elemento.appendChild(imagen);
+    }
+
+    // Nombre
+    const nombre = document.createElement('h5');
+    nombre.textContent = item.nombre;
+    nombre.className = 'categoria-nombre';
+    elemento.appendChild(nombre);
+
+    // Botón
+    const boton = document.createElement('button');
+    boton.className = 'ver-productos-btn';
+    boton.textContent = 'Ver productos';
+    boton.addEventListener('click', () => {
+      window.location.href = `CAT.html?categoria=${encodeURIComponent(item.nombre)}`;
     });
-  })
-  .catch(error => console.error('Error al cargar el JSON:', error));
+    elemento.appendChild(boton);
+
+    contenedor.appendChild(elemento);
+  });
+}
+
+cargarCategorias();
