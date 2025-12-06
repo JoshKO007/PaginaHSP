@@ -5,3 +5,4 @@ Desktop/id_rsa*
 *.keystore
 *.p12
 *.pfx
+Public/IMG/
