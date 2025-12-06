@@ -260,8 +260,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Omitir la marca ACCESORIOS
         items = items.filter(item => {
-            const alt = item.getAttribute("alt")?.toUpperCase() || "";
-            return alt !== "ACCESORIOS";
+            const nombre = item.getAttribute("data-nombre");
+            return nombre !== "ACCESORIOS";
         });
 
         if (items.length > 5) {

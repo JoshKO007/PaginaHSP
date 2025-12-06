@@ -39,6 +39,7 @@ async function cargarMarcas() {
       const imagen = document.createElement("img");
       imagen.src = item.imagen;
       imagen.alt = item.nombre;
+      imagen.setAttribute("data-nombre", item.nombre.toUpperCase());
       imagen.className = "marca-img";
       elemento.appendChild(imagen);
     }
