@@ -136,6 +136,70 @@
       white-space: nowrap;
     }
 
+    .marca-badge.inactive {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .switch-field {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .switch-label {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #d1d5db;
+      transition: 0.2s;
+      border-radius: 999px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.2s;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.35);
+    }
+
+    .switch input:checked + .slider {
+      background-color: var(--accent);
+    }
+
+    .switch input:checked + .slider:before {
+      transform: translateX(18px);
+    }
+
     .btn-secondary {
       border-radius: 999px;
       border: 1px solid #d1d5db;
@@ -401,6 +465,17 @@
           <p class="hint">Selecciona una imagen para ver cómo se mostrará el logo.</p>
         </div>
 
+        <div class="field">
+          <div class="switch-field">
+            <span class="switch-label">Marca activa</span>
+            <label class="switch">
+              <input type="checkbox" id="activaSwitch" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <p class="hint">Puedes desactivar temporalmente una marca sin eliminarla.</p>
+        </div>
+
         <button type="submit" class="btn-primary">
           <i class="fa-solid fa-floppy-disk"></i>
           Guardar marca
@@ -482,6 +557,7 @@
   const titleEl = cardForm.querySelector("h1");
   const subtitleEl = cardForm.querySelector(".subtitle");
   const submitBtn = cardForm.querySelector(".btn-primary");
+  const activaSwitch = document.getElementById("activaSwitch");
 
   let currentEditId = null;
   let currentEditImageUrl = null;
@@ -604,10 +680,15 @@
       nameEl.textContent = marca.nombre;
       nameWrap.appendChild(nameEl);
 
-      if (marca.activa) {
+      if (marca.activa === true) {
         const badge = document.createElement("span");
         badge.className = "marca-badge";
         badge.textContent = "Activa";
+        nameWrap.appendChild(badge);
+      } else if (marca.activa === false) {
+        const badge = document.createElement("span");
+        badge.className = "marca-badge inactive";
+        badge.textContent = "Inactiva";
         nameWrap.appendChild(badge);
       }
 
@@ -630,6 +711,9 @@
   function resetFormState() {
     currentEditId = null;
     currentEditImageUrl = null;
+    if (activaSwitch) {
+      activaSwitch.checked = true;
+    }
     cardForm.classList.remove("card-form-editing");
     titleEl.textContent = "Agregar Marca";
     subtitleEl.textContent = "Registra una nueva marca para usarla en el catálogo de productos.";
@@ -641,6 +725,9 @@
   function startEditMarca(marca) {
     currentEditId = marca.id;
     currentEditImageUrl = marca.imagen || null;
+    if (activaSwitch) {
+      activaSwitch.checked = marca.activa !== false;
+    }
     cardForm.classList.add("card-form-editing");
     titleEl.textContent = "Editar Marca";
     subtitleEl.textContent = "Actualiza el nombre o el logo de una marca existente.";
@@ -690,6 +777,7 @@
 
     try {
       let imageUrl = currentEditImageUrl || null;
+      const activa = activaSwitch ? !!activaSwitch.checked : true;
 
       if (file) {
         // Si hay un archivo nuevo, siempre subimos a imgBB
@@ -703,7 +791,7 @@
           .update({
             nombre,
             imagen: imageUrl,
-            activa: true,
+            activa,
           })
           .eq("id", currentEditId);
 
@@ -723,7 +811,7 @@
             id: newId,
             nombre,
             imagen: imageUrl,
-            activa: true,
+            activa,
           },
         ]);
 
