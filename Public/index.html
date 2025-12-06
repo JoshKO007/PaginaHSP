@@ -58,14 +58,8 @@
 
     <section class="marcas-container">
         <h2>Nuestras Marcas</h2>
-        <div class="marcas-grid">
-            <img src="IMG/OSTEOSYS.png" alt="Marca 1">
-            <img src="IMG/VIEWWORKS.png" alt="Marca 2">
-            <img src="IMG/CARERAY.png" alt="Marca 3">
-            <img src="IMG/FUJIFILM.svg" alt="Marca 4">
-            <img src="IMG/SONY.png" alt="Marca 5">
-            <img src="IMG/LESSA.png" alt="Marca 6">
-            <img src="IMG/COMEN.png" alt="Marca 7">
+        <div class="marcas-grid" id="marcas-grid">
+            <!-- Las marcas se generarán dinámicamente con JavaScript desde Supabase -->
         </div>
         <a href="marcas.html" class="ver-mas-btn">Ver todas las marcas</a>
     </section>
@@ -239,6 +233,7 @@
     </script>
     <script src="JS/script.js"></script>
     <script type="module" src="JS/categorias.js"></script>
+    <script type="module" src="JS/marcas.js"></script>
     <script src="JS/ayuda.js"></script>
     <script type="module">
         import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
