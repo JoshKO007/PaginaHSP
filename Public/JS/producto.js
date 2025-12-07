@@ -21,6 +21,7 @@ console.log("Producto seleccionado (ID o nombre):", productoIdParam);
 
 // Variable global para usar en WhatsApp y correo
 let producto = null;
+let categoriaNombre = "";
 
 // Cargar detalle del producto desde Supabase
 async function cargarProducto() {
@@ -48,7 +49,7 @@ async function cargarProducto() {
       const { data, error } = await supabase
         .from("productos")
         .select(
-          "id, nombre, numero_modelo, descripcion, imagen, categoria, marca_id, activo"
+          "id, nombre, numero_modelo, descripcion, imagen, categoria_id, marca_id, activo"
         )
         .eq("id", idAsNumber)
         .eq("activo", true)
@@ -63,7 +64,7 @@ async function cargarProducto() {
       const { data, error } = await supabase
         .from("productos")
         .select(
-          "id, nombre, numero_modelo, descripcion, imagen, categoria, marca_id, activo"
+          "id, nombre, numero_modelo, descripcion, imagen, categoria_id, marca_id, activo"
         )
         .ilike("nombre", productoIdParam)
         .eq("activo", true)
@@ -89,7 +90,23 @@ async function cargarProducto() {
 
     producto = prodData[0];
 
-    // 2) Cargar características del producto
+    // 2) Cargar nombre de la categoría usando categoria_id
+    categoriaNombre = "";
+    if (producto.categoria_id) {
+      const { data: catData, error: catError } = await supabase
+        .from("categorias")
+        .select("id, nombre")
+        .eq("id", producto.categoria_id)
+        .limit(1);
+
+      if (catError) {
+        console.error("Error cargando categoría:", catError);
+      } else if (catData && catData.length > 0) {
+        categoriaNombre = catData[0].nombre;
+      }
+    }
+
+    // 3) Cargar características del producto
     let listaCar = [];
     const { data: caracteristicas, error: carError } = await supabase
       .from("producto_caracteristicas")
@@ -103,14 +120,14 @@ async function cargarProducto() {
       listaCar = caracteristicas.map((row) => row.texto);
     }
 
-    // 3) Renderizar producto en el DOM
+    // 4) Renderizar producto en el DOM
     contenedorDetalle.innerHTML = `
       <div class="producto-detalle">
         <img src="${producto.imagen}" alt="${producto.nombre}" class="producto-detalle-img">
         <div class="producto-detalle-info">
           <h1>${producto.nombre}</h1>
           <p><strong>Modelo:</strong> ${producto.numero_modelo || ""}</p>
-          <p><strong>Categoría:</strong> ${producto.categoria || ""}</p>
+          <p><strong>Categoría:</strong> ${categoriaNombre || ""}</p>
           <p><strong>Descripción:</strong> ${producto.descripcion || ""}</p>
           ${
             listaCar.length > 0
@@ -124,24 +141,32 @@ async function cargarProducto() {
       </div>
     `;
 
-    // 4) Cargar productos relacionados desde Supabase
+    // 5) Cargar productos relacionados desde Supabase
     if (contenedorRelacionados) {
       contenedorRelacionados.innerHTML = "";
 
       let queryRel = supabase
         .from("productos")
         .select(
-          "id, nombre, numero_modelo, descripcion, imagen, categoria, marca_id, activo"
+          "id, nombre, numero_modelo, descripcion, imagen, categoria_id, marca_id, activo"
         )
         .eq("activo", true)
         .neq("id", producto.id);
 
-      // Relacionados por misma marca y, si existe, misma categoría
-      let orCond = `marca_id.eq.${producto.marca_id}`;
-      if (producto.categoria) {
-        orCond += `,categoria.eq.${producto.categoria}`;
+      // Relacionados por misma marca y/o misma categoría (por categoria_id)
+      let orCond = "";
+      if (producto.marca_id) {
+        orCond = `marca_id.eq.${producto.marca_id}`;
       }
-      queryRel = queryRel.or(orCond);
+      if (producto.categoria_id) {
+        orCond += orCond
+          ? `,categoria_id.eq.${producto.categoria_id}`
+          : `categoria_id.eq.${producto.categoria_id}`;
+      }
+
+      if (orCond) {
+        queryRel = queryRel.or(orCond);
+      }
 
       const { data: relacionados, error: relError } = await queryRel;
 
@@ -156,7 +181,6 @@ async function cargarProducto() {
           card.innerHTML = `
             <img src="${relacionado.imagen}" alt="${relacionado.nombre}">
             <h3>${relacionado.nombre}</h3>
-            <p><strong>Categoría:</strong> ${relacionado.categoria || ""}</p>
             <a href="producto.html?id=${encodeURIComponent(
               relacionado.id
             )}" class="ver-mas-btn">Ver más</a>
@@ -222,7 +246,7 @@ if (whatsappBtn) {
 
     const mensaje = `Hola, estoy interesado en el siguiente producto:
 - *Nombre*: ${producto.nombre}
-- Categoría: ${producto.categoria || "No especificada"}
+- Categoría: ${categoriaNombre || "No especificada"}
 
 - *Modelo*: ${producto.numero_modelo || "No especificado"}
 - *Descripción*: ${producto.descripcion || "Sin descripción"}
@@ -248,7 +272,7 @@ if (correoBtn) {
     const cuerpo =
       `Hola, estoy interesado en el siguiente producto:\n\n` +
       `- Nombre: ${producto.nombre}\n` +
-      `- Categoría: ${producto.categoria || "No especificada"}\n` +
+      `- Categoría: ${categoriaNombre || "No especificada"}\n` +
       `- Modelo: ${producto.numero_modelo || "No especificado"}\n` +
       `- Descripción: ${producto.descripcion || "Sin descripción"}\n`;
 
