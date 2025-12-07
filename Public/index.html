@@ -87,7 +87,7 @@
     </style>
 </head>
 <body>
-    <canvas id="backgroundCanvas"></canvas>
+    
     <nav class="navbar">
         <div class="logo">
             <a href="index.html">
@@ -124,6 +124,7 @@
             <!-- Las categorías se generarán dinámicamente con JavaScript -->
         </div>
         <a href="categorias.html" class="ver-mas-btn-cat">Ver todas las categorías</a>
+        
     </section>
 
     <section class="marcas-container">
@@ -347,5 +348,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
         window.supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     </script>
+  <!-- Fondo canvas animado -->
+<script>
+    // Fondo Canvas animado (similar al admin principal)
+    const bgCanvas = document.getElementById("bgCanvas");
+    const bgCtx = bgCanvas.getContext("2d");
+
+    function resizeCanvas() {
+      bgCanvas.width = window.innerWidth;
+      bgCanvas.height = window.innerHeight;
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    const circles = Array.from({ length: 40 }, () => ({
+      x: Math.random() * bgCanvas.width,
+      y: Math.random() * bgCanvas.height,
+      r: Math.random() * 8 + 3,
+      dx: (Math.random() - 0.5) * 0.4,
+      dy: (Math.random() - 0.5) * 0.4,
+      alpha: Math.random() * 0.45 + 0.15,
+    }));
+
+    function animateBg() {
+      bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+
+      circles.forEach((c) => {
+        bgCtx.beginPath();
+        bgCtx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+        bgCtx.fillStyle = `rgba(0, 119, 204, ${c.alpha})`;
+        bgCtx.fill();
+
+        c.x += c.dx;
+        c.y += c.dy;
+
+        if (c.x < 0 || c.x > bgCanvas.width) c.dx *= -1;
+        if (c.y < 0 || c.y > bgCanvas.height) c.dy *= -1;
+      });
+
+      requestAnimationFrame(animateBg);
+    }
+
+    animateBg();
+  </script>
 </body>
 </html>
