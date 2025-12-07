@@ -483,6 +483,15 @@
         <button type="submit" class="btn-primary">
           <i class="fa-solid fa-floppy-disk"></i><span style="margin-left:6px;">Guardar marca</span>
         </button>
+        <button
+          type="button"
+          id="cancelEditBtn"
+          class="btn-secondary"
+          style="width:100%; margin-top:10px; justify-content:center; display:none;"
+        >
+          <i class="fa-solid fa-xmark"></i>
+          <span>Cancelar edición</span>
+        </button>
       </form>
 
       <div class="footer-links">
@@ -563,6 +572,7 @@
   const subtitleEl = cardForm.querySelector(".subtitle");
   const submitBtn = cardForm.querySelector(".btn-primary");
   const activaSwitch = document.getElementById("activaSwitch");
+  const cancelEditBtn = document.getElementById("cancelEditBtn");
   function setSubmitLoading(isLoading, isEditing) {
     if (!submitBtn) return;
 
@@ -746,6 +756,9 @@
     titleEl.textContent = "Agregar Marca";
     subtitleEl.textContent = "Registra una nueva marca para usarla en el catálogo de productos.";
     submitBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i><span style="margin-left:6px;">Guardar marca</span>';
+    if (cancelEditBtn) {
+      cancelEditBtn.style.display = "none";
+    }
     form.reset();
     previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
     if (formStatus) {
@@ -763,6 +776,9 @@
     titleEl.textContent = "Editar Marca";
     subtitleEl.textContent = "Actualiza el nombre o el logo de una marca existente.";
     submitBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i><span style="margin-left:6px;">Guardar cambios</span>';
+    if (cancelEditBtn) {
+      cancelEditBtn.style.display = "inline-flex";
+    }
 
     document.getElementById("nombre").value = marca.nombre || "";
 
@@ -786,6 +802,12 @@
 
     // Llevar el foco al formulario
     cardForm.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  if (cancelEditBtn) {
+    cancelEditBtn.addEventListener("click", () => {
+      resetFormState();
+    });
   }
 
   /* -------------------------- SUBMIT FORM -------------------------- */
