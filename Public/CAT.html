@@ -7,8 +7,217 @@
     <link rel="stylesheet" href="CSS/styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="IMG/Y.png" type="image/png"> <!-- Favicon -->
+    <style>
+        /* --- Modernización puntual del panel de productos (CAT) --- */
+        .cat-modern .marcas-container-especifico {
+            width: min(95%, 1360px);
+            margin: 46px auto 76px;
+            padding: 42px clamp(16px, 2.6vw, 34px);
+            border: 1px solid #d4e3fb;
+            border-radius: 24px;
+            background: #fafdff;
+        }
+
+        .cat-modern .pm-title {
+            margin: 0 0 24px;
+            font-size: clamp(1.5rem, 2.4vw, 2rem);
+            text-align: center;
+            color: #1f3a73;
+            letter-spacing: 0.03em;
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+        .cat-modern .pm-title::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 0;
+            width: 90px;
+            height: 4px;
+            border-radius: 999px;
+            background: #3f6df6;
+        }
+
+        .cat-modern #contenedor-items {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+            margin-top: 8px;
+        }
+
+        .cat-modern #contenedor-items .letra-encabezado {
+            grid-column: 1 / -1;
+            margin: 12px 0 2px;
+            padding-left: 4px;
+            font-size: clamp(1.28rem, 2.1vw, 1.65rem);
+            font-weight: 800;
+            color: #1d3f8a;
+        }
+
+        .cat-modern #contenedor-items .producto-card {
+            margin: 0 !important;
+            width: 100%;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            align-items: stretch;
+            gap: clamp(16px, 2vw, 26px);
+            padding: clamp(16px, 2vw, 24px);
+            border: 1px solid #d8e5fb;
+            border-radius: 20px;
+            background: #ffffff;
+            box-shadow: 0 10px 24px rgba(24, 63, 126, 0.08);
+            transition: transform 0.24s ease, box-shadow 0.24s ease;
+        }
+
+        .cat-modern #contenedor-items .producto-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 30px rgba(24, 63, 126, 0.12);
+        }
+
+        .cat-modern #contenedor-items.single-product {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .cat-modern #contenedor-items.single-product .producto-card {
+            max-width: 860px;
+            justify-self: center;
+        }
+
+        .cat-modern #contenedor-items .producto-card.producto-card-solo {
+            grid-column: 1 / -1;
+            max-width: 860px;
+            justify-self: center;
+        }
+
+        .cat-modern #contenedor-items .producto-card .producto-img {
+            width: 100%;
+            height: 220px;
+            max-width: none !important;
+            max-height: none !important;
+            object-fit: contain;
+            border-radius: 14px;
+            border: 1px solid #e4ecfb;
+            background: #f8fbff;
+            padding: 12px;
+            align-self: center;
+        }
+
+        .cat-modern #contenedor-items .producto-card .producto-texto {
+            display: flex !important;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 2px 4px;
+            min-width: 0;
+        }
+
+        .cat-modern #contenedor-items .producto-card h3 {
+            margin: 0;
+            font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+            line-height: 1.35;
+            color: #1f3b76;
+        }
+
+        .cat-modern #contenedor-items .producto-card p {
+            margin: 0;
+            color: #3b537f;
+            line-height: 1.52;
+        }
+
+        .cat-modern #contenedor-items .producto-card .caracteristicas-titulo {
+            margin-top: 4px;
+            font-size: 0.96rem;
+            font-weight: 700;
+            color: #2c4d8e;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .cat-modern #contenedor-items .producto-card .caracteristicas-lista {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 6px;
+            width: 100%;
+            text-align: left;
+            justify-items: start;
+        }
+
+        .cat-modern #contenedor-items .producto-card .caracteristicas-lista li {
+            color: #40619a;
+            padding-left: 0;
+            line-height: 1.48;
+            text-align: left;
+        }
+
+        .cat-modern #contenedor-items .producto-card .caracteristicas-lista li::before {
+            content: none;
+        }
+
+        .cat-modern #contenedor-items .producto-card .ver-mas-btn-producto {
+            margin-top: 8px;
+            padding: 11px 20px;
+            border: 1px solid #3f6df6;
+            border-radius: 11px;
+            background: linear-gradient(180deg, #4f7bff 0%, #3f6df6 100%);
+            color: #fff;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+        }
+
+        .cat-modern #contenedor-items .producto-card .ver-mas-btn-producto:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 9px 18px rgba(53, 96, 196, 0.3);
+            filter: brightness(1.02);
+        }
+
+        .cat-modern #contenedor-items > p {
+            margin: 4px 0 0;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px dashed #c5d7fa;
+            color: #375487;
+            background: #f8fbff;
+        }
+
+        @media (max-width: 1000px) {
+            .cat-modern .marcas-container-especifico {
+                width: 94%;
+                margin: 34px auto 56px;
+                padding: 26px 14px;
+                border-radius: 16px;
+            }
+
+            .cat-modern #contenedor-items {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 16px;
+            }
+
+            .cat-modern #contenedor-items .producto-card {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 14px;
+                padding: 14px;
+                border-radius: 15px;
+            }
+
+            .cat-modern #contenedor-items .producto-card .producto-img {
+                height: 190px;
+            }
+
+            .cat-modern #contenedor-items .producto-card .producto-texto {
+                gap: 8px;
+            }
+        }
+    </style>
 </head>
-<body>
+<body class="home-modern cat-modern">
     <canvas id="backgroundCanvas"></canvas>
     <nav class="navbar">
         <div class="logo">
@@ -24,10 +233,26 @@
         
         <!-- Menú principal -->
         <ul class="nav-links" id="navLinks">
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="categorias.html">Categorías</a></li>
-            <li><a href="marcas.html">Marcas Destacadas</a></li>
-            <li><a href="contacto.html">Contacto</a></li>
+            <li>
+                <a href="index.html">
+                    <span class="nav-label">Inicio</span>
+                </a>
+            </li>
+            <li>
+                <a href="categorias.html">
+                    <span class="nav-label">Categorías</span>
+                </a>
+            </li>
+            <li>
+                <a href="marcas.html">
+                    <span class="nav-label">Marcas</span>
+                </a>
+            </li>
+            <li>
+                <a href="contacto.html">
+                    <span class="nav-label">Contacto</span>
+                </a>
+            </li>
         </ul>
     </nav>
 
@@ -54,16 +279,17 @@
             <!-- Sección 1: Logo y descripción -->
             <div class="footer-brand">
                 <img src="IMG/logoNBE.png" alt="Logo" class="footer-logo">
+                <p class="footer-brand-copy">Innovación médica en <span class="footer-chip">tiempo real</span></p>
             </div>
     
             <!-- Sección 2: Enlaces rápidos -->
             <div class="footer-section">
                 <h3 class="footer-title">Enlaces Rápidos</h3>
                 <ul class="footer-links">
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="marcas.html">Productos</a></li>
-                    <li><a href="servicio.html">Servicios</a></li>
-                    <li><a href="contacto.html">Contacto</a></li>
+                    <li><a href="index.html"><i class="fas fa-house"></i> Inicio</a></li>
+                    <li><a href="marcas.html"><i class="fas fa-box-open"></i> Productos</a></li>
+                    <li><a href="servicio.html"><i class="fas fa-screwdriver-wrench"></i> Servicios</a></li>
+                    <li><a href="contacto.html"><i class="fas fa-address-book"></i> Contacto</a></li>
                 </ul>
             </div>
     
@@ -71,7 +297,7 @@
             <div class="footer-section">
                 <h3 class="footer-title">Contacto</h3>
                 <div class="footer-contact">
-                    <p><i class="fas fa-map-marker-alt"></i>Boulevard 4 vientos #10</p>
+                    <p><i class="fas fa-location-dot"></i><span class="footer-chip">Boulevard 4 vientos #10</span></p>
                     <p><i class="fas fa-phone"></i> +52 55 3172 6585</p>
                     <p><i class="fas fa-phone"></i> +52 55 1262 5346</p>
                     <p><i class="fas fa-envelope"></i>rafael_torres@yolotech.com.mx</p>
@@ -82,8 +308,8 @@
             <div class="footer-section">
                 <h3 class="footer-title">Síguenos</h3>
                 <div class="footer-social">
-                    <a href="https://www.facebook.com/profile.php?id=61573914026623" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.instagram.com/yolotech_?igsh=NXkyZzVhM3RnazBy" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=61573914026623" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/yolotech_?igsh=NXkyZzVhM3RnazBy" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
         </div>
@@ -91,8 +317,8 @@
         <div class="footer-bottom">
             <p>&copy; 2025 <strong>YOLOTECH</strong>. Todos los derechos reservados.</p>
             <div class="footer-legal">
-                <a href="privacidad.html">Política de privacidad</a>
-                <a href="servicio.html">Términos de servicio</a>
+                <a href="privacidad.html"><i class="fas fa-shield-alt"></i> Política de privacidad</a>
+                <a href="servicio.html"><i class="fas fa-file-contract"></i> Términos de servicio</a>
             </div>
         </div>
     </footer>
@@ -103,7 +329,7 @@
 
     <div class="chat-widget" id="chatWidget">
         <div class="chat-header">
-            <h3>¡Hola! 👋</h3>
+            <h3>¡Hola!</h3>
             <p>¿En qué podemos ayudarte?</p>
             <span class="close-chat" id="closeChat">&times;</span>
         </div>
@@ -164,39 +390,6 @@
                     }
                 });
             });
-            
-            // Cambiar tema
-            const themeToggle = document.getElementById('themeToggle');
-            themeToggle.addEventListener('click', function() {
-                document.body.classList.toggle('night');
-                document.body.classList.toggle('day');
-                
-                // Cambiar icono
-                const icon = this.querySelector('i');
-                if (document.body.classList.contains('night')) {
-                    icon.classList.remove('fa-sun');
-                    icon.classList.add('fa-moon');
-                } else {
-                    icon.classList.remove('fa-moon');
-                    icon.classList.add('fa-sun');
-                }
-                
-                // Cambiar clase en navbar
-                document.querySelector('.navbar').classList.toggle('night');
-                document.querySelector('.navbar').classList.toggle('day');
-                
-                // Cambiar clase en enlaces
-                document.querySelectorAll('.nav-links a').forEach(link => {
-                    link.classList.toggle('night');
-                    link.classList.toggle('day');
-                });
-            });
-            
-            // Verificar tema al cargar
-            if (document.body.classList.contains('night')) {
-                themeToggle.querySelector('i').classList.remove('fa-sun');
-                themeToggle.querySelector('i').classList.add('fa-moon');
-            }
         });
         
         // Control de video

@@ -82,6 +82,7 @@ async function cargarProductosPorCategoria() {
   }
 
   if (!productos || productos.length === 0) {
+    contenedorProductos.classList.remove("single-product");
     const mensaje = document.createElement("p");
     mensaje.textContent = "No se encontraron productos para esta categoría.";
     contenedorProductos.appendChild(mensaje);
@@ -195,7 +196,8 @@ async function cargarProductosPorCategoria() {
 
     // Botón "Ver más" (ahora por id de producto)
     const verMasBtn = document.createElement("button");
-    verMasBtn.textContent = "Ver más";
+    verMasBtn.type = "button";
+    verMasBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Ver detalle';
     verMasBtn.className = "ver-mas-btn-producto";
     verMasBtn.addEventListener("click", () => {
       window.location.href = `producto.html?id=${encodeURIComponent(producto.id)}`;
@@ -217,6 +219,10 @@ async function cargarProductosPorCategoria() {
     contenedorProductos.appendChild(productoCard);
   });
 
+  const totalCards = contenedorProductos.querySelectorAll(".producto-card").length;
+  contenedorProductos.classList.toggle("single-product", totalCards === 1);
+  centrarCardsSolitariasPorLetra(contenedorProductos);
+
   // Limitar tamaño de las imágenes de productos
   const productoImgs = document.querySelectorAll(".producto-img");
   productoImgs.forEach((img) => {
@@ -229,54 +235,44 @@ async function cargarProductosPorCategoria() {
   ajustarVistaProductos();
 }
 
-// Función para ajustar la vista en pantallas pequeñas
-function ajustarVistaProductos() {
-  const productosCards = document.querySelectorAll(".producto-card");
+function centrarCardsSolitariasPorLetra(contenedorProductos) {
+  const children = Array.from(contenedorProductos.children);
+  let cardsDelBloque = [];
 
-  productosCards.forEach((card) => {
-    const productoTexto = card.querySelector(".producto-texto");
-    const productoNombre = card.querySelector("h3");
-    const verMasBtn = card.querySelector(".ver-mas-btn-producto");
+  const procesarBloque = () => {
+    cardsDelBloque.forEach((card) => card.classList.remove("producto-card-solo"));
+    if (cardsDelBloque.length % 2 === 1) {
+      cardsDelBloque[cardsDelBloque.length - 1].classList.add("producto-card-solo");
+    }
+    cardsDelBloque = [];
+  };
 
-    const nombreProducto = card.getAttribute("data-nombre");
-
-    if (window.innerWidth <= 1000) {
-      if (productoTexto) productoTexto.style.display = "none";
-
-      if (productoNombre) {
-        productoNombre.style.display = "block";
-        productoNombre.textContent = nombreProducto;
-        productoNombre.style.textAlign = "center";
-        productoNombre.style.fontSize = "1.2rem";
-        productoNombre.style.marginBottom = "10px";
-        productoNombre.style.fontWeight = "bold";
+  children.forEach((element) => {
+    if (element.classList.contains("letra-encabezado")) {
+      if (cardsDelBloque.length > 0) {
+        procesarBloque();
       }
+      return;
+    }
 
-      if (verMasBtn) {
-        verMasBtn.style.display = "block";
-        verMasBtn.style.marginTop = "10px";
-        verMasBtn.style.padding = "8px 16px";
-        verMasBtn.style.fontSize = "0.9rem";
-        verMasBtn.style.cursor = "pointer";
-      }
-    } else {
-      if (productoTexto) productoTexto.style.display = "flex";
-      if (productoNombre) {
-        productoNombre.style.display = "block";
-        productoNombre.style.textAlign = "";
-        productoNombre.style.fontSize = "";
-        productoNombre.style.marginBottom = "";
-        productoNombre.style.fontWeight = "";
-      }
-      if (verMasBtn) {
-        verMasBtn.style.display = "block";
-        verMasBtn.style.marginTop = "";
-        verMasBtn.style.padding = "";
-        verMasBtn.style.fontSize = "";
-        verMasBtn.style.cursor = "";
-      }
+    if (element.classList.contains("producto-card")) {
+      cardsDelBloque.push(element);
     }
   });
+
+  if (cardsDelBloque.length > 0) {
+    procesarBloque();
+  }
+}
+
+// Función para ajustar la vista en pantallas pequeñas
+function ajustarVistaProductos() {
+  const contenedorProductos = document.getElementById("contenedor-items");
+  if (!contenedorProductos) {
+    return;
+  }
+
+  contenedorProductos.classList.toggle("vista-compacta", window.innerWidth <= 1000);
 }
 
 // Ajustar tamaño del texto en el contenedor de la "marca" (en realidad categoría)

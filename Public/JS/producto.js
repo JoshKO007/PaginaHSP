@@ -174,6 +174,7 @@ async function cargarProducto() {
         console.error("Error cargando productos relacionados:", relError);
         contenedorRelacionados.innerHTML =
           "<p>No se pudieron cargar los productos relacionados.</p>";
+        actualizarLayoutRelacionados(contenedorRelacionados);
       } else if (relacionados && relacionados.length > 0) {
         relacionados.forEach((relacionado) => {
           const card = document.createElement("div");
@@ -181,15 +182,18 @@ async function cargarProducto() {
           card.innerHTML = `
             <img src="${relacionado.imagen}" alt="${relacionado.nombre}">
             <h3>${relacionado.nombre}</h3>
+            <p class="producto-meta">Modelo: ${relacionado.numero_modelo || ""}</p>
             <a href="producto.html?id=${encodeURIComponent(
               relacionado.id
-            )}" class="ver-mas-btn">Ver más</a>
+            )}" class="ver-mas-btn"><i class="fas fa-arrow-right"></i> Ver detalle</a>
           `;
           contenedorRelacionados.appendChild(card);
         });
+        actualizarLayoutRelacionados(contenedorRelacionados);
       } else {
         contenedorRelacionados.innerHTML =
           "<p>No se encontraron productos relacionados.</p>";
+        actualizarLayoutRelacionados(contenedorRelacionados);
       }
     }
   } catch (err) {
@@ -197,6 +201,11 @@ async function cargarProducto() {
     contenedorDetalle.innerHTML =
       "<p>Ocurrió un error al cargar la información del producto.</p>";
   }
+}
+
+function actualizarLayoutRelacionados(contenedorRelacionados) {
+  const cards = contenedorRelacionados.querySelectorAll(".producto-card-unico");
+  contenedorRelacionados.classList.toggle("single-related", cards.length === 1);
 }
 
 // Ejecutar cuando el DOM esté listo

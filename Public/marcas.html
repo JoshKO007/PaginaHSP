@@ -7,8 +7,92 @@
     <link rel="stylesheet" href="CSS/styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="IMG/Y.png" type="image/png"> <!-- Favicon -->
+<style>
+/* --- Ajustes específicos de la página de marcas --- */
+.marcas-page .marcas-container {
+    width: min(95%, 1400px);
+    margin: 56px auto 72px;
+    padding: 56px 36px;
+    background: #fafdff;
+    border: 1px solid #d4e3fb;
+    border-radius: 22px;
+}
+
+.marcas-page .marcas-container h2 {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.marcas-page #marcas-grid,
+.marcas-page .marcas-grid {
+    width: 100%;
+    max-width: 1220px;
+    margin: 18px auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 50px 42px;
+}
+
+.marcas-page .marca-item {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    height: auto !important;
+}
+
+.marcas-page .marca-item img,
+.marcas-page .marca-img {
+    width: 210px;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    object-fit: contain;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+.marcas-page .marca-item .ver-productos-btn {
+    margin-top: 10px;
+    padding: 10px 18px;
+    font-size: 0.92rem;
+}
+
+@media (max-width: 992px) {
+    .marcas-page .marcas-container {
+        width: 94%;
+        margin: 36px auto 52px;
+        padding: 40px 20px;
+        border-radius: 16px;
+    }
+
+    .marcas-page #marcas-grid,
+    .marcas-page .marcas-grid {
+        gap: 34px 20px;
+    }
+
+    .marcas-page .marca-item {
+        width: 194px;
+        gap: 14px;
+    }
+
+    .marcas-page .marca-item img,
+    .marcas-page .marca-img {
+        width: 162px;
+    }
+}
+</style>
 </head>
-<body>
+<body class="home-modern marcas-page">
     <canvas id="backgroundCanvas"></canvas>
     <nav class="navbar">
         <div class="logo">
@@ -24,10 +108,26 @@
         
         <!-- Menú principal -->
         <ul class="nav-links" id="navLinks">
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="categorias.html">Categorías</a></li>
-            <li><a href="marcas.html">Marcas Destacadas</a></li>
-            <li><a href="contacto.html">Contacto</a></li>
+            <li>
+                <a href="index.html">
+                    <span class="nav-label">Inicio</span>
+                </a>
+            </li>
+            <li>
+                <a href="categorias.html">
+                    <span class="nav-label">Categorías</span>
+                </a>
+            </li>
+            <li>
+                <a href="marcas.html" aria-current="page">
+                    <span class="nav-label">Marcas</span>
+                </a>
+            </li>
+            <li>
+                <a href="contacto.html">
+                    <span class="nav-label">Contacto</span>
+                </a>
+            </li>
         </ul>
     </nav>
 
@@ -35,12 +135,13 @@
      <div class="video-container">
         <video src="VID/mamografía.mp4" autoplay muted loop class="video" playsinline></video>
         <div class="video-text">
-            <h1>Nuestras Marcas</h1>
+            <h1>NUESTRAS MARCAS</h1>
             <p>Explora nuestras marcas y encuentra la solución perfecta para tus necesidades</p>
         </div>
     </div>
 
     <section class="marcas-container">
+        <h2>Nuestras Marcas</h2>
         <div id="marcas-grid"></div> <!-- Cambiado de contenedor-items a marcas-grid -->
     </section>
     
@@ -49,16 +150,17 @@
             <!-- Sección 1: Logo y descripción -->
             <div class="footer-brand">
                 <img src="IMG/logoNBE.png" alt="Logo" class="footer-logo">
+                <p class="footer-brand-copy">Innovación médica en <span class="footer-chip">tiempo real</span></p>
             </div>
     
             <!-- Sección 2: Enlaces rápidos -->
             <div class="footer-section">
                 <h3 class="footer-title">Enlaces Rápidos</h3>
                 <ul class="footer-links">
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="marcas.html">Productos</a></li>
-                    <li><a href="servicio.html">Servicios</a></li>
-                    <li><a href="contacto.html">Contacto</a></li>
+                    <li><a href="index.html"><i class="fas fa-house"></i> Inicio</a></li>
+                    <li><a href="marcas.html"><i class="fas fa-box-open"></i> Productos</a></li>
+                    <li><a href="servicio.html"><i class="fas fa-screwdriver-wrench"></i> Servicios</a></li>
+                    <li><a href="contacto.html"><i class="fas fa-address-book"></i> Contacto</a></li>
                 </ul>
             </div>
     
@@ -66,7 +168,7 @@
             <div class="footer-section">
                 <h3 class="footer-title">Contacto</h3>
                 <div class="footer-contact">
-                    <p><i class="fas fa-map-marker-alt"></i>Boulevard 4 vientos #10</p>
+                    <p><i class="fas fa-location-dot"></i><span class="footer-chip">Boulevard 4 vientos #10</span></p>
                     <p><i class="fas fa-phone"></i> +52 55 3172 6585</p>
                     <p><i class="fas fa-phone"></i> +52 55 1262 5346</p>
                     <p><i class="fas fa-envelope"></i>rafael_torres@yolotech.com.mx</p>
@@ -77,8 +179,8 @@
             <div class="footer-section">
                 <h3 class="footer-title">Síguenos</h3>
                 <div class="footer-social">
-                    <a href="https://www.facebook.com/profile.php?id=61573914026623" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.instagram.com/yolotech_?igsh=NXkyZzVhM3RnazBy" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=61573914026623" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/yolotech_?igsh=NXkyZzVhM3RnazBy" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
         </div>
@@ -86,8 +188,8 @@
         <div class="footer-bottom">
             <p>&copy; 2025 <strong>YOLOTECH</strong>. Todos los derechos reservados.</p>
             <div class="footer-legal">
-                <a href="privacidad.html">Política de privacidad</a>
-                <a href="servicio.html">Términos de servicio</a>
+                <a href="privacidad.html"><i class="fas fa-shield-alt"></i> Política de privacidad</a>
+                <a href="servicio.html"><i class="fas fa-file-contract"></i> Términos de servicio</a>
             </div>
         </div>
     </footer>
@@ -98,7 +200,7 @@
 
     <div class="chat-widget" id="chatWidget">
         <div class="chat-header">
-            <h3>¡Hola! 👋</h3>
+            <h3>¡Hola!</h3>
             <p>¿En qué podemos ayudarte?</p>
             <span class="close-chat" id="closeChat">&times;</span>
         </div>

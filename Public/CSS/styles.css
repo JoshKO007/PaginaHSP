@@ -3052,3 +3052,889 @@ body {
     font-size: 1rem;
     color: #666;
 }
+
+/* ===== Home modern: Navbar + Footer ===== */
+.home-modern {
+    --hm-primary: #3f6df6;
+    --hm-primary-dark: #2f55d4;
+    --hm-secondary: #6f8cff;
+    --hm-accent-green: #2cb67d;
+    --hm-accent-orange: #f4a261;
+    --hm-accent-violet: #7b61ff;
+    --hm-panel-bg: #f7fbff;
+    --hm-panel-border: #cfe0f8;
+    --hm-text-dark: #1f2d3d;
+    --hm-nav-base: #dbe8ff;
+    --hm-nav-chip: #f7faff;
+    --hm-nav-hover: #e6eeff;
+    --hm-nav-active: #ffffff;
+    --hm-nav-text: #29438a;
+    --hm-page-bg: #eaf1fb;
+    background-color: var(--hm-page-bg);
+}
+
+.home-modern .navbar {
+    min-height: 76px;
+    padding: 8px 22px;
+    border-radius: 20px;
+    background: var(--hm-nav-base);
+    border: 1px solid #bdd3fb;
+    backdrop-filter: blur(10px);
+    box-shadow: none;
+}
+
+.home-modern .nav-links {
+    gap: 6px;
+    padding: 5px;
+    border-radius: 999px;
+    background: transparent;
+    border: 1px solid transparent;
+}
+
+.home-modern .nav-links li {
+    width: auto;
+}
+
+.home-modern .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    padding: 9px 16px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--hm-nav-text);
+    font-weight: 600;
+    font-size: 0.96rem;
+    justify-content: center;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.home-modern .nav-links a:hover {
+    background: var(--hm-nav-hover);
+    border-color: #cadcff;
+    color: #203a7d;
+}
+
+.home-modern .nav-label {
+    letter-spacing: 0.2px;
+}
+
+.home-modern .nav-links a[aria-current="page"] {
+    background: var(--hm-nav-active);
+    border-color: #bfd4ff;
+    color: var(--hm-primary-dark);
+}
+
+.home-modern .video {
+    width: 95%;
+    height: calc(100% - 28px);
+    margin: 14px auto;
+    border-radius: 24px;
+    border: 1.5px solid #d2e2fb;
+    box-shadow: 0 14px 28px rgba(34, 71, 139, 0.16);
+    -webkit-mask-image: none;
+    mask-image: none;
+    -webkit-mask-composite: initial;
+    mask-composite: initial;
+    object-position: center center;
+}
+
+.home-modern .video-text {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(90%, 980px);
+    padding: 0;
+    text-align: center;
+}
+
+.home-modern .video-text h1,
+.home-modern .video-text p {
+    text-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+    transition: color 0.25s ease, transform 0.25s ease, letter-spacing 0.25s ease;
+}
+
+.home-modern .video-text h1 {
+    margin: 0;
+    font-size: clamp(2.8rem, 7vw, 5.6rem);
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #f3f7ff;
+}
+
+.home-modern .video-text p {
+    margin: 14px auto 0;
+    max-width: 760px;
+    font-size: clamp(1.2rem, 2.4vw, 2.1rem);
+    font-weight: 600;
+    line-height: 1.35;
+    color: #e4edff;
+}
+
+.home-modern .video-text:hover h1 {
+    transform: scale(1.03);
+    color: #c6d9ff;
+    letter-spacing: 0.09em;
+}
+
+.home-modern .video-text:hover p {
+    transform: translateY(-2px);
+    color: #ffd9a6;
+}
+
+.home-modern .menu-toggle {
+    border-radius: 10px;
+    width: 38px;
+    height: 38px;
+    background: var(--hm-nav-active);
+    color: var(--hm-primary-dark);
+    border: 1px solid #c8dbff;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    right: 18px;
+    font-size: 1rem;
+}
+
+.home-modern .categorias-container,
+.home-modern .marcas-container {
+    width: 95%;
+    max-width: 1400px;
+    margin: 56px auto;
+    padding: 44px 34px;
+    border-radius: 24px;
+    text-align: center;
+    background: var(--hm-panel-bg);
+    border: 1px solid var(--hm-panel-border);
+    box-shadow: 0 12px 30px rgba(23, 67, 129, 0.09);
+}
+
+.home-modern .categorias-container {
+    background: #fafdff;
+}
+
+.home-modern .marcas-container {
+    background: #fafdff;
+}
+
+.home-modern .categorias-container h3,
+.home-modern .marcas-container h2 {
+    margin-bottom: 26px;
+    font-size: clamp(1.75rem, 2.2vw, 2.2rem);
+    letter-spacing: 0.4px;
+    text-align: center;
+    color: var(--hm-text-dark);
+}
+
+.home-modern .categorias-container h3 {
+    position: relative;
+    display: inline-block;
+    padding: 0 4px 12px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    color: #1f2d3d;
+    font-weight: 750;
+    letter-spacing: 0.01em;
+    text-transform: none;
+}
+
+.home-modern .categorias-container h3::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    width: 64px;
+    height: 4px;
+    border-radius: 999px;
+    background: #3f6df6;
+    opacity: 0.9;
+}
+
+.home-modern .marcas-container h2 {
+    position: relative;
+    display: inline-block;
+    padding: 0 4px 12px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    color: #1f2d3d;
+    font-weight: 750;
+    letter-spacing: 0.01em;
+    text-transform: none;
+}
+
+.home-modern .marcas-container h2::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    width: 64px;
+    height: 4px;
+    border-radius: 999px;
+    background: #3f6df6;
+    opacity: 0.9;
+}
+
+.home-modern .categorias-grid,
+.home-modern .marcas-grid,
+.home-modern #marcas-grid {
+    margin-top: 12px;
+}
+
+.home-modern .categorias-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 26px 22px;
+    align-items: start;
+    max-width: 1120px;
+    margin: 16px auto 0;
+}
+
+.home-modern .categoria-item {
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.home-modern .categoria-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 6px 4px !important;
+    min-height: 210px;
+    text-decoration: none;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    transform: none;
+}
+
+.home-modern .categoria-link img {
+    width: clamp(116px, 10vw, 146px);
+    aspect-ratio: 1 / 1;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+.home-modern .categoria-link p,
+.home-modern .categoria-item p {
+    margin: 0;
+    font-size: clamp(0.98rem, 1.2vw, 1.08rem);
+    line-height: 1.32;
+    color: #253a68;
+    text-align: center;
+    max-width: 170px;
+    font-weight: 650;
+    letter-spacing: 0.012em;
+    text-wrap: balance;
+    transition: color 0.22s ease, transform 0.22s ease;
+}
+
+.home-modern .categoria-link:hover {
+    transform: translateY(-2px);
+}
+
+.home-modern .categoria-link:hover p {
+    color: var(--hm-primary-dark);
+    transform: translateY(-1px);
+}
+
+.home-modern .ver-mas-btn-cat,
+.home-modern .ver-mas-btn {
+    margin-top: 34px;
+    background: var(--hm-primary);
+    border: 1px solid var(--hm-primary-dark);
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(42, 122, 233, 0.22);
+}
+
+.home-modern .ver-productos-btn {
+    padding: 8px 14px;
+    font-size: 0.88rem;
+    border-radius: 999px;
+    background: rgba(44, 182, 125, 0.18);
+    border: 1px solid rgba(44, 182, 125, 0.45);
+    color: #1b6a4a;
+    box-shadow: none;
+}
+
+.home-modern .ver-mas-btn-cat:hover,
+.home-modern .ver-mas-btn:hover {
+    background: var(--hm-primary-dark);
+}
+
+.home-modern .ver-productos-btn:hover {
+    background: rgba(44, 182, 125, 0.28);
+    border-color: rgba(44, 182, 125, 0.62);
+    color: #145338;
+}
+
+.home-modern .marca-item,
+.home-modern .modern-item {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    height: auto !important;
+    gap: 12px !important;
+}
+
+.home-modern .marca-item:hover,
+.home-modern .modern-item:hover {
+    border-color: transparent !important;
+}
+
+.home-modern #marcas-grid,
+.home-modern .marcas-grid {
+    gap: 30px;
+    margin-top: 16px;
+}
+
+.home-modern .marca-item img,
+.home-modern .modern-item img,
+.home-modern .marca-img {
+    width: clamp(120px, 11vw, 156px);
+    aspect-ratio: 16 / 9;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+.home-modern .marca-item .ver-productos-btn,
+.home-modern .modern-item .ver-productos-btn {
+    margin-top: 8px;
+}
+
+.home-modern .footer {
+    width: 100%;
+    max-width: none;
+    margin: 58px 0 0;
+    padding: 34px 0 0;
+    border-radius: 0;
+    background: #fafdff;
+    border: 1px solid #d3e3fb;
+    box-shadow: 0 14px 34px rgba(23, 67, 129, 0.1);
+    color: #2b3f66;
+}
+
+.home-modern .footer-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1.1fr 0.9fr;
+    gap: 26px;
+    align-items: start;
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 0 28px 24px;
+}
+
+.home-modern .footer-brand {
+    max-width: 340px;
+}
+
+.home-modern .footer-logo {
+    width: clamp(148px, 14vw, 188px);
+    margin-bottom: 12px;
+}
+
+.home-modern .footer-brand-copy {
+    margin-top: 0;
+    color: #506897;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.home-modern .footer-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #eaf2ff;
+    border: 1px solid #c4d8fc;
+    color: #2f55d4;
+}
+
+.home-modern .footer-title {
+    margin-bottom: 14px;
+    color: #243b6f;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+.home-modern .footer-title::after {
+    width: 52px;
+    height: 3px;
+    border-radius: 999px;
+    background: #3f6df6;
+}
+
+.home-modern .footer-links {
+    padding: 0;
+    margin: 0;
+}
+
+.home-modern .footer-links li {
+    margin-bottom: 10px;
+}
+
+.home-modern .footer-links a,
+.home-modern .footer-legal a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 2px 0;
+    color: #334f81;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.home-modern .footer-links a:hover,
+.home-modern .footer-legal a:hover {
+    color: #2f55d4;
+    transform: translateX(2px);
+}
+
+.home-modern .footer-contact p {
+    margin-bottom: 10px;
+    color: #3d5684;
+    line-height: 1.45;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.home-modern .footer-links a svg,
+.home-modern .footer-legal a svg,
+.home-modern .footer-contact svg,
+.home-modern .footer-links a i,
+.home-modern .footer-legal a i,
+.home-modern .footer-contact i {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    padding: 8px;
+    box-sizing: content-box;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    flex-shrink: 0;
+    overflow: visible;
+    line-height: 1;
+    background: #e7efff;
+    border: 1px solid #c5d8fb;
+    color: #2f55d4;
+    stroke-width: 2;
+}
+
+.home-modern .footer-social {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.home-modern .social-icon svg,
+.home-modern .social-icon i {
+    width: 22px;
+    height: 22px;
+    font-size: 22px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+
+.home-modern .social-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #bfd4ff;
+    background: #eaf2ff;
+    color: #2f55d4;
+    overflow: visible;
+    line-height: 1;
+}
+
+.home-modern .social-icon:hover {
+    transform: translateY(-2px) scale(1.03);
+    filter: saturate(1.05);
+}
+
+.home-modern .footer-bottom {
+    border-top: 1px solid #dbe7fb;
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 16px 28px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.home-modern .footer-bottom p {
+    margin: 0;
+    color: #4a628f;
+}
+
+.home-modern .footer-legal {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 992px) {
+    .home-modern .navbar {
+        min-height: 68px;
+        padding: 8px 12px;
+        border-radius: 16px;
+    }
+
+    .home-modern .menu-toggle {
+        display: inline-flex;
+    }
+
+    .home-modern .nav-links {
+        gap: 8px;
+        top: calc(100% + 10px);
+        right: 0;
+        width: min(320px, 92vw);
+        padding: 10px;
+        border-radius: 14px;
+        background: #dbe8ff;
+        border: 1px solid #bdd3fb;
+        box-shadow: none;
+    }
+
+    .home-modern .nav-links li {
+        width: 100%;
+    }
+
+    .home-modern .nav-links a {
+        width: 100%;
+        justify-content: center;
+        padding: 11px 14px;
+        border-radius: 12px;
+    }
+
+    .home-modern .video {
+        width: 95%;
+        height: calc(100% - 20px);
+        margin: 10px auto;
+        border-radius: 16px;
+    }
+
+    .home-modern .video-text {
+        width: min(92%, 760px);
+        padding: 0;
+    }
+
+    .home-modern .video-text h1 {
+        letter-spacing: 0.05em;
+    }
+
+    .home-modern .video-text p {
+        margin-top: 10px;
+        line-height: 1.4;
+    }
+
+    .home-modern .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 0 18px 16px;
+    }
+
+    .home-modern .footer-social,
+    .home-modern .footer-links,
+    .home-modern .footer-contact {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .home-modern .footer-brand {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+
+    .home-modern .footer {
+        width: 100%;
+        border-radius: 0;
+        padding-top: 24px;
+    }
+
+    .home-modern .footer-bottom {
+        padding: 14px 18px 18px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .home-modern .footer-legal {
+        gap: 10px;
+    }
+
+    .home-modern .categorias-container,
+    .home-modern .marcas-container {
+        width: 94%;
+        margin: 34px auto;
+        padding: 28px 18px;
+        border-radius: 18px;
+    }
+
+    .home-modern .categorias-container h3,
+    .home-modern .marcas-container h2 {
+        margin-bottom: 20px;
+    }
+
+    .home-modern .categorias-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 20px 14px;
+        margin-top: 12px;
+    }
+
+    .home-modern .categoria-link {
+        min-height: 188px;
+        gap: 10px;
+        padding: 4px 2px !important;
+    }
+
+    .home-modern .categoria-link img {
+        width: clamp(100px, 24vw, 128px);
+    }
+
+    .home-modern .ver-mas-btn-cat,
+    .home-modern .ver-mas-btn {
+        margin-top: 24px;
+    }
+}
+
+/* ===== Home modern: Chat widget ===== */
+.home-modern .chat-bubble {
+    width: 64px;
+    height: 64px;
+    left: 22px;
+    bottom: 22px;
+    border-radius: 50%;
+    background: #3f6df6;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    font-size: 1.45rem;
+    box-shadow: 0 14px 28px rgba(47, 85, 212, 0.32);
+}
+
+.home-modern .chat-bubble:hover {
+    transform: translateY(-3px) scale(1.06);
+    box-shadow: 0 18px 34px rgba(47, 85, 212, 0.38);
+}
+
+.home-modern .chat-bubble::after {
+    content: "Ayuda";
+    position: absolute;
+    left: 74px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #ffffff;
+    color: #2f55d4;
+    border: 1px solid #c8dbff;
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.home-modern .chat-bubble:hover::after {
+    opacity: 1;
+}
+
+.home-modern .chat-widget {
+    bottom: 100px;
+    left: 22px;
+    width: min(380px, calc(100vw - 30px));
+    border-radius: 24px;
+    border: 1px solid #bad2ff;
+    background: #eef4ff;
+    box-shadow: 0 24px 44px rgba(20, 55, 119, 0.28);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.home-modern .chat-header {
+    background: #2f55d4;
+    color: #ffffff;
+    border-bottom: 1px solid #2648b7;
+    padding: 16px 18px 18px;
+    border-radius: 24px 24px 0 0;
+    text-align: left;
+}
+
+.home-modern .chat-header h3 {
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: left;
+}
+
+.home-modern .chat-header p {
+    margin-top: 4px;
+    font-size: 0.88rem;
+    color: #dce6ff;
+    opacity: 1;
+    text-align: left;
+}
+
+.home-modern .close-chat {
+    color: #ffffff;
+    top: 10px;
+    right: 12px;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.home-modern .close-chat:hover {
+    transform: scale(1.04);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.home-modern .chat-body {
+    padding: 14px;
+    background: #eef4ff;
+    border-top: none;
+}
+
+.home-modern .chat-body textarea {
+    height: 124px;
+    padding: 16px;
+    border-radius: 16px;
+    border: 1px solid #b6ccfb;
+    background: #ffffff;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    color: #1b2c56;
+    line-height: 1.5;
+}
+
+.home-modern .chat-body textarea::placeholder {
+    color: #6b80b3;
+}
+
+.home-modern .chat-body textarea:focus {
+    border-color: #7ba2ff;
+    box-shadow: 0 0 0 4px rgba(63, 109, 246, 0.18);
+}
+
+.home-modern .chat-actions {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.home-modern .chat-button {
+    min-height: 46px;
+    border-radius: 12px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    border: 1px solid transparent;
+    letter-spacing: 0.02em;
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.home-modern .chat-button i {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+}
+
+.home-modern .whatsapp-button {
+    background: #25d366;
+    border-color: #18b454;
+    color: #ffffff;
+}
+
+.home-modern .whatsapp-button i {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.home-modern .whatsapp-button:hover {
+    background: #1fb35a;
+    border-color: #15974b;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 18px rgba(31, 179, 90, 0.28);
+}
+
+.home-modern .email-button {
+    background: #ffffff;
+    border-color: #b5caf6;
+    color: #2f55d4;
+}
+
+.home-modern .email-button i {
+    background: #e7efff;
+    color: #2f55d4;
+}
+
+.home-modern .email-button:hover {
+    background: #e8f0ff;
+    border-color: #9eb8f0;
+    color: #2343b0;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 16px rgba(62, 98, 179, 0.2);
+}
+
+@media (max-width: 992px) {
+    .home-modern .chat-bubble {
+        left: 14px;
+        bottom: 14px;
+        width: 58px;
+        height: 58px;
+    }
+
+    .home-modern .chat-bubble::after {
+        display: none;
+    }
+
+    .home-modern .chat-widget {
+        left: 14px;
+        bottom: 82px;
+        width: calc(100vw - 28px);
+    }
+}

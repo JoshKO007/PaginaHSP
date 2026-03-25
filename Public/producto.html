@@ -7,8 +7,242 @@
     <link rel="stylesheet" href="CSS/styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="IMG/Y.png" type="image/png"> <!-- Favicon -->
+    <style>
+        /* --- Modernización panel "Explora más productos" --- */
+        .producto-modern .producto-detalle-container {
+            max-width: none;
+            width: min(95%, 1360px);
+            margin: 36px auto 24px;
+            padding: clamp(16px, 2.2vw, 28px);
+            min-height: auto;
+            align-items: stretch;
+            border: 1px solid #d4e3fb;
+            border-radius: 24px;
+            background: #fafdff;
+            box-shadow: 0 10px 24px rgba(24, 63, 126, 0.08);
+        }
+
+        .producto-modern .producto-detalle-container #producto-detalle {
+            width: 100%;
+        }
+
+        .producto-modern .producto-detalle {
+            width: 100%;
+            justify-content: center;
+            background: #ffffff;
+            border: 1px solid #d8e5fb;
+            border-radius: 20px;
+        }
+
+        .producto-modern .botones-container {
+            width: 100%;
+            max-width: none;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 14px;
+            padding-top: 4px;
+        }
+
+        .producto-modern .botones-container .cotizar-btn,
+        .producto-modern .botones-container .dudas-btn {
+            min-width: 150px;
+            padding: 11px 20px;
+            border-radius: 11px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+        }
+
+        .producto-modern .botones-container .cotizar-btn {
+            border: 1px solid #3f6df6;
+            color: #ffffff;
+            background: linear-gradient(180deg, #4f7bff 0%, #3f6df6 100%);
+            box-shadow: 0 8px 16px rgba(53, 96, 196, 0.25);
+        }
+
+        .producto-modern .botones-container .cotizar-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 11px 20px rgba(53, 96, 196, 0.32);
+            filter: brightness(1.03);
+        }
+
+        .producto-modern .botones-container .dudas-btn {
+            border: 1px solid #c9d9fb;
+            color: #2e4f8f;
+            background: #eef4ff;
+            box-shadow: 0 6px 14px rgba(24, 63, 126, 0.12);
+        }
+
+        .producto-modern .botones-container .dudas-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 18px rgba(24, 63, 126, 0.18);
+            background: #e7f0ff;
+        }
+
+        .producto-modern .productos-relacionados-container {
+            width: min(95%, 1360px);
+            margin: 24px auto 72px;
+            padding: 34px clamp(14px, 2.4vw, 30px);
+            border: 1px solid #d4e3fb;
+            border-radius: 24px;
+            background: #fafdff;
+        }
+
+        .producto-modern #productos-relacionados-unicos {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+        }
+
+        .producto-modern #productos-relacionados-unicos h2 {
+            margin: 0 0 22px;
+            text-align: center;
+            font-size: clamp(1.4rem, 2.2vw, 1.95rem);
+            color: #1f3a73;
+            letter-spacing: 0.02em;
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+        .producto-modern #productos-relacionados-unicos h2::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 0;
+            width: 86px;
+            height: 4px;
+            border-radius: 999px;
+            background: #3f6df6;
+        }
+
+        .producto-modern .productos-grid-unicos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 320px));
+            gap: 18px;
+            align-items: stretch;
+            justify-content: center;
+            justify-items: center;
+        }
+
+        .producto-modern .productos-grid-unicos.single-related {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .producto-modern .productos-grid-unicos.single-related .producto-card-unico {
+            max-width: 420px;
+            justify-self: center;
+        }
+
+        .producto-modern .productos-grid-unicos .producto-card-unico {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 12px;
+            height: 100%;
+            width: min(100%, 320px);
+            padding: 14px;
+            border: 1px solid #d8e5fb;
+            border-radius: 18px;
+            background: #ffffff;
+            box-shadow: 0 10px 22px rgba(24, 63, 126, 0.08);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .producto-modern .productos-grid-unicos .producto-card-unico:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 28px rgba(24, 63, 126, 0.12);
+        }
+
+        .producto-modern .productos-grid-unicos .producto-card-unico img {
+            width: 100%;
+            height: 170px;
+            object-fit: contain;
+            border: 1px solid #e4ecfb;
+            border-radius: 12px;
+            background: #f8fbff;
+            padding: 10px;
+        }
+
+        .producto-modern .productos-grid-unicos .producto-card-unico h3 {
+            margin: 0;
+            font-size: 1.08rem;
+            line-height: 1.36;
+            color: #1f3b76;
+        }
+
+        .producto-modern .productos-grid-unicos .producto-card-unico .producto-meta {
+            margin: -2px 0 2px;
+            color: #45639a;
+            font-size: 0.94rem;
+        }
+
+        .producto-modern .productos-grid-unicos .producto-card-unico .ver-mas-btn {
+            margin-top: auto;
+            align-self: center;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 11px;
+            border: 1px solid #3f6df6;
+            background: linear-gradient(180deg, #4f7bff 0%, #3f6df6 100%);
+            color: #fff;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .producto-modern .productos-grid-unicos .producto-card-unico .ver-mas-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 9px 18px rgba(53, 96, 196, 0.3);
+        }
+
+        @media (max-width: 1000px) {
+            .producto-modern .producto-detalle-container {
+                width: 94%;
+                margin: 26px auto 20px;
+                padding: 14px;
+                border-radius: 16px;
+            }
+
+            .producto-modern .producto-detalle {
+                border-radius: 14px;
+            }
+
+            .producto-modern .botones-container {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-top: 12px;
+            }
+
+            .producto-modern .botones-container .cotizar-btn,
+            .producto-modern .botones-container .dudas-btn {
+                min-width: 140px;
+            }
+
+            .producto-modern .productos-relacionados-container {
+                width: 94%;
+                margin: 20px auto 52px;
+                padding: 24px 14px;
+                border-radius: 16px;
+            }
+
+            .producto-modern .productos-grid-unicos {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+    </style>
 </head>
-<body>
+<body class="home-modern producto-modern">
     <canvas id="backgroundCanvas"></canvas>
     <nav class="navbar">
         <div class="logo">
@@ -24,10 +258,26 @@
         
         <!-- Menú principal -->
         <ul class="nav-links" id="navLinks">
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="categorias.html">Categorías</a></li>
-            <li><a href="marcas.html">Marcas Destacadas</a></li>
-            <li><a href="contacto.html">Contacto</a></li>
+            <li>
+                <a href="index.html">
+                    <span class="nav-label">Inicio</span>
+                </a>
+            </li>
+            <li>
+                <a href="categorias.html">
+                    <span class="nav-label">Categorías</span>
+                </a>
+            </li>
+            <li>
+                <a href="marcas.html">
+                    <span class="nav-label">Marcas</span>
+                </a>
+            </li>
+            <li>
+                <a href="contacto.html">
+                    <span class="nav-label">Contacto</span>
+                </a>
+            </li>
         </ul>
     </nav>
 
@@ -75,16 +325,17 @@
             <!-- Sección 1: Logo y descripción -->
             <div class="footer-brand">
                 <img src="IMG/logoNBE.png" alt="Logo" class="footer-logo">
+                <p class="footer-brand-copy">Innovación médica en <span class="footer-chip">tiempo real</span></p>
             </div>
     
             <!-- Sección 2: Enlaces rápidos -->
             <div class="footer-section">
                 <h3 class="footer-title">Enlaces Rápidos</h3>
                 <ul class="footer-links">
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="marcas.html">Productos</a></li>
-                    <li><a href="servicio.html">Servicios</a></li>
-                    <li><a href="contacto.html">Contacto</a></li>
+                    <li><a href="index.html"><i class="fas fa-house"></i> Inicio</a></li>
+                    <li><a href="marcas.html"><i class="fas fa-box-open"></i> Productos</a></li>
+                    <li><a href="servicio.html"><i class="fas fa-screwdriver-wrench"></i> Servicios</a></li>
+                    <li><a href="contacto.html"><i class="fas fa-address-book"></i> Contacto</a></li>
                 </ul>
             </div>
     
@@ -92,7 +343,7 @@
             <div class="footer-section">
                 <h3 class="footer-title">Contacto</h3>
                 <div class="footer-contact">
-                    <p><i class="fas fa-map-marker-alt"></i>Boulevard 4 vientos #10</p>
+                    <p><i class="fas fa-location-dot"></i><span class="footer-chip">Boulevard 4 vientos #10</span></p>
                     <p><i class="fas fa-phone"></i> +52 55 3172 6585</p>
                     <p><i class="fas fa-phone"></i> +52 55 1262 5346</p>
                     <p><i class="fas fa-envelope"></i>rafael_torres@yolotech.com.mx</p>
@@ -103,8 +354,8 @@
             <div class="footer-section">
                 <h3 class="footer-title">Síguenos</h3>
                 <div class="footer-social">
-                    <a href="https://www.facebook.com/profile.php?id=61573914026623" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.instagram.com/yolotech_?igsh=NXkyZzVhM3RnazBy" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=61573914026623" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/yolotech_?igsh=NXkyZzVhM3RnazBy" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
         </div>
@@ -112,8 +363,8 @@
         <div class="footer-bottom">
             <p>&copy; 2025 <strong>YOLOTECH</strong>. Todos los derechos reservados.</p>
             <div class="footer-legal">
-                <a href="privacidad.html">Política de privacidad</a>
-                <a href="servicio.html">Términos de servicio</a>
+                <a href="privacidad.html"><i class="fas fa-shield-alt"></i> Política de privacidad</a>
+                <a href="servicio.html"><i class="fas fa-file-contract"></i> Términos de servicio</a>
             </div>
         </div>
     </footer>
@@ -124,7 +375,7 @@
 
     <div class="chat-widget" id="chatWidget">
         <div class="chat-header">
-            <h3>¡Hola! 👋</h3>
+            <h3>¡Hola!</h3>
             <p>¿En qué podemos ayudarte?</p>
             <span class="close-chat" id="closeChat">&times;</span>
         </div>
@@ -185,39 +436,6 @@
                     }
                 });
             });
-            
-            // Cambiar tema
-            const themeToggle = document.getElementById('themeToggle');
-            themeToggle.addEventListener('click', function() {
-                document.body.classList.toggle('night');
-                document.body.classList.toggle('day');
-                
-                // Cambiar icono
-                const icon = this.querySelector('i');
-                if (document.body.classList.contains('night')) {
-                    icon.classList.remove('fa-sun');
-                    icon.classList.add('fa-moon');
-                } else {
-                    icon.classList.remove('fa-moon');
-                    icon.classList.add('fa-sun');
-                }
-                
-                // Cambiar clase en navbar
-                document.querySelector('.navbar').classList.toggle('night');
-                document.querySelector('.navbar').classList.toggle('day');
-                
-                // Cambiar clase en enlaces
-                document.querySelectorAll('.nav-links a').forEach(link => {
-                    link.classList.toggle('night');
-                    link.classList.toggle('day');
-                });
-            });
-            
-            // Verificar tema al cargar
-            if (document.body.classList.contains('night')) {
-                themeToggle.querySelector('i').classList.remove('fa-sun');
-                themeToggle.querySelector('i').classList.add('fa-moon');
-            }
         });
         
         // Control de video

@@ -8,73 +8,106 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="IMG/Y.png" type="image/png"> <!-- Favicon -->
 <style>
-/* --- Grid de categorías: 4 por fila, centradas, sin bordes --- */
-.categorias-container {
+/* --- Ajustes específicos de la página de categorías --- */
+.categorias-page .categorias-container {
+    width: min(95%, 1400px) !important;
+    margin: 56px auto 72px !important;
+    padding: 52px 34px !important;
+    display: block !important;
+    background: #fafdff;
+    border: 1px solid #d4e3fb;
+    border-radius: 22px;
+}
+
+.categorias-page .categorias-grid {
     width: 100%;
-    padding: 40px 0;
+    max-width: 1220px !important;
+    margin: 18px auto 0 !important;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+    align-items: flex-start;
+    gap: 42px 34px;
 }
 
-.categorias-grid {
-    width: 90%;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 40px;
-    justify-content: center;   /* Centra el conjunto completo */
-    justify-items: center;      /* Centra cada elemento dentro de su columna */
-    align-items: start;
-    margin: 0 auto;             /* Asegura centrado horizontal */
-}
-
-/* --- Tarjeta limpia sin bordes ni fondo --- */
-.categoria-item {
+.categorias-page .categoria-item {
+    width: 210px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
     background: none !important;
     box-shadow: none !important;
     border: none !important;
     padding: 0 !important;
 }
 
-/* --- Imagen relacional uniforme --- */
-.categoria-item img {
-    max-width: 160px;
-    max-height: 120px;
-    object-fit: contain;
-    display: block;
-}
-
-/* --- Nombre de la categoría --- */
-.categoria-item p {
-    margin-top: 10px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    text-align: center;
-}
-
-/* --- Enlace sin subrayado --- */
-.categoria-link {
+.categorias-page .categoria-link {
+    width: 100%;
     text-decoration: none;
     color: inherit;
     text-align: center;
-}
-/* --- Overrides específicos SOLO para esta página --- */
-.categorias-container {
-    width: 100%;
-    display: flex !important;
-    justify-content: center !important;
-    margin: 0 auto !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
 }
 
-.categorias-grid {
-    max-width: 1300px !important;
-    margin: 0 auto !important;
+.categorias-page .categoria-item img,
+.categorias-page .categoria-link img {
+    width: 176px;
+    aspect-ratio: 1 / 1;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+.categorias-page .categoria-item p,
+.categorias-page .categoria-link p {
+    margin: 0;
+    font-size: 1.08rem;
+    font-weight: 650;
+    line-height: 1.3;
+    text-align: center;
+    max-width: 196px;
+    color: #253a68;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    border-radius: 10px;
+    background: rgba(63, 109, 246, 0.14);
+    border: 1px solid rgba(63, 109, 246, 0.24);
+    width: min(100%, 196px);
+    min-height: 56px;
+    margin: 0 auto;
+}
+
+@media (max-width: 992px) {
+    .categorias-page .categorias-container {
+        width: 94% !important;
+        margin: 36px auto 52px !important;
+        padding: 34px 18px !important;
+        border-radius: 16px;
+    }
+
+    .categorias-page .categorias-grid {
+        gap: 28px 18px;
+    }
+
+    .categorias-page .categoria-item {
+        width: 168px;
+    }
+
+    .categorias-page .categoria-item img,
+    .categorias-page .categoria-link img {
+        width: 142px;
+    }
 }
 </style>
 </head>
-<body>
+<body class="home-modern categorias-page">
     <canvas id="backgroundCanvas"></canvas>
     <nav class="navbar">
         <div class="logo">
@@ -90,10 +123,26 @@
         
         <!-- Menú principal -->
         <ul class="nav-links" id="navLinks">
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="categorias.html">Categorías</a></li>
-            <li><a href="marcas.html">Marcas Destacadas</a></li>
-            <li><a href="contacto.html">Contacto</a></li>
+            <li>
+                <a href="index.html">
+                    <span class="nav-label">Inicio</span>
+                </a>
+            </li>
+            <li>
+                <a href="categorias.html" aria-current="page">
+                    <span class="nav-label">Categorías</span>
+                </a>
+            </li>
+            <li>
+                <a href="marcas.html">
+                    <span class="nav-label">Marcas</span>
+                </a>
+            </li>
+            <li>
+                <a href="contacto.html">
+                    <span class="nav-label">Contacto</span>
+                </a>
+            </li>
         </ul>
     </nav>
 
@@ -101,8 +150,8 @@
         <div class="video-container">
             <video src="VID/desfibrilador.mp4" autoplay muted loop class="video" playsinline></video>
             <div class="video-text">
-                <h1>CATEGORIAS</h1>
-                <p>Explora nuestras categorias y encuentra la solución perfecta para tus necesidades</p>
+                <h1>CATEGORÍAS</h1>
+                <p>Explora nuestras categorías y encuentra la solución perfecta para tus necesidades</p>
             </div>
         </div>
 
@@ -116,16 +165,17 @@
             <!-- Sección 1: Logo y descripción -->
             <div class="footer-brand">
                 <img src="IMG/logoNBE.png" alt="Logo" class="footer-logo">
+                <p class="footer-brand-copy">Innovación médica en <span class="footer-chip">tiempo real</span></p>
             </div>
     
             <!-- Sección 2: Enlaces rápidos -->
             <div class="footer-section">
                 <h3 class="footer-title">Enlaces Rápidos</h3>
                 <ul class="footer-links">
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="marcas.html">Productos</a></li>
-                    <li><a href="servicio.html">Servicios</a></li>
-                    <li><a href="contacto.html">Contacto</a></li>
+                    <li><a href="index.html"><i class="fas fa-house"></i> Inicio</a></li>
+                    <li><a href="marcas.html"><i class="fas fa-box-open"></i> Productos</a></li>
+                    <li><a href="servicio.html"><i class="fas fa-screwdriver-wrench"></i> Servicios</a></li>
+                    <li><a href="contacto.html"><i class="fas fa-address-book"></i> Contacto</a></li>
                 </ul>
             </div>
     
@@ -133,19 +183,19 @@
             <div class="footer-section">
                 <h3 class="footer-title">Contacto</h3>
                 <div class="footer-contact">
-                    <p><i class="fas fa-map-marker-alt"></i>Boulevard 4 vientos #10</p>
+                    <p><i class="fas fa-location-dot"></i><span class="footer-chip">Boulevard 4 vientos #10</span></p>
                     <p><i class="fas fa-phone"></i> +52 55 3172 6585</p>
                     <p><i class="fas fa-phone"></i> +52 55 1262 5346</p>
                     <p><i class="fas fa-envelope"></i>rafael_torres@yolotech.com.mx</p>
                 </div>
             </div>
-    
+
             <!-- Sección 4: Redes sociales -->
             <div class="footer-section">
                 <h3 class="footer-title">Síguenos</h3>
                 <div class="footer-social">
-                    <a href="https://www.facebook.com/profile.php?id=61573914026623" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.instagram.com/yolotech_?igsh=NXkyZzVhM3RnazBy" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=61573914026623" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/yolotech_?igsh=NXkyZzVhM3RnazBy" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
         </div>
@@ -153,8 +203,8 @@
         <div class="footer-bottom">
             <p>&copy; 2025 <strong>YOLOTECH</strong>. Todos los derechos reservados.</p>
             <div class="footer-legal">
-                <a href="privacidad.html">Política de privacidad</a>
-                <a href="servicio.html">Términos de servicio</a>
+                <a href="privacidad.html"><i class="fas fa-shield-alt"></i> Política de privacidad</a>
+                <a href="servicio.html"><i class="fas fa-file-contract"></i> Términos de servicio</a>
             </div>
         </div>
     </footer>
@@ -165,7 +215,7 @@
 
     <div class="chat-widget" id="chatWidget">
         <div class="chat-header">
-            <h3>¡Hola! 👋</h3>
+            <h3>¡Hola!</h3>
             <p>¿En qué podemos ayudarte?</p>
             <span class="close-chat" id="closeChat">&times;</span>
         </div>
