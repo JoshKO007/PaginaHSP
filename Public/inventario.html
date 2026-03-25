@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventario | YoloTech</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg: #f3f7ff;
+      --card: #ffffff;
+      --line: #d8e5fb;
+      --text: #1e355f;
+      --muted: #60739b;
+      --primary: #3f6df6;
+      --primary-soft: #eef3ff;
+      --ok: #1f9d68;
+      --warn: #f59e0b;
+      --danger: #dc2626;
+      --radius: 16px;
+      --shadow: 0 10px 24px rgba(24, 63, 126, 0.1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", system-ui, sans-serif;
+      background: radial-gradient(circle at 10% -20%, #eaf2ff, #f8fbff 40%, #eff5ff);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: #ffffff;
+      border-right: 1px solid var(--line);
+      padding: 22px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 12px;
+      background: var(--primary-soft);
+      border: 1px solid var(--line);
+      font-weight: 700;
+      color: #23407a;
+    }
+
+    .brand i {
+      color: var(--primary);
+      font-size: 18px;
+    }
+
+    .side-nav {
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .nav-btn {
+      border: 1px solid transparent;
+      background: transparent;
+      color: #2d4d88;
+      border-radius: 12px;
+      padding: 10px 12px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+
+    .nav-btn:hover {
+      background: #f5f8ff;
+      border-color: #d9e6ff;
+    }
+
+    .nav-btn.active {
+      background: linear-gradient(180deg, #4f7bff 0%, #3f6df6 100%);
+      color: #fff;
+      border-color: #3f6df6;
+      box-shadow: 0 10px 18px rgba(53, 96, 196, 0.28);
+    }
+
+    .side-footer {
+      margin-top: auto;
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .content {
+      padding: 22px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .topbar {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      box-shadow: var(--shadow);
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: 1.22rem;
+      color: #23407a;
+    }
+
+    .topbar-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pill {
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: .85rem;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #29447c;
+    }
+
+    .pill.warn {
+      background: #fff7e8;
+      color: #b45309;
+      border-color: #f8d7a6;
+    }
+
+    .view { display: none; }
+    .view.active { display: block; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .card h2 {
+      margin: 0 0 14px;
+      font-size: 1.05rem;
+      color: #26457d;
+      font-weight: 700;
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .kpi {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .kpi .label { font-size: .82rem; color: var(--muted); }
+    .kpi .value { margin-top: 6px; font-size: 1.35rem; font-weight: 800; color: #204079; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .field { display: grid; gap: 6px; }
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: .85rem;
+      color: #486196;
+      font-weight: 600;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 11px;
+      border-radius: 10px;
+      border: 1px solid #cfe0ff;
+      background: #fff;
+      color: #1f3a73;
+      outline: none;
+      font: inherit;
+    }
+
+    textarea { min-height: 92px; resize: vertical; }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .btn {
+      border-radius: 10px;
+      border: 1px solid #3f6df6;
+      background: linear-gradient(180deg, #4f7bff 0%, #3f6df6 100%);
+      color: #fff;
+      padding: 9px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn.secondary {
+      border-color: #c9d9fb;
+      background: #eef4ff;
+      color: #2e4f8f;
+    }
+
+    .btn.danger {
+      border-color: #fecaca;
+      background: #fff1f2;
+      color: #b91c1c;
+    }
+
+    .btn.icon-only {
+      padding: 7px 10px;
+      min-width: 38px;
+      justify-content: center;
+    }
+
+    .list {
+      max-height: 700px;
+      overflow: auto;
+      border: 1px solid #dce7fd;
+      border-radius: 12px;
+      padding: 12px;
+      background: #f8fbff;
+    }
+
+    #productosView .list {
+      max-height: calc(100vh - 280px);
+    }
+
+    #productosView .grid-2 {
+      grid-template-columns: 320px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    #productosView .grid-2 .card:first-child {
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      padding: 14px 16px;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid #e3ecff;
+      margin-bottom: 12px;
+    }
+
+    .row:last-child { margin-bottom: 0; }
+
+    .row .title {
+      font-weight: 700;
+      color: #23407a;
+      line-height: 1.45;
+      font-size: .98rem;
+    }
+
+    .row .meta {
+      font-size: .84rem;
+      color: #5f77a6;
+      margin-top: 4px;
+      line-height: 1.35;
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 9px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: .78rem;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+
+    .badge.ok { color: #166534; background: #ecfdf3; border-color: #a7f3d0; }
+    .badge.low { color: #92400e; background: #fff7ed; border-color: #fed7aa; }
+    .badge.out { color: #991b1b; background: #fef2f2; border-color: #fecaca; }
+
+    .table-header {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr auto;
+      gap: 14px;
+      padding: 0 2px 14px 16px;
+      font-size: .84rem;
+      font-weight: 700;
+      color: #5a73a3;
+      letter-spacing: 0.3px;
+    }
+
+    .product-row {
+      grid-template-columns: 2fr 1fr 1fr 1fr auto;
+      gap: 14px;
+    }
+
+    .stock-controls {
+      display: inline-flex;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .tiny {
+      font-size: .82rem;
+      color: #6a82ad;
+      line-height: 1.35;
+    }
+
+    .movement-list {
+      max-height: 210px;
+      overflow: auto;
+      display: grid;
+      gap: 7px;
+    }
+
+    .movement-item {
+      border: 1px solid #e3ecff;
+      border-radius: 10px;
+      padding: 8px;
+      font-size: .82rem;
+      background: #fff;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .alert-controls {
+      display: grid;
+      gap: 12px;
+    }
+
+    .alert-toggle-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .alert-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #dce7fd;
+      background: #f8fbff;
+      border-radius: 10px;
+      padding: 9px 10px;
+      color: #2d4d88;
+      font-size: .88rem;
+      font-weight: 600;
+    }
+
+    .alert-toggle input {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: #3f6df6;
+    }
+
+    .alert-summary {
+      display: grid;
+      gap: 8px;
+      border-top: 1px solid #e3ecff;
+      padding-top: 10px;
+    }
+
+    .alert-summary-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #e3ecff;
+      background: #fff;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: .85rem;
+      color: #466096;
+    }
+
+    .alert-summary-item.disabled {
+      opacity: .55;
+      background: #f9fbff;
+    }
+
+    .search-toolbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 160px;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .search-toolbar input,
+    .search-toolbar select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #cfe0ff;
+      background: #fff;
+      color: #1f3a73;
+      font: inherit;
+      font-size: .9rem;
+    }
+
+    .search-hint {
+      margin-bottom: 12px;
+      font-size: .82rem;
+      color: #60739b;
+      font-weight: 500;
+    }
+
+    canvas {
+      max-height: 100% !important;
+    }
+
+    .badge.excess {
+      color: #7c3aed;
+      background: #f3e8ff;
+      border-color: #ddd6fe;
+    }
+
+    .badge.warn {
+      color: #0369a1;
+      background: #e0f2fe;
+      border-color: #bae6fd;
+    }
+
+    @media (max-width: 1180px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar {
+        height: auto;
+        position: static;
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+      }
+      .side-nav { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+    }
+
+    @media (max-width: 900px) {
+      .grid-2, .form-grid { grid-template-columns: 1fr; }
+      .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .table-header { display: none; }
+      .product-row { grid-template-columns: 1fr; }
+      .row-actions { justify-content: flex-start; }
+      .search-toolbar { grid-template-columns: 1fr; }
+      .alert-toggle-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <style>
+    body {
+      background: linear-gradient(135deg, #f0f4ff, #ffffff 60%, #d9ecff);
+    }
+
+    #bgCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.35;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bgCanvas"></canvas>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <i class="fa-solid fa-warehouse"></i>
+        Inventario
+      </div>
+
+      <nav class="side-nav">
+        <button class="nav-btn active" data-view="dashboardView"><i class="fa-solid fa-chart-line"></i> Dashboard</button>
+        <button class="nav-btn" data-view="categoriasView"><i class="fa-solid fa-layer-group"></i> Categorías</button>
+        <button class="nav-btn" data-view="marcasView"><i class="fa-solid fa-tags"></i> Marcas</button>
+        <button class="nav-btn" data-view="productosView"><i class="fa-solid fa-boxes-stacked"></i> Productos</button>
+      </nav>
+
+      <div class="side-footer">
+        <span><i class="fa-solid fa-shield-halved"></i> Panel interno YoloTech</span>
+        <a href="admin.html" style="color:#3f6df6; text-decoration:none; font-weight:600;"><i class="fa-solid fa-arrow-left"></i> Volver al admin</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <h1 id="viewTitle">Dashboard de Inventario</h1>
+        <div class="topbar-meta">
+          <span class="pill" id="syncInfo">Sincronizando...</span>
+          <span class="pill warn" id="lowStockPill">Sin alertas</span>
+        </div>
+      </header>
+
+      <section class="view active" id="dashboardView">
+        <div class="kpis">
+          <div class="kpi"><div class="label">Productos</div><div class="value" id="kpiProductos">0</div></div>
+          <div class="kpi"><div class="label">Categorías</div><div class="value" id="kpiCategorias">0</div></div>
+          <div class="kpi"><div class="label">Marcas</div><div class="value" id="kpiMarcas">0</div></div>
+          <div class="kpi"><div class="label">Stock bajo</div><div class="value" id="kpiLow">0</div></div>
+        </div>
+
+        <div class="kpis">
+          <div class="kpi"><div class="label">Valor Inventario</div><div class="value" id="kpiValorTotal">$0</div></div>
+          <div class="kpi"><div class="label">Margen Promedio</div><div class="value" id="kpiMargenPromedio">0%</div></div>
+          <div class="kpi"><div class="label">Productos Agotados</div><div class="value" id="kpiAgotados">0</div></div>
+          <div class="kpi"><div class="label">En Reorden</div><div class="value" id="kpiReorden">0</div></div>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h2>Estado de stock</h2>
+            <canvas id="stockChart" height="180"></canvas>
+          </article>
+          <article class="card">
+            <h2>Distribución de alertas</h2>
+            <canvas id="alertasChart" height="180"></canvas>
+          </article>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h2>Productos por categoría</h2>
+            <canvas id="categoriaChartDash" height="180"></canvas>
+          </article>
+          <article class="card">
+            <h2>Productos por marca</h2>
+            <canvas id="marcaChartDash" height="180"></canvas>
+          </article>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h2>Top 5 productos por valor</h2>
+            <canvas id="topValueChart" height="180"></canvas>
+          </article>
+          <article class="card">
+            <h2>Valor de inventario por categoría</h2>
+            <canvas id="valorCategoria" height="180"></canvas>
+          </article>
+        </div>
+
+        <article class="card" style="margin-top:14px;">
+          <h2>Configuración de alertas</h2>
+          <div class="alert-controls">
+            <div class="alert-toggle-grid">
+              <label class="alert-toggle"><input type="checkbox" id="alertOutToggle" checked /> Agotado</label>
+              <label class="alert-toggle"><input type="checkbox" id="alertLowToggle" checked /> Stock mínimo</label>
+              <label class="alert-toggle"><input type="checkbox" id="alertReorderToggle" checked /> Reorden</label>
+              <label class="alert-toggle"><input type="checkbox" id="alertExcessToggle" checked /> Exceso</label>
+            </div>
+            <div class="alert-summary" id="alertSummaryList"></div>
+          </div>
+        </article>
+
+        <article class="card" style="margin-top:14px;">
+          <h2>Movimientos recientes</h2>
+          <div class="movement-list" id="movementList"></div>
+        </article>
+      </section>
+
+      <section class="view" id="categoriasView">
+        <div class="grid-2">
+          <article class="card">
+            <h2 id="categoriaFormTitle">Agregar categoría</h2>
+            <form id="categoriaForm" class="form-grid">
+              <div class="field full">
+                <label>Nombre</label>
+                <input id="categoriaNombre" type="text" required />
+              </div>
+              <div class="field full">
+                <label>Imagen (archivo)</label>
+                <input id="categoriaImagen" type="file" accept="image/*" />
+              </div>
+              <div class="field full" id="categoriaImagePreviewContainer" style="min-height:120px; background:#f8fbff; border:1px dashed #dce7fd; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#999; font-size:.85rem;">
+                Vista previa de imagen
+              </div>
+              <div class="field">
+                <label>Estado</label>
+                <select id="categoriaActiva"><option value="true">Activa</option><option value="false">Inactiva</option></select>
+              </div>
+              <div class="field">
+                <label>ID (auto)</label>
+                <input value="Automático" disabled />
+              </div>
+              <div class="field full actions">
+                <button class="btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                <button class="btn secondary" type="button" id="cancelCategoriaBtn"><i class="fa-solid fa-rotate-left"></i> Cancelar edición</button>
+              </div>
+            </form>
+          </article>
+          <article class="card">
+            <h2>Listado de categorías</h2>
+            <div class="search-toolbar">
+              <input id="categoriaSearch" type="text" placeholder="Buscar categoría..." />
+              <select id="categoriaSearchBy">
+                <option value="all">Todo</option>
+                <option value="id">ID</option>
+                <option value="nombre">Nombre</option>
+                <option value="estado">Estado</option>
+              </select>
+            </div>
+            <div class="search-hint" id="categoriaSearchHint">Mostrando todas las categorías</div>
+            <div class="list" id="categoriaList"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="marcasView">
+        <div class="grid-2">
+          <article class="card">
+            <h2 id="marcaFormTitle">Agregar marca</h2>
+            <form id="marcaForm" class="form-grid">
+              <div class="field full">
+                <label>Nombre</label>
+                <input id="marcaNombre" type="text" required />
+              </div>
+              <div class="field full">
+                <label>Logo (archivo)</label>
+                <input id="marcaImagen" type="file" accept="image/*" />
+              </div>
+              <div class="field full" id="marcaImagePreviewContainer" style="min-height:120px; background:#f8fbff; border:1px dashed #dce7fd; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#999; font-size:.85rem;">
+                Vista previa de imagen
+              </div>
+              <div class="field">
+                <label>Estado</label>
+                <select id="marcaActiva"><option value="true">Activa</option><option value="false">Inactiva</option></select>
+              </div>
+              <div class="field full actions">
+                <button class="btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                <button class="btn secondary" type="button" id="cancelMarcaBtn"><i class="fa-solid fa-rotate-left"></i> Cancelar edición</button>
+              </div>
+            </form>
+          </article>
+          <article class="card">
+            <h2>Listado de marcas</h2>
+            <div class="search-toolbar">
+              <input id="marcaSearch" type="text" placeholder="Buscar marca..." />
+              <select id="marcaSearchBy">
+                <option value="all">Todo</option>
+                <option value="id">ID</option>
+                <option value="nombre">Nombre</option>
+                <option value="estado">Estado</option>
+              </select>
+            </div>
+            <div class="search-hint" id="marcaSearchHint">Mostrando todas las marcas</div>
+            <div class="list" id="marcaList"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="productosView">
+        <div class="grid-2">
+          <article class="card">
+            <h2 id="productoFormTitle">Agregar producto</h2>
+            <form id="productoForm" class="form-grid">
+              <div class="field full">
+                <label>Nombre del producto</label>
+                <input id="productoNombre" type="text" required />
+              </div>
+              
+              <div class="field">
+                <label>SKU / Código</label>
+                <input id="productoSku" type="text" placeholder="Ej: SKU-001" required />
+              </div>
+              <div class="field">
+                <label>Modelo</label>
+                <input id="productoModelo" type="text" required />
+              </div>
+              
+              <div class="field">
+                <label>Marca</label>
+                <select id="productoMarca" required></select>
+              </div>
+              <div class="field">
+                <label>Categoría</label>
+                <select id="productoCategoria" required></select>
+              </div>
+              
+              <div class="field">
+                <label>Proveedor</label>
+                <input id="productoProveedor" type="text" placeholder="Nombre del proveedor" />
+              </div>
+              <div class="field">
+                <label>Ubicación en almacén</label>
+                <input id="productoUbicacion" type="text" placeholder="Ej: Pasillo A-3" />
+              </div>
+              
+              <div class="field full">
+                <label>Descripción</label>
+                <textarea id="productoDescripcion"></textarea>
+              </div>
+              
+              <div class="field full">
+                <label>Imagen (archivo)</label>
+                <input id="productoImagen" type="file" accept="image/*" />
+              </div>
+              <div class=\"field full\" id=\"productoImagePreviewContainer\" style=\"min-height:120px; background:#f8fbff; border:1px dashed #dce7fd; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#999; font-size:.85rem;\">
+                Vista previa de imagen
+              </div>              
+              <div class="field full">
+                <label>Características (una por línea)</label>
+                <textarea id="productoCaracteristicas" placeholder="Característica 1&#10;Característica 2"></textarea>
+              </div>
+
+              <div style="border-top: 2px solid #e3ecff; padding-top: 12px; grid-column: 1/-1; margin-bottom: 6px;">
+                <h3 style="margin: 0; color: #486196; font-size: 0.95rem; font-weight: 600;">Control de Stock</h3>
+              </div>
+              
+              <div class="field">
+                <label>Stock inicial</label>
+                <input id="productoStock" type="number" min="0" value="0" required />
+              </div>
+              <div class="field">
+                <label>Stock mínimo (alerta)</label>
+                <input id="productoMinimo" type="number" min="0" value="5" required />
+              </div>
+
+              <div class="field">
+                <label>Stock máximo</label>
+                <input id="productoMaximo" type="number" min="0" value="100" />
+              </div>
+              <div class="field">
+                <label>Punto de reorden</label>
+                <input id="productoReorden" type="number" min="0" value="10" />
+              </div>
+
+              <div style="border-top: 2px solid #e3ecff; padding-top: 12px; grid-column: 1/-1; margin-bottom: 6px;">
+                <h3 style="margin: 0; color: #486196; font-size: 0.95rem; font-weight: 600;">Valorización</h3>
+              </div>
+
+              <div class="field">
+                <label>Costo unitario ($)</label>
+                <input id="productoCosto" type="number" min="0" step="0.01" value="0" required />
+              </div>
+              <div class="field">
+                <label>Precio de venta ($)</label>
+                <input id="productoPrecio" type="number" min="0" step="0.01" value="0" required />
+              </div>
+
+              <div class="field">
+                <label>Margen de ganancia (%)</label>
+                <input id="productoMargen" type="number" min="0" max="100" value="0" readonly style="background: #f0f4ff; cursor: not-allowed;" />
+              </div>
+              <div class="field">
+                <label>Moneda</label>
+                <select id="productoMoneda">
+                  <option value="USD">USD ($)</option>
+                  <option value="MXN">MXN ($)</option>
+                  <option value="EUR">EUR (€)</option>
+                </select>
+              </div>
+
+              <div style="border-top: 2px solid #e3ecff; padding-top: 12px; grid-column: 1/-1; margin-bottom: 6px;">
+                <h3 style="margin: 0; color: #486196; font-size: 0.95rem; font-weight: 600;">Trazabilidad</h3>
+              </div>
+
+              <div class="field full">
+                <label>Número de lote/serie</label>
+                <input id="productoLote" type="text" placeholder="Ej: LOTE-2026-001" />
+              </div>
+              <div class="field">
+                <label>Fecha de adquisición</label>
+                <input id="productoFecha" type="date" />
+              </div>
+              <div class="field">
+                <label>Estado</label>
+                <select id="productoActivo"><option value="true">Activo</option><option value="false">Inactivo</option></select>
+              </div>
+
+              <div class="field full actions">
+                <button class="btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar producto</button>
+                <button class="btn secondary" type="button" id="cancelProductoBtn"><i class="fa-solid fa-rotate-left"></i> Cancelar edición</button>
+              </div>
+            </form>
+          </article>
+
+          <article class="card">
+            <h2>Inventario de productos</h2>
+            <div class="search-toolbar">
+              <input id="productoSearch" type="text" placeholder="Buscar producto, modelo, marca, categoría..." />
+              <select id="productoSearchBy">
+                <option value="all">Todo</option>
+                <option value="id">ID</option>
+                <option value="nombre">Nombre</option>
+                <option value="modelo">Modelo</option>
+                <option value="marca">Marca</option>
+                <option value="categoria">Categoría</option>
+                <option value="estado">Estado</option>
+                <option value="stock">Stock</option>
+              </select>
+            </div>
+            <div class="search-hint" id="productoSearchHint">Mostrando todos los productos</div>
+            <div class="table-header">
+              <span>Producto</span><span>Marca</span><span>Stock</span><span>Estado</span><span>Acciones</span>
+            </div>
+            <div class="list" id="productoList"></div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="JS/inventario.js"></script>
+  <script>
+    const bgCanvas = document.getElementById("bgCanvas");
+    if (bgCanvas) {
+      const bgCtx = bgCanvas.getContext("2d");
+      function resizeCanvas() {
+        bgCanvas.width = window.innerWidth;
+        bgCanvas.height = window.innerHeight;
+      }
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
+      const circles = Array.from({ length: 40 }, () => ({
+        x: Math.random() * bgCanvas.width,
+        y: Math.random() * bgCanvas.height,
+        r: Math.random() * 8 + 3,
+        dx: (Math.random() - 0.5) * 0.4,
+        dy: (Math.random() - 0.5) * 0.4,
+        alpha: Math.random() * 0.45 + 0.15,
+      }));
+      function animateBg() {
+        bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+        circles.forEach((c) => {
+          bgCtx.beginPath();
+          bgCtx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+          bgCtx.fillStyle = `rgba(0, 119, 204, ${c.alpha})`;
+          bgCtx.fill();
+          c.x += c.dx;
+          c.y += c.dy;
+          if (c.x < 0 || c.x > bgCanvas.width) c.dx *= -1;
+          if (c.y < 0 || c.y > bgCanvas.height) c.dy *= -1;
+        });
+        requestAnimationFrame(animateBg);
+      }
+      animateBg();
+    }
+  </script>
+</body>
+</html>

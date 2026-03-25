@@ -107,6 +107,43 @@
       margin-top: 20px;
     }
 
+    .inventory-access {
+      margin-top: 26px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(0, 119, 204, 0.2);
+      text-align: center;
+    }
+
+    .inventory-label {
+      margin-bottom: 12px;
+      color: var(--color-text-soft);
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .inventory-btn {
+      width: 100%;
+      border: 1px solid rgba(0, 119, 204, 0.35);
+      background: rgba(0, 119, 204, 0.08);
+      color: var(--color-accent);
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: transform var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .inventory-btn:hover {
+      background: rgba(0, 119, 204, 0.16);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(0, 119, 204, 0.16);
+    }
+
     .option-card {
       display: flex;
       align-items: center;
@@ -139,13 +176,14 @@
       width: 100%;
       height: 100%;
       z-index: -1;
+      pointer-events: none;
       opacity: 0.35;
     }
   </style>
 </head>
 
 <body>
-<canvas id="bgCanvas"></canvas>
+<canvas id="bgCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:0.35;"></canvas>
 
   <!-- LOGIN -->
   <div class="login-box active" id="loginBox">
@@ -188,10 +226,20 @@
         <span>Agregar Producto</span>
       </div>
     </div>
+
+    <div class="inventory-access">
+      <p class="inventory-label">Acceso externo al Inventario</p>
+      <button class="inventory-btn" onclick="openInventory()">
+        <i class="fa-solid fa-warehouse"></i>
+        Abrir Inventario
+        <i class="fa-solid fa-up-right-from-square"></i>
+      </button>
+    </div>
   </div>
 
   <script>
     const ADMIN_PASSWORD = "HSP2025"; // <-- CAMBIA ESTA CONTRASEÑA
+    const INVENTORY_URL = "inventario.html";
 
     function login() {
       const pass = document.getElementById("passwordInput").value;
@@ -206,6 +254,10 @@
 
     function goTo(page) {
       window.location.href = page;
+    }
+
+    function openInventory() {
+      window.open(INVENTORY_URL, "_blank", "noopener,noreferrer");
     }
   </script>
   <script>
