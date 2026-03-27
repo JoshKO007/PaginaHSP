@@ -6,6 +6,7 @@
   <title>Inventario | YoloTech</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <style>
     :root {
       --bg: #f3f7ff;
@@ -178,6 +179,23 @@
       font-size: 1.05rem;
       color: #26457d;
       font-weight: 700;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+    }
+
+    .btn.small {
+      padding: 7px 10px;
+      font-size: .82rem;
     }
 
     .kpis {
@@ -388,6 +406,141 @@
       gap: 12px;
     }
 
+    .stock-status-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .stock-status-card {
+      border: 1px solid #dce7fd;
+      background: #f8fbff;
+      border-radius: 12px;
+      padding: 10px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .stock-status-title {
+      font-size: .82rem;
+      color: #60739b;
+      font-weight: 700;
+    }
+
+    .stock-status-value {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #204079;
+      line-height: 1;
+    }
+
+    .stock-status-sub {
+      font-size: .78rem;
+      color: #60739b;
+    }
+
+    .stock-status-card.ok { border-color: #bbf7d0; background: #f0fdf4; }
+    .stock-status-card.warn { border-color: #fde68a; background: #fffbeb; }
+    .stock-status-card.out { border-color: #fecaca; background: #fef2f2; }
+    .stock-status-card.reorder { border-color: #bfdbfe; background: #eff6ff; }
+
+    .product-row.highlight {
+      border-color: #3f6df6;
+      box-shadow: 0 0 0 2px rgba(63, 109, 246, 0.18);
+      animation: pulseHighlight 1.2s ease;
+    }
+
+    @keyframes pulseHighlight {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.01); }
+      100% { transform: scale(1); }
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 22, 46, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9998;
+      padding: 16px;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-card {
+      width: min(920px, 100%);
+      max-height: 85vh;
+      background: #fff;
+      border: 1px solid #dce7fd;
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      overflow: hidden;
+    }
+
+    .modal-head {
+      padding: 12px 14px;
+      border-bottom: 1px solid #e3ecff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-head h3 {
+      margin: 0;
+      color: #26457d;
+      font-size: 1rem;
+    }
+
+    .modal-body {
+      padding: 12px;
+      overflow: auto;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .modal-product {
+      width: 100%;
+      border: 1px solid #e3ecff;
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      text-align: left;
+      cursor: pointer;
+      color: inherit;
+    }
+
+    .modal-product:hover {
+      border-color: #3f6df6;
+      background: #f8fbff;
+    }
+
+    .modal-product img,
+    .modal-product .img-placeholder {
+      width: 54px;
+      height: 54px;
+      border-radius: 8px;
+      border: 1px solid #dce7fd;
+      object-fit: cover;
+      background: #f0f4ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #7b90b9;
+      font-size: .9rem;
+    }
+
     .alert-toggle-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -493,6 +646,7 @@
     @media (max-width: 900px) {
       .grid-2, .form-grid { grid-template-columns: 1fr; }
       .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .stock-status-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .table-header { display: none; }
       .product-row { grid-template-columns: 1fr; }
       .row-actions { justify-content: flex-start; }
@@ -597,15 +751,32 @@
         </div>
 
         <article class="card" style="margin-top:14px;">
-          <h2>Configuración de alertas</h2>
-          <div class="alert-controls">
-            <div class="alert-toggle-grid">
-              <label class="alert-toggle"><input type="checkbox" id="alertOutToggle" checked /> Agotado</label>
-              <label class="alert-toggle"><input type="checkbox" id="alertLowToggle" checked /> Stock mínimo</label>
-              <label class="alert-toggle"><input type="checkbox" id="alertReorderToggle" checked /> Reorden</label>
-              <label class="alert-toggle"><input type="checkbox" id="alertExcessToggle" checked /> Exceso</label>
+          <h2>Resumen de estados</h2>
+          <div class="stock-status-grid" id="stockStatusGrid">
+            <div class="stock-status-card ok">
+              <div class="stock-status-title">Stock correcto</div>
+              <div class="stock-status-value" id="statusOkCount">0</div>
+              <div class="stock-status-sub">Productos estables</div>
+              <button class="btn secondary small" id="btnStatusOk"><i class="fa-solid fa-eye"></i> Ver productos</button>
             </div>
-            <div class="alert-summary" id="alertSummaryList"></div>
+            <div class="stock-status-card warn">
+              <div class="stock-status-title">Advertencia</div>
+              <div class="stock-status-value" id="statusWarnCount">0</div>
+              <div class="stock-status-sub">Stock bajo o exceso</div>
+              <button class="btn secondary small" id="btnStatusWarn"><i class="fa-solid fa-eye"></i> Ver productos</button>
+            </div>
+            <div class="stock-status-card out">
+              <div class="stock-status-title">Sin stock</div>
+              <div class="stock-status-value" id="statusOutCount">0</div>
+              <div class="stock-status-sub">Productos agotados</div>
+              <button class="btn secondary small" id="btnStatusOut"><i class="fa-solid fa-eye"></i> Ver productos</button>
+            </div>
+            <div class="stock-status-card reorder">
+              <div class="stock-status-title">Pedido / Reorden</div>
+              <div class="stock-status-value" id="statusReorderCount">0</div>
+              <div class="stock-status-sub">Requieren pedido</div>
+              <button class="btn secondary small" id="btnStatusReorder"><i class="fa-solid fa-eye"></i> Ver productos</button>
+            </div>
           </div>
         </article>
 
@@ -646,7 +817,10 @@
             </form>
           </article>
           <article class="card">
-            <h2>Listado de categorías</h2>
+            <div class="section-head">
+              <h2>Listado de categorías</h2>
+              <button class="btn secondary small" id="exportCategoriasBtn"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+            </div>
             <div class="search-toolbar">
               <input id="categoriaSearch" type="text" placeholder="Buscar categoría..." />
               <select id="categoriaSearchBy">
@@ -689,7 +863,10 @@
             </form>
           </article>
           <article class="card">
-            <h2>Listado de marcas</h2>
+            <div class="section-head">
+              <h2>Listado de marcas</h2>
+              <button class="btn secondary small" id="exportMarcasBtn"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+            </div>
             <div class="search-toolbar">
               <input id="marcaSearch" type="text" placeholder="Buscar marca..." />
               <select id="marcaSearchBy">
@@ -832,7 +1009,10 @@
           </article>
 
           <article class="card">
-            <h2>Inventario de productos</h2>
+            <div class="section-head">
+              <h2>Inventario de productos</h2>
+              <button class="btn secondary small" id="exportProductosBtn"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+            </div>
             <div class="search-toolbar">
               <input id="productoSearch" type="text" placeholder="Buscar producto, modelo, marca, categoría..." />
               <select id="productoSearchBy">
@@ -855,6 +1035,16 @@
         </div>
       </section>
     </main>
+  </div>
+
+  <div class="modal" id="statusModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="statusModalTitle">Productos</h3>
+        <button class="btn secondary icon-only" id="statusModalClose" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" id="statusModalList"></div>
+    </div>
   </div>
 
   <script type="module" src="JS/inventario.js"></script>

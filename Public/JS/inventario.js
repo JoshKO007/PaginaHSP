@@ -6,7 +6,6 @@ const SUPABASE_ANON_KEY =
 const IMGBB_API_KEY = "18d7825e6b190dcaac01e42053affc61";
 
 const MOV_STORE_KEY = "inventory_movements_v1";
-const ALERT_CFG_KEY = "inventory_alert_config_v1";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -28,12 +27,7 @@ const state = {
   marcaChartDash: null,
   topValueChart: null,
   valorCategoriaChart: null,
-  alertConfig: {
-    out: true,
-    low: true,
-    reorder: true,
-    excess: true,
-  },
+  highlightedProductId: null,
 };
 
 const els = {
@@ -107,11 +101,23 @@ const els = {
   marcaChartDash: document.getElementById("marcaChartDash"),
   topValueChart: document.getElementById("topValueChart"),
   valorCategoria: document.getElementById("valorCategoria"),
-  alertOutToggle: document.getElementById("alertOutToggle"),
-  alertLowToggle: document.getElementById("alertLowToggle"),
-  alertReorderToggle: document.getElementById("alertReorderToggle"),
-  alertExcessToggle: document.getElementById("alertExcessToggle"),
-  alertSummaryList: document.getElementById("alertSummaryList"),
+
+  statusOkCount: document.getElementById("statusOkCount"),
+  statusWarnCount: document.getElementById("statusWarnCount"),
+  statusOutCount: document.getElementById("statusOutCount"),
+  statusReorderCount: document.getElementById("statusReorderCount"),
+  btnStatusOk: document.getElementById("btnStatusOk"),
+  btnStatusWarn: document.getElementById("btnStatusWarn"),
+  btnStatusOut: document.getElementById("btnStatusOut"),
+  btnStatusReorder: document.getElementById("btnStatusReorder"),
+  statusModal: document.getElementById("statusModal"),
+  statusModalTitle: document.getElementById("statusModalTitle"),
+  statusModalList: document.getElementById("statusModalList"),
+  statusModalClose: document.getElementById("statusModalClose"),
+
+  exportCategoriasBtn: document.getElementById("exportCategoriasBtn"),
+  exportMarcasBtn: document.getElementById("exportMarcasBtn"),
+  exportProductosBtn: document.getElementById("exportProductosBtn"),
 };
 
 function setSyncStatus(text) {
@@ -246,34 +252,6 @@ function loadMovementStore() {
 
 function saveMovementStore() {
   localStorage.setItem(MOV_STORE_KEY, JSON.stringify(state.movements));
-}
-
-function loadAlertConfig() {
-  try {
-    const raw = localStorage.getItem(ALERT_CFG_KEY);
-    if (!raw) return { ...state.alertConfig };
-    const parsed = JSON.parse(raw);
-    return {
-      out: parsed?.out !== false,
-      low: parsed?.low !== false,
-      reorder: parsed?.reorder !== false,
-      excess: parsed?.excess !== false,
-    };
-  } catch {
-    return { ...state.alertConfig };
-  }
-}
-
-function saveAlertConfig() {
-  localStorage.setItem(ALERT_CFG_KEY, JSON.stringify(state.alertConfig));
-}
-
-function isAlertTypeEnabled(health) {
-  if (health === "out") return state.alertConfig.out;
-  if (health === "low") return state.alertConfig.low;
-  if (health === "reorder") return state.alertConfig.reorder;
-  if (health === "excess") return state.alertConfig.excess;
-  return false;
 }
 
 function addMovement(productoId, nombre, delta, reason) {
@@ -468,67 +446,42 @@ function productHealth(productId) {
   return "ok";
 }
 
-function lowStockProducts() {
-  return state.productos.filter((p) => {
-    const h = productHealth(p.id);
-    return isAlertTypeEnabled(h);
-  });
+function statusBucketFromHealth(health) {
+  if (health === "ok") return "ok";
+  if (health === "out") return "out";
+  if (health === "reorder") return "reorder";
+  return "warn";
 }
 
 function getAlertCounts() {
-  const counts = { out: 0, low: 0, reorder: 0, excess: 0 };
+  const counts = { out: 0, low: 0, reorder: 0, excess: 0, ok: 0, warn: 0 };
   state.productos.forEach((p) => {
     const h = productHealth(p.id);
     if (counts[h] !== undefined) counts[h] += 1;
   });
+  counts.warn = counts.low + counts.excess;
   return counts;
 }
 
-function renderAlertSettings() {
-  if (els.alertOutToggle) els.alertOutToggle.checked = state.alertConfig.out;
-  if (els.alertLowToggle) els.alertLowToggle.checked = state.alertConfig.low;
-  if (els.alertReorderToggle) els.alertReorderToggle.checked = state.alertConfig.reorder;
-  if (els.alertExcessToggle) els.alertExcessToggle.checked = state.alertConfig.excess;
-
-  if (!els.alertSummaryList) return;
-  const counts = getAlertCounts();
-  const rows = [
-    { key: "out", label: "Agotado", count: counts.out },
-    { key: "low", label: "Stock mínimo", count: counts.low },
-    { key: "reorder", label: "Reorden", count: counts.reorder },
-    { key: "excess", label: "Exceso", count: counts.excess },
-  ];
-
-  els.alertSummaryList.innerHTML = rows
-    .map((r) => {
-      const enabled = state.alertConfig[r.key];
-      return `
-        <div class='alert-summary-item ${enabled ? "" : "disabled"}'>
-          <span>${r.label} ${enabled ? "" : "(desactivada)"}</span>
-          <strong>${r.count}</strong>
-        </div>
-      `;
-    })
-    .join("");
+function getFilteredCategorias() {
+  const query = normalizeText(els.categoriaSearch?.value || "");
+  const mode = els.categoriaSearchBy?.value || "all";
+  const filtered = state.categorias.filter((cat) => categoryMatches(cat, query, mode));
+  return { mode, list: sortCategorias(filtered, mode) };
 }
 
-function setupAlertControls() {
-  const map = [
-    [els.alertOutToggle, "out"],
-    [els.alertLowToggle, "low"],
-    [els.alertReorderToggle, "reorder"],
-    [els.alertExcessToggle, "excess"],
-  ];
+function getFilteredMarcas() {
+  const query = normalizeText(els.marcaSearch?.value || "");
+  const mode = els.marcaSearchBy?.value || "all";
+  const filtered = state.marcas.filter((marca) => marcaMatches(marca, query, mode));
+  return { mode, list: sortMarcas(filtered, mode) };
+}
 
-  map.forEach(([checkbox, key]) => {
-    if (!checkbox) return;
-    checkbox.addEventListener("change", () => {
-      state.alertConfig[key] = checkbox.checked;
-      saveAlertConfig();
-      renderAlertSettings();
-      renderDashboard();
-    });
-  });
+function getFilteredProductos() {
+  const query = normalizeText(els.productoSearch?.value || "");
+  const mode = els.productoSearchBy?.value || "all";
+  const filtered = state.productos.filter((p) => productoMatches(p, query, mode));
+  return { mode, list: sortProductos(filtered, mode) };
 }
 
 function renderAll() {
@@ -685,10 +638,7 @@ function sortProductos(items, mode) {
 function renderCategorias() {
   els.categoriaList.innerHTML = "";
 
-  const query = normalizeText(els.categoriaSearch?.value || "");
-  const mode = els.categoriaSearchBy?.value || "all";
-  const filtered = state.categorias.filter((cat) => categoryMatches(cat, query, mode));
-  const sorted = sortCategorias(filtered, mode);
+  const { mode, list: sorted } = getFilteredCategorias();
 
   if (els.categoriaSearchHint) {
     els.categoriaSearchHint.textContent = `Mostrando ${sorted.length} de ${state.categorias.length} categorías · orden: ${mode}`;
@@ -730,10 +680,7 @@ function renderCategorias() {
 function renderMarcas() {
   els.marcaList.innerHTML = "";
 
-  const query = normalizeText(els.marcaSearch?.value || "");
-  const mode = els.marcaSearchBy?.value || "all";
-  const filtered = state.marcas.filter((marca) => marcaMatches(marca, query, mode));
-  const sorted = sortMarcas(filtered, mode);
+  const { mode, list: sorted } = getFilteredMarcas();
 
   if (els.marcaSearchHint) {
     els.marcaSearchHint.textContent = `Mostrando ${sorted.length} de ${state.marcas.length} marcas · orden: ${mode}`;
@@ -775,10 +722,7 @@ function renderMarcas() {
 function renderProductos() {
   els.productoList.innerHTML = "";
 
-  const query = normalizeText(els.productoSearch?.value || "");
-  const mode = els.productoSearchBy?.value || "all";
-  const filtered = state.productos.filter((p) => productoMatches(p, query, mode));
-  const sorted = sortProductos(filtered, mode);
+  const { mode, list: sorted } = getFilteredProductos();
 
   if (els.productoSearchHint) {
     els.productoSearchHint.textContent = `Mostrando ${sorted.length} de ${state.productos.length} productos · orden: ${mode}`;
@@ -814,7 +758,9 @@ function renderProductos() {
     const visibilityBadge = p.activo === false ? "<span class='badge out'>Oculto</span>" : "<span class='badge ok'>Visible</span>";
 
     const row = document.createElement("div");
-    row.className = "row product-row";
+    const isHighlighted = Number(state.highlightedProductId) === Number(p.id);
+    row.className = `row product-row${isHighlighted ? " highlight" : ""}`;
+    row.dataset.productId = String(p.id);
     row.innerHTML = `
       <div>
         <div class='title'>${p.nombre} ${visibilityBadge}</div>
@@ -874,20 +820,24 @@ function renderProductos() {
     row.querySelector("[data-action='toggle']")?.addEventListener("click", () => toggleProducto(p));
     row.querySelector("[data-action='edit']")?.addEventListener("click", () => startEditProducto(p));
     els.productoList.appendChild(row);
+
+    if (isHighlighted) {
+      requestAnimationFrame(() => {
+        row.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+    }
   });
 }
 
 function renderDashboard() {
-  const low = lowStockProducts();
-  const out = state.productos.filter((p) => productHealth(p.id) === "out").length;
-  const reorden = state.productos.filter((p) => productHealth(p.id) === "reorder").length;
+  const counts = getAlertCounts();
 
   els.kpiProductos.textContent = String(state.productos.length);
   els.kpiCategorias.textContent = String(state.categorias.length);
   els.kpiMarcas.textContent = String(state.marcas.length);
-  els.kpiLow.textContent = String(low.length);
-  els.kpiAgotados.textContent = String(out);
-  els.kpiReorden.textContent = String(reorden);
+  els.kpiLow.textContent = String(counts.low);
+  els.kpiAgotados.textContent = String(counts.out);
+  els.kpiReorden.textContent = String(counts.reorder);
 
   // Calcular valor total del inventario
   let valorTotal = 0;
@@ -906,17 +856,88 @@ function renderDashboard() {
 
   els.kpiValorTotal.textContent = `$${valorTotal.toFixed(2)}`;
   els.kpiMargenPromedio.textContent = margenCount > 0 ? `${Math.round(margenTotal / margenCount)}%` : "0%";
-  const enabledTypes = Object.values(state.alertConfig).filter(Boolean).length;
-  els.lowStockPill.textContent =
-    enabledTypes === 0
-      ? "Alertas desactivadas"
-      : low.length > 0
-        ? `${low.length} productos en alerta`
-        : "Sin alertas";
+  const totalAlerts = counts.warn + counts.out + counts.reorder;
+  els.lowStockPill.textContent = totalAlerts > 0 ? `${totalAlerts} productos en alerta` : "Sin alertas";
 
   renderMovements();
-  renderAlertSettings();
+  updateStatusCards(counts);
   renderCharts();
+}
+
+function updateStatusCards(counts = getAlertCounts()) {
+  if (els.statusOkCount) els.statusOkCount.textContent = String(counts.ok);
+  if (els.statusWarnCount) els.statusWarnCount.textContent = String(counts.warn);
+  if (els.statusOutCount) els.statusOutCount.textContent = String(counts.out);
+  if (els.statusReorderCount) els.statusReorderCount.textContent = String(counts.reorder);
+}
+
+function productsForBucket(bucket) {
+  return state.productos.filter((p) => {
+    const health = productHealth(p.id);
+    const status = statusBucketFromHealth(health);
+    return status === bucket;
+  });
+}
+
+function bucketLabel(bucket) {
+  if (bucket === "ok") return "Stock correcto";
+  if (bucket === "warn") return "Advertencia";
+  if (bucket === "out") return "Sin stock";
+  if (bucket === "reorder") return "Pedido / Reorden";
+  return "Estado";
+}
+
+function openStatusModal(bucket) {
+  if (!els.statusModal || !els.statusModalList || !els.statusModalTitle) return;
+  const items = productsForBucket(bucket);
+  els.statusModalTitle.textContent = `${bucketLabel(bucket)} · ${items.length} producto(s)`;
+
+  if (items.length === 0) {
+    els.statusModalList.innerHTML = "<div class='tiny'>No hay productos en este estado.</div>";
+  } else {
+    els.statusModalList.innerHTML = "";
+    items.forEach((p) => {
+      const stock = getStockEntry(p.id);
+      const marca = state.marcas.find((m) => m.id === p.marca_id)?.nombre || "Sin marca";
+      const categoria = state.categorias.find((c) => c.id === p.categoria_id)?.nombre || "Sin categoría";
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "modal-product";
+      button.innerHTML = `
+        ${p.imagen ? `<img src='${p.imagen}' alt='${p.nombre}' />` : "<div class='img-placeholder'><i class='fa-solid fa-image'></i></div>"}
+        <div style='min-width:0;'>
+          <div class='title'>${p.nombre}</div>
+          <div class='meta'>${marca} • ${categoria}</div>
+          <div class='tiny'>Stock: ${stock.stock} • SKU: ${stock.sku || "N/D"}</div>
+        </div>
+        <i class='fa-solid fa-arrow-right' style='color:#5973a9;'></i>
+      `;
+
+      button.addEventListener("click", () => focusProductInProductsView(p.id));
+      els.statusModalList.appendChild(button);
+    });
+  }
+
+  els.statusModal.classList.add("active");
+  els.statusModal.setAttribute("aria-hidden", "false");
+}
+
+function closeStatusModal() {
+  if (!els.statusModal) return;
+  els.statusModal.classList.remove("active");
+  els.statusModal.setAttribute("aria-hidden", "true");
+}
+
+function focusProductInProductsView(productId) {
+  state.highlightedProductId = Number(productId);
+  closeStatusModal();
+  openView("productosView");
+  renderProductos();
+  setTimeout(() => {
+    state.highlightedProductId = null;
+    renderProductos();
+  }, 2600);
 }
 
 function renderMovements() {
@@ -973,10 +994,6 @@ function renderCharts() {
 
   // ===== GRÁFICA 2: Distribución de Alertas =====
   if (state.alertasChart) state.alertasChart.destroy();
-  const chartOut = state.alertConfig.out ? outCount : 0;
-  const chartLow = state.alertConfig.low ? lowCount : 0;
-  const chartReorder = state.alertConfig.reorder ? reorderCount : 0;
-  const chartExcess = state.alertConfig.excess ? excessCount : 0;
 
   state.alertasChart = new Chart(els.alertasChart, {
     type: "pie",
@@ -984,7 +1001,7 @@ function renderCharts() {
       labels: ["Agotados", "Stock Bajo", "En Reorden", "Exceso", "Normal"],
       datasets: [
         {
-          data: [chartOut, chartLow, chartReorder, chartExcess, okCount],
+          data: [outCount, lowCount, reorderCount, excessCount, okCount],
           backgroundColor: ["#dc2626", "#f59e0b", "#3b82f6", "#a78bfa", "#10b981"],
           borderWidth: 2,
           borderColor: "#fff",
@@ -1575,7 +1592,7 @@ function updateMargen() {
   els.productoMargen.value = margen;
 }
 
-function setupNavigation() {
+function openView(viewId) {
   const titleMap = {
     dashboardView: "Dashboard de Inventario",
     categoriasView: "Gestión de Categorías",
@@ -1583,17 +1600,116 @@ function setupNavigation() {
     productosView: "Gestión de Productos y Stock",
   };
 
+  document.querySelectorAll(".nav-btn").forEach((b) => {
+    b.classList.toggle("active", b.getAttribute("data-view") === viewId);
+  });
+
+  document.querySelectorAll(".view").forEach((v) => {
+    v.classList.toggle("active", v.id === viewId);
+  });
+
+  if (els.viewTitle) els.viewTitle.textContent = titleMap[viewId] || "Inventario";
+}
+
+function setupNavigation() {
   document.querySelectorAll(".nav-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const target = btn.getAttribute("data-view");
-      document.querySelectorAll(".nav-btn").forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-
-      document.querySelectorAll(".view").forEach((v) => v.classList.remove("active"));
-      document.getElementById(target)?.classList.add("active");
-
-      if (els.viewTitle) els.viewTitle.textContent = titleMap[target] || "Inventario";
+      if (!target) return;
+      openView(target);
     });
+  });
+}
+
+function setupStatusCardActions() {
+  const mapping = [
+    [els.btnStatusOk, "ok"],
+    [els.btnStatusWarn, "warn"],
+    [els.btnStatusOut, "out"],
+    [els.btnStatusReorder, "reorder"],
+  ];
+
+  mapping.forEach(([btn, bucket]) => {
+    btn?.addEventListener("click", () => openStatusModal(bucket));
+  });
+}
+
+function setupStatusModalHandlers() {
+  els.statusModalClose?.addEventListener("click", closeStatusModal);
+  els.statusModal?.addEventListener("click", (event) => {
+    if (event.target === els.statusModal) closeStatusModal();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && els.statusModal?.classList.contains("active")) {
+      closeStatusModal();
+    }
+  });
+}
+
+function downloadWorkbook(rows, sheetName, filePrefix) {
+  if (!Array.isArray(rows) || rows.length === 0) {
+    showNotification("No hay datos para exportar.", "warning");
+    return;
+  }
+
+  if (typeof XLSX === "undefined") {
+    showNotification("No se pudo cargar la librería de Excel.", "error");
+    return;
+  }
+
+  const worksheet = XLSX.utils.json_to_sheet(rows);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+  const stamp = new Date().toISOString().slice(0, 10);
+  XLSX.writeFile(workbook, `${filePrefix}_${stamp}.xlsx`);
+  showNotification(`Exportación completada: ${rows.length} registro(s).`, "success");
+}
+
+function setupExportButtons() {
+  els.exportCategoriasBtn?.addEventListener("click", () => {
+    const { list } = getFilteredCategorias();
+    const rows = list.map((cat) => ({
+      id: cat.id,
+      nombre: cat.nombre,
+      estado: cat.activa === false ? "Inactiva" : "Activa",
+      imagen: cat.imagen || "",
+    }));
+    downloadWorkbook(rows, "Categorias", "categorias");
+  });
+
+  els.exportMarcasBtn?.addEventListener("click", () => {
+    const { list } = getFilteredMarcas();
+    const rows = list.map((marca) => ({
+      id: marca.id,
+      nombre: marca.nombre,
+      estado: marca.activa === false ? "Inactiva" : "Activa",
+      imagen: marca.imagen || "",
+    }));
+    downloadWorkbook(rows, "Marcas", "marcas");
+  });
+
+  els.exportProductosBtn?.addEventListener("click", () => {
+    const { list } = getFilteredProductos();
+    const rows = list.map((p) => {
+      const stock = getStockEntry(p.id);
+      const health = productHealth(p.id);
+      const marca = state.marcas.find((m) => m.id === p.marca_id)?.nombre || "Sin marca";
+      const categoria = state.categorias.find((c) => c.id === p.categoria_id)?.nombre || "Sin categoría";
+      return {
+        id: p.id,
+        nombre: p.nombre,
+        sku: stock.sku || "",
+        modelo: p.numero_modelo || "",
+        marca,
+        categoria,
+        stock: stock.stock,
+        stock_minimo: stock.min,
+        punto_reorden: stock.reorden,
+        estado_stock: health,
+        estado_publicacion: p.activo === false ? "Inactivo" : "Activo",
+      };
+    });
+    downloadWorkbook(rows, "Productos", "productos");
   });
 }
 
@@ -1617,11 +1733,12 @@ function setupSearchHandlers() {
 async function bootstrap() {
   state.stockMap = {};
   state.movements = loadMovementStore();
-  state.alertConfig = loadAlertConfig();
 
   setupNavigation();
   setupSearchHandlers();
-  setupAlertControls();
+  setupStatusCardActions();
+  setupStatusModalHandlers();
+  setupExportButtons();
   resetCategoriaForm();
   resetMarcaForm();
   resetProductoForm();
