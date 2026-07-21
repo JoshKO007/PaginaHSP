@@ -3230,22 +3230,76 @@
 		}
 
 		async function exportCotizacionToPdf(cotData) {
+			let containerToClean = null;
 			try {
 				const { masterPdfWrapper, opt } = await buildCotizacionPdfElement(cotData);
-				await html2pdf().set(opt).from(masterPdfWrapper).save();
+
+				// Adjuntar al DOM fuera de pantalla para que Safari y Chrome móvil puedan calcular fuentes y layout
+				masterPdfWrapper.style.position = 'fixed';
+				masterPdfWrapper.style.left = '-9999px';
+				masterPdfWrapper.style.top = '0px';
+				masterPdfWrapper.style.zIndex = '-9999';
+				document.body.appendChild(masterPdfWrapper);
+				containerToClean = masterPdfWrapper;
+
+				const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+				if (isMobile && opt.html2canvas) {
+					opt.html2canvas = Object.assign({}, opt.html2canvas, { scale: 1.5 });
+				}
+
+				const worker = html2pdf().set(opt).from(masterPdfWrapper);
+
+				if (isMobile) {
+					// En teléfonos (Safari iOS / Chrome Android), generar Blob y forzar descarga
+					const pdfBlob = await worker.outputPdf('blob');
+					const blobUrl = URL.createObjectURL(pdfBlob);
+
+					const a = document.createElement('a');
+					a.href = blobUrl;
+					a.download = opt.filename || `Cotizacion_${cotData.numero || 'DOC'}.pdf`;
+					a.target = '_blank';
+					document.body.appendChild(a);
+					a.click();
+
+					setTimeout(() => {
+						if (a.parentNode) a.parentNode.removeChild(a);
+						URL.revokeObjectURL(blobUrl);
+					}, 3000);
+				} else {
+					await worker.save();
+				}
 			} catch (e) {
 				console.error('Error al generar PDF:', e);
-				alert('Ocurrió un error al generar el archivo PDF.');
+				alert('Ocurrió un error al generar el archivo PDF' + (e.message ? ': ' + e.message : '.'));
+			} finally {
+				if (containerToClean && containerToClean.parentNode) {
+					containerToClean.parentNode.removeChild(containerToClean);
+				}
 			}
 		}
 
 		async function generateCotizacionPdfBase64(cotData) {
-			const { masterPdfWrapper, opt } = await buildCotizacionPdfElement(cotData);
-			const emailOpt = Object.assign({}, opt, {
-				image: { type: 'jpeg', quality: 0.75 },
-				html2canvas: { scale: 1, useCORS: true, logging: false, scrollY: 0 }
-			});
-			return await html2pdf().set(emailOpt).from(masterPdfWrapper).outputPdf('datauristring');
+			let containerToClean = null;
+			try {
+				const { masterPdfWrapper, opt } = await buildCotizacionPdfElement(cotData);
+
+				masterPdfWrapper.style.position = 'fixed';
+				masterPdfWrapper.style.left = '-9999px';
+				masterPdfWrapper.style.top = '0px';
+				masterPdfWrapper.style.zIndex = '-9999';
+				document.body.appendChild(masterPdfWrapper);
+				containerToClean = masterPdfWrapper;
+
+				const emailOpt = Object.assign({}, opt, {
+					image: { type: 'jpeg', quality: 0.75 },
+					html2canvas: { scale: 1, useCORS: true, logging: false, scrollY: 0 }
+				});
+				return await html2pdf().set(emailOpt).from(masterPdfWrapper).outputPdf('datauristring');
+			} finally {
+				if (containerToClean && containerToClean.parentNode) {
+					containerToClean.parentNode.removeChild(containerToClean);
+				}
+			}
 		}
 
 		// Exponer globalmente
