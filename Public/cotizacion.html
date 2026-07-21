@@ -3230,74 +3230,578 @@
 		}
 
 		async function exportCotizacionToPdf(cotData) {
-			let containerToClean = null;
-			try {
-				const { masterPdfWrapper, opt } = await buildCotizacionPdfElement(cotData);
+			const modal = document.getElementById('pdfDesignerModal');
+			const isModalOpen = modal && modal.classList.contains('show');
+			let layout = {};
+			let tc = tableColsConfig;
 
-				// Adjuntar al DOM fuera de pantalla para que Safari y Chrome móvil puedan calcular fuentes y layout
-				masterPdfWrapper.style.position = 'fixed';
-				masterPdfWrapper.style.left = '-9999px';
-				masterPdfWrapper.style.top = '0px';
-				masterPdfWrapper.style.zIndex = '-9999';
-				document.body.appendChild(masterPdfWrapper);
-				containerToClean = masterPdfWrapper;
+			if (isModalOpen) {
+				const currentActive = getCurrentPdfLayoutConfig();
+				layout = (currentActive && currentActive.layout) ? currentActive.layout : {};
+				tc = (currentActive && currentActive.tableCols) ? currentActive.tableCols : tableColsConfig;
+			} else {
+				try {
+					let { data } = await supabase
+						.from('pdf_page_configurations')
+						.select('coordinates_data, table_cols_data')
+						.eq('config_name', 'layout_cotizacion')
+						.maybeSingle();
 
-				const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-				if (isMobile) {
-					// En móviles abrir una nueva pestaña limpia para visualizar/descargar el PDF
-					const printWindow = window.open('', '_blank');
-					if (printWindow) {
-						printWindow.document.write('<!DOCTYPE html><html><head><title>Generando Cotización...</title></head><body style="margin:0;display:flex;justify-content:center;align-items:center;height:100vh;font-family:sans-serif;background:#f8fafc;color:#0f172a"><h3>Cargando documento PDF...</h3></body></html>');
+					if (!data) {
+						const { data: defData } = await supabase
+							.from('pdf_page_configurations')
+							.select('coordinates_data, table_cols_data')
+							.eq('is_default', true)
+							.maybeSingle();
+						if (defData) data = defData;
 					}
 
-					const mobileOpt = Object.assign({}, opt, {
-						image: { type: 'jpeg', quality: 0.85 },
-						html2canvas: { scale: 1.2, useCORS: true, logging: false, scrollY: 0 }
-					});
-
-					const pdfUri = await html2pdf().set(mobileOpt).from(masterPdfWrapper).output('datauristring');
-
-					if (printWindow && !printWindow.closed) {
-						printWindow.location.href = pdfUri;
-					} else {
-						window.location.href = pdfUri;
+					if (data) {
+						layout = data.coordinates_data || layout;
+						tc = data.table_cols_data || tc;
 					}
-				} else {
-					await html2pdf().set(opt).from(masterPdfWrapper).save();
+				} catch (e) { }
+
+				if (!layout || !layout.nombre) {
+					let layoutRaw = localStorage.getItem('config_pdf_cotizacion_layout');
+					let colsRaw = localStorage.getItem('config_pdf_cotizacion_table_cols');
+
+					if (!layoutRaw && !colsRaw) {
+						const defaultRaw = localStorage.getItem('config_pdf_cotizacion_default');
+						if (defaultRaw) {
+							try {
+								const def = JSON.parse(defaultRaw);
+								layoutRaw = JSON.stringify(def.layout);
+								colsRaw = JSON.stringify(def.tableCols);
+							} catch (e) { }
+						}
+					}
+
+					try { if (layoutRaw) layout = JSON.parse(layoutRaw); } catch (e) { }
+					try { if (colsRaw) tc = Object.assign({}, tableColsConfig, JSON.parse(colsRaw)); } catch (e) { }
 				}
+			}
+
+			if (!window.pdfBgDataUrl) {
+				await renderPdfTemplateBackground();
+			}
+
+			const bgImgUrl = window.pdfBgDataUrl || '';
+			const targetW = window.pdfPageWidth || 816;
+			const targetH = window.pdfPageHeight || 1056;
+
+			function applyStyle(el, key, defaultTop, defaultLeft, defaultWidth) {
+				const cfg = layout[key] || {};
+				el.style.position = 'absolute';
+				el.style.top = cfg.top || defaultTop;
+				el.style.left = cfg.left || defaultLeft;
+				if (cfg.width || defaultWidth) el.style.width = cfg.width || defaultWidth;
+				if (cfg.fontFamily) el.style.fontFamily = cfg.fontFamily;
+				if (cfg.fontSize) el.style.fontSize = cfg.fontSize;
+				if (cfg.color) el.style.color = cfg.color;
+				if (cfg.fontWeight) el.style.fontWeight = cfg.fontWeight;
+				if (cfg.fontStyle) el.style.fontStyle = cfg.fontStyle;
+				if (cfg.textDecoration) el.style.textDecoration = cfg.textDecoration;
+			}
+
+			function formatMultilineDescription(str, wordsPerLine = 3) {
+				if (!str) return '';
+				const words = str.trim().split(/\s+/);
+				const lines = [];
+				for (let i = 0; i < words.length; i += wordsPerLine) {
+					lines.push(words.slice(i, i + wordsPerLine).map(w => escapeHtml(w)).join(' '));
+				}
+				return lines.join('<br>');
+			}
+
+			const prods = cotData.productos || [];
+			const maxItemsPerPage = 5;
+			const prodChunks = [];
+			if (prods.length === 0) {
+				prodChunks.push([]);
+			} else {
+				for (let i = 0; i < prods.length; i += maxItemsPerPage) {
+					prodChunks.push(prods.slice(i, i + maxItemsPerPage));
+				}
+			}
+			const totalPages = prodChunks.length;
+
+			let grandTotal = 0;
+			prods.forEach(p => {
+				const unitPrice = parseFloat(String(p.precio || '').replace(',', '.')) || 0;
+				const sub = unitPrice * (p.qty || 1);
+				const iva = (p.aplicaIva !== false) ? (sub * 0.16) : 0;
+				grandTotal += (sub + iva);
+			});
+
+			const masterPdfWrapper = document.createElement('div');
+
+			prodChunks.forEach((chunkItems, pageIdx) => {
+				const pdfContainer = document.createElement('div');
+				pdfContainer.style.position = 'relative';
+				pdfContainer.style.width = targetW + 'px';
+				pdfContainer.style.height = (targetH - 2) + 'px';
+				pdfContainer.style.background = `url("${bgImgUrl}") no-repeat 0 0 / 100% 100%`;
+				pdfContainer.style.fontFamily = 'Inter, sans-serif';
+				pdfContainer.style.boxSizing = 'border-box';
+				pdfContainer.style.overflow = 'hidden';
+				if (pageIdx < totalPages - 1) {
+					pdfContainer.style.pageBreakAfter = 'always';
+				}
+
+				// 1. Cliente
+				const elCliente = document.createElement('div');
+				elCliente.textContent = (cotData.cliente ? cotData.cliente.nombre : '') || '—';
+				elCliente.style.whiteSpace = 'nowrap';
+				applyStyle(elCliente, 'nombre', '270px', '210px', '550px');
+				pdfContainer.appendChild(elCliente);
+
+				// 2. Fecha
+				const elFecha = document.createElement('div');
+				const dt = cotData.fecha ? new Date(cotData.fecha) : new Date();
+				elFecha.textContent = !isNaN(dt) ? dt.toLocaleDateString() : (cotData.fecha || '—');
+				applyStyle(elFecha, 'fecha', '305px', '210px');
+				pdfContainer.appendChild(elFecha);
+
+				// 3. Número
+				const elNumero = document.createElement('div');
+				elNumero.textContent = cotData.numero || '—';
+				applyStyle(elNumero, 'numero', '235px', '560px');
+				pdfContainer.appendChild(elNumero);
+
+				// 4. Vendedor
+				const elVendedor = document.createElement('div');
+				elVendedor.textContent = (cotData.vendedor ? cotData.vendedor.nombre : '') || '—';
+				applyStyle(elVendedor, 'vendedor', '875px', '150px');
+				pdfContainer.appendChild(elVendedor);
+
+				// 5. Teléfono Vendedor
+				const elTelVendedor = document.createElement('div');
+				elTelVendedor.textContent = (cotData.vendedor ? cotData.vendedor.telefono : '') || '—';
+				applyStyle(elTelVendedor, 'telefono', '925px', '150px');
+				pdfContainer.appendChild(elTelVendedor);
+
+				// 6. Total
+				const elTotal = document.createElement('div');
+				const totalVal = cotData.total !== undefined ? parseFloat(cotData.total) : grandTotal;
+				elTotal.textContent = !isNaN(totalVal) ? totalVal.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' }) : '$0.00';
+				applyStyle(elTotal, 'total', '760px', '560px');
+				pdfContainer.appendChild(elTotal);
+
+				// 6. Tabla de Productos (máx 5 por página)
+				const elTabla = document.createElement('div');
+				applyStyle(elTabla, 'tabla', '390px', '55px', '684px');
+
+				let currentY = 0;
+				chunkItems.forEach(p => {
+					const unitPrice = parseFloat(String(p.precio || '').replace(',', '.')) || 0;
+					const subtotal = unitPrice * (p.qty || 1);
+					const ivaMonto = (p.aplicaIva !== false) ? (subtotal * 0.16) : 0;
+					const totalItem = subtotal + ivaMonto;
+
+					const rowContainer = document.createElement('div');
+					rowContainer.style.position = 'absolute';
+					rowContainer.style.top = currentY + 'px';
+					rowContainer.style.left = '0px';
+					rowContainer.style.width = '684px';
+					rowContainer.style.height = '62px';
+					rowContainer.style.borderBottom = '1.5px solid #cbd5e1';
+
+					function applyColFormat(el, colKey) {
+						const c = tc[colKey] || {};
+						if (c.fontFamily) el.style.fontFamily = c.fontFamily;
+						if (c.color) el.style.color = c.color;
+						if (c.fontWeight) el.style.fontWeight = c.fontWeight;
+						if (c.fontStyle) el.style.fontStyle = c.fontStyle;
+						if (c.textDecoration) el.style.textDecoration = c.textDecoration;
+					}
+
+					// Columna Descripción
+					const cDesc = document.createElement('div');
+					cDesc.style.position = 'absolute';
+					cDesc.style.left = (tc.desc.left || 0) + 'px';
+					cDesc.style.width = (tc.desc.width || 240) + 'px';
+					cDesc.style.fontSize = tc.desc.fontSize || '12px';
+					cDesc.style.textAlign = tc.desc.align || 'left';
+					applyColFormat(cDesc, 'desc');
+					cDesc.style.display = 'flex';
+					cDesc.style.gap = '6px';
+					cDesc.style.alignItems = 'flex-start';
+					cDesc.style.padding = '4px';
+					cDesc.style.boxSizing = 'border-box';
+					cDesc.innerHTML = `
+						<img src="${p.imagen || 'IMG/default.png'}" style="width:44px;height:34px;object-fit:cover;border-radius:4px;flex-shrink:0">
+						<div style="line-height:1.25">
+							<div style="font-weight:700">${formatMultilineDescription(p.nombre || '', 3)}</div>
+							${p.modelo ? `<div style="font-size:0.8em;color:#475569;margin-top:1px">Modelo: ${escapeHtml(p.modelo)}</div>` : ''}
+						</div>
+					`;
+					rowContainer.appendChild(cDesc);
+
+					// Columna Cantidad
+					const cCant = document.createElement('div');
+					cCant.style.position = 'absolute';
+					cCant.style.left = (tc.cant.left || 250) + 'px';
+					cCant.style.width = (tc.cant.width || 75) + 'px';
+					cCant.style.fontSize = tc.cant.fontSize || '12px';
+					cCant.style.textAlign = tc.cant.align || 'center';
+					cCant.style.fontWeight = '600';
+					applyColFormat(cCant, 'cant');
+					cCant.style.padding = '4px';
+					cCant.style.boxSizing = 'border-box';
+					cCant.textContent = String(p.qty || 1);
+					rowContainer.appendChild(cCant);
+
+					// Columna Subtotal
+					const cSub = document.createElement('div');
+					cSub.style.position = 'absolute';
+					cSub.style.left = (tc.sub.left || 345) + 'px';
+					cSub.style.width = (tc.sub.width || 100) + 'px';
+					cSub.style.fontSize = tc.sub.fontSize || '12px';
+					cSub.style.textAlign = tc.sub.align || 'right';
+					applyColFormat(cSub, 'sub');
+					cSub.style.padding = '4px';
+					cSub.style.boxSizing = 'border-box';
+					cSub.textContent = `$${subtotal.toFixed(2)}`;
+					rowContainer.appendChild(cSub);
+
+					// Columna IVA
+					const cIva = document.createElement('div');
+					cIva.style.position = 'absolute';
+					cIva.style.left = (tc.iva.left || 465) + 'px';
+					cIva.style.width = (tc.iva.width || 85) + 'px';
+					cIva.style.fontSize = tc.iva.fontSize || '12px';
+					cIva.style.textAlign = tc.iva.align || 'right';
+					applyColFormat(cIva, 'iva');
+					cIva.style.padding = '4px';
+					cIva.style.boxSizing = 'border-box';
+					cIva.textContent = `$${ivaMonto.toFixed(2)}`;
+					rowContainer.appendChild(cIva);
+
+					// Columna Total
+					const cTot = document.createElement('div');
+					cTot.style.position = 'absolute';
+					cTot.style.left = (tc.tot.left || 560) + 'px';
+					cTot.style.width = (tc.tot.width || 120) + 'px';
+					cTot.style.fontSize = tc.tot.fontSize || '12px';
+					cTot.style.textAlign = tc.tot.align || 'right';
+					cTot.style.fontWeight = '700';
+					applyColFormat(cTot, 'tot');
+					cTot.style.padding = '4px';
+					cTot.style.boxSizing = 'border-box';
+					cTot.textContent = `$${totalItem.toFixed(2)}`;
+					rowContainer.appendChild(cTot);
+
+					elTabla.appendChild(rowContainer);
+					currentY += 62;
+				});
+
+				pdfContainer.appendChild(elTabla);
+				masterPdfWrapper.appendChild(pdfContainer);
+			});
+
+			const opt = {
+				margin: 0,
+				filename: `Cotizacion_${cotData.numero || 'DOC'}.pdf`,
+				image: { type: 'jpeg', quality: 0.98 },
+				html2canvas: { scale: 2, useCORS: true, logging: false, scrollY: 0 },
+				jsPDF: { unit: 'px', format: [targetW, targetH], orientation: 'portrait' },
+				pagebreak: { mode: ['css', 'legacy'] }
+			};
+
+			try {
+				await html2pdf().set(opt).from(masterPdfWrapper).save();
 			} catch (e) {
 				console.error('Error al generar PDF:', e);
-				alert('Ocurrió un error al generar el archivo PDF' + (e.message ? ': ' + e.message : '.'));
-			} finally {
-				if (containerToClean && containerToClean.parentNode) {
-					containerToClean.parentNode.removeChild(containerToClean);
-				}
+				alert('Ocurrió un error al generar el archivo PDF.');
 			}
 		}
 
 		async function generateCotizacionPdfBase64(cotData) {
-			let containerToClean = null;
-			try {
-				const { masterPdfWrapper, opt } = await buildCotizacionPdfElement(cotData);
+			const modal = document.getElementById('pdfDesignerModal');
+			const isModalOpen = modal && modal.classList.contains('show');
+			let layout = {};
+			let tc = tableColsConfig;
 
-				masterPdfWrapper.style.position = 'fixed';
-				masterPdfWrapper.style.left = '-9999px';
-				masterPdfWrapper.style.top = '0px';
-				masterPdfWrapper.style.zIndex = '-9999';
-				document.body.appendChild(masterPdfWrapper);
-				containerToClean = masterPdfWrapper;
+			if (isModalOpen) {
+				const currentActive = getCurrentPdfLayoutConfig();
+				layout = (currentActive && currentActive.layout) ? currentActive.layout : {};
+				tc = (currentActive && currentActive.tableCols) ? currentActive.tableCols : tableColsConfig;
+			} else {
+				try {
+					let { data } = await supabase
+						.from('pdf_page_configurations')
+						.select('coordinates_data, table_cols_data')
+						.eq('config_name', 'layout_cotizacion')
+						.maybeSingle();
 
-				const emailOpt = Object.assign({}, opt, {
-					image: { type: 'jpeg', quality: 0.75 },
-					html2canvas: { scale: 1, useCORS: true, logging: false, scrollY: 0 }
-				});
-				const pdf = await html2pdf().set(emailOpt).from(masterPdfWrapper).toPdf().get('pdf');
-				return pdf.output('datauristring');
-			} finally {
-				if (containerToClean && containerToClean.parentNode) {
-					containerToClean.parentNode.removeChild(containerToClean);
+					if (!data) {
+						const { data: defData } = await supabase
+							.from('pdf_page_configurations')
+							.select('coordinates_data, table_cols_data')
+							.eq('is_default', true)
+							.maybeSingle();
+						if (defData) data = defData;
+					}
+
+					if (data) {
+						layout = data.coordinates_data || layout;
+						tc = data.table_cols_data || tc;
+					}
+				} catch (e) { }
+
+				if (!layout || !layout.nombre) {
+					let layoutRaw = localStorage.getItem('config_pdf_cotizacion_layout');
+					let colsRaw = localStorage.getItem('config_pdf_cotizacion_table_cols');
+
+					if (!layoutRaw && !colsRaw) {
+						const defaultRaw = localStorage.getItem('config_pdf_cotizacion_default');
+						if (defaultRaw) {
+							try {
+								const def = JSON.parse(defaultRaw);
+								layoutRaw = JSON.stringify(def.layout);
+								colsRaw = JSON.stringify(def.tableCols);
+							} catch (e) { }
+						}
+					}
+
+					try { if (layoutRaw) layout = JSON.parse(layoutRaw); } catch (e) { }
+					try { if (colsRaw) tc = Object.assign({}, tableColsConfig, JSON.parse(colsRaw)); } catch (e) { }
 				}
+			}
+
+			if (!window.pdfBgDataUrl) {
+				await renderPdfTemplateBackground();
+			}
+
+			const bgImgUrl = window.pdfBgDataUrl || '';
+			const targetW = window.pdfPageWidth || 816;
+			const targetH = window.pdfPageHeight || 1056;
+
+			function applyStyle(el, key, defaultTop, defaultLeft, defaultWidth) {
+				const cfg = layout[key] || {};
+				el.style.position = 'absolute';
+				el.style.top = cfg.top || defaultTop;
+				el.style.left = cfg.left || defaultLeft;
+				if (cfg.width || defaultWidth) el.style.width = cfg.width || defaultWidth;
+				if (cfg.fontFamily) el.style.fontFamily = cfg.fontFamily;
+				if (cfg.fontSize) el.style.fontSize = cfg.fontSize;
+				if (cfg.color) el.style.color = cfg.color;
+				if (cfg.fontWeight) el.style.fontWeight = cfg.fontWeight;
+				if (cfg.fontStyle) el.style.fontStyle = cfg.fontStyle;
+				if (cfg.textDecoration) el.style.textDecoration = cfg.textDecoration;
+			}
+
+			function formatMultilineDescription(str, wordsPerLine = 3) {
+				if (!str) return '';
+				const words = str.trim().split(/\s+/);
+				const lines = [];
+				for (let i = 0; i < words.length; i += wordsPerLine) {
+					lines.push(words.slice(i, i + wordsPerLine).map(w => escapeHtml(w)).join(' '));
+				}
+				return lines.join('<br>');
+			}
+
+			const prods = cotData.productos || [];
+			const maxItemsPerPage = 5;
+			const prodChunks = [];
+			if (prods.length === 0) {
+				prodChunks.push([]);
+			} else {
+				for (let i = 0; i < prods.length; i += maxItemsPerPage) {
+					prodChunks.push(prods.slice(i, i + maxItemsPerPage));
+				}
+			}
+			const totalPages = prodChunks.length;
+
+			let grandTotal = 0;
+			prods.forEach(p => {
+				const unitPrice = parseFloat(String(p.precio || '').replace(',', '.')) || 0;
+				const sub = unitPrice * (p.qty || 1);
+				const iva = (p.aplicaIva !== false) ? (sub * 0.16) : 0;
+				grandTotal += (sub + iva);
+			});
+
+			const masterPdfWrapper = document.createElement('div');
+
+			prodChunks.forEach((chunkItems, pageIdx) => {
+				const pdfContainer = document.createElement('div');
+				pdfContainer.style.position = 'relative';
+				pdfContainer.style.width = targetW + 'px';
+				pdfContainer.style.height = (targetH - 2) + 'px';
+				pdfContainer.style.background = `url("${bgImgUrl}") no-repeat 0 0 / 100% 100%`;
+				pdfContainer.style.fontFamily = 'Inter, sans-serif';
+				pdfContainer.style.boxSizing = 'border-box';
+				pdfContainer.style.overflow = 'hidden';
+				if (pageIdx < totalPages - 1) {
+					pdfContainer.style.pageBreakAfter = 'always';
+				}
+
+				// 1. Cliente
+				const elCliente = document.createElement('div');
+				elCliente.textContent = (cotData.cliente ? cotData.cliente.nombre : '') || '—';
+				elCliente.style.whiteSpace = 'nowrap';
+				applyStyle(elCliente, 'nombre', '270px', '210px', '550px');
+				pdfContainer.appendChild(elCliente);
+
+				// 2. Fecha
+				const elFecha = document.createElement('div');
+				const dt = cotData.fecha ? new Date(cotData.fecha) : new Date();
+				elFecha.textContent = !isNaN(dt) ? dt.toLocaleDateString() : (cotData.fecha || '—');
+				applyStyle(elFecha, 'fecha', '305px', '210px');
+				pdfContainer.appendChild(elFecha);
+
+				// 3. Número
+				const elNumero = document.createElement('div');
+				elNumero.textContent = cotData.numero || '—';
+				applyStyle(elNumero, 'numero', '235px', '560px');
+				pdfContainer.appendChild(elNumero);
+
+				// 4. Vendedor
+				const elVendedor = document.createElement('div');
+				elVendedor.textContent = (cotData.vendedor ? cotData.vendedor.nombre : '') || '—';
+				applyStyle(elVendedor, 'vendedor', '875px', '150px');
+				pdfContainer.appendChild(elVendedor);
+
+				// 5. Teléfono Vendedor
+				const elTelVendedor = document.createElement('div');
+				elTelVendedor.textContent = (cotData.vendedor ? cotData.vendedor.telefono : '') || '—';
+				applyStyle(elTelVendedor, 'telefono', '925px', '150px');
+				pdfContainer.appendChild(elTelVendedor);
+
+				// 6. Total
+				const elTotal = document.createElement('div');
+				const totalVal = cotData.total !== undefined ? parseFloat(cotData.total) : grandTotal;
+				elTotal.textContent = !isNaN(totalVal) ? totalVal.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' }) : '$0.00';
+				applyStyle(elTotal, 'total', '760px', '560px');
+				pdfContainer.appendChild(elTotal);
+
+				// 6. Tabla de Productos (máx 5 por página)
+				const elTabla = document.createElement('div');
+				applyStyle(elTabla, 'tabla', '390px', '55px', '684px');
+
+				let currentY = 0;
+				chunkItems.forEach(p => {
+					const unitPrice = parseFloat(String(p.precio || '').replace(',', '.')) || 0;
+					const subtotal = unitPrice * (p.qty || 1);
+					const ivaMonto = (p.aplicaIva !== false) ? (subtotal * 0.16) : 0;
+					const totalItem = subtotal + ivaMonto;
+
+					const rowContainer = document.createElement('div');
+					rowContainer.style.position = 'absolute';
+					rowContainer.style.top = currentY + 'px';
+					rowContainer.style.left = '0px';
+					rowContainer.style.width = '684px';
+					rowContainer.style.height = '62px';
+					rowContainer.style.borderBottom = '1.5px solid #cbd5e1';
+
+					function applyColFormat(el, colKey) {
+						const c = tc[colKey] || {};
+						if (c.fontFamily) el.style.fontFamily = c.fontFamily;
+						if (c.color) el.style.color = c.color;
+						if (c.fontWeight) el.style.fontWeight = c.fontWeight;
+						if (c.fontStyle) el.style.fontStyle = c.fontStyle;
+						if (c.textDecoration) el.style.textDecoration = c.textDecoration;
+					}
+
+					// Columna Descripción
+					const cDesc = document.createElement('div');
+					cDesc.style.position = 'absolute';
+					cDesc.style.left = (tc.desc.left || 0) + 'px';
+					cDesc.style.width = (tc.desc.width || 240) + 'px';
+					cDesc.style.fontSize = tc.desc.fontSize || '12px';
+					cDesc.style.textAlign = tc.desc.align || 'left';
+					applyColFormat(cDesc, 'desc');
+					cDesc.style.display = 'flex';
+					cDesc.style.gap = '6px';
+					cDesc.style.alignItems = 'flex-start';
+					cDesc.style.padding = '4px';
+					cDesc.style.boxSizing = 'border-box';
+					cDesc.innerHTML = `
+						<img src="${p.imagen || 'IMG/default.png'}" style="width:44px;height:34px;object-fit:cover;border-radius:4px;flex-shrink:0">
+						<div style="line-height:1.25">
+							<div style="font-weight:700">${formatMultilineDescription(p.nombre || '', 3)}</div>
+							${p.modelo ? `<div style="font-size:0.8em;color:#475569;margin-top:1px">Modelo: ${escapeHtml(p.modelo)}</div>` : ''}
+						</div>
+					`;
+					rowContainer.appendChild(cDesc);
+
+					// Columna Cantidad
+					const cCant = document.createElement('div');
+					cCant.style.position = 'absolute';
+					cCant.style.left = (tc.cant.left || 250) + 'px';
+					cCant.style.width = (tc.cant.width || 75) + 'px';
+					cCant.style.fontSize = tc.cant.fontSize || '12px';
+					cCant.style.textAlign = tc.cant.align || 'center';
+					cCant.style.fontWeight = '600';
+					applyColFormat(cCant, 'cant');
+					cCant.style.padding = '4px';
+					cCant.style.boxSizing = 'border-box';
+					cCant.textContent = String(p.qty || 1);
+					rowContainer.appendChild(cCant);
+
+					// Columna Subtotal
+					const cSub = document.createElement('div');
+					cSub.style.position = 'absolute';
+					cSub.style.left = (tc.sub.left || 345) + 'px';
+					cSub.style.width = (tc.sub.width || 100) + 'px';
+					cSub.style.fontSize = tc.sub.fontSize || '12px';
+					cSub.style.textAlign = tc.sub.align || 'right';
+					applyColFormat(cSub, 'sub');
+					cSub.style.padding = '4px';
+					cSub.style.boxSizing = 'border-box';
+					cSub.textContent = `$${subtotal.toFixed(2)}`;
+					rowContainer.appendChild(cSub);
+
+					// Columna IVA
+					const cIva = document.createElement('div');
+					cIva.style.position = 'absolute';
+					cIva.style.left = (tc.iva.left || 465) + 'px';
+					cIva.style.width = (tc.iva.width || 85) + 'px';
+					cIva.style.fontSize = tc.iva.fontSize || '12px';
+					cIva.style.textAlign = tc.iva.align || 'right';
+					applyColFormat(cIva, 'iva');
+					cIva.style.padding = '4px';
+					cIva.style.boxSizing = 'border-box';
+					cIva.textContent = `$${ivaMonto.toFixed(2)}`;
+					rowContainer.appendChild(cIva);
+
+					// Columna Total
+					const cTot = document.createElement('div');
+					cTot.style.position = 'absolute';
+					cTot.style.left = (tc.tot.left || 560) + 'px';
+					cTot.style.width = (tc.tot.width || 120) + 'px';
+					cTot.style.fontSize = tc.tot.fontSize || '12px';
+					cTot.style.textAlign = tc.tot.align || 'right';
+					cTot.style.fontWeight = '700';
+					applyColFormat(cTot, 'tot');
+					cTot.style.padding = '4px';
+					cTot.style.boxSizing = 'border-box';
+					cTot.textContent = `$${totalItem.toFixed(2)}`;
+					rowContainer.appendChild(cTot);
+
+					elTabla.appendChild(rowContainer);
+					currentY += 62;
+				});
+
+				pdfContainer.appendChild(elTabla);
+				masterPdfWrapper.appendChild(pdfContainer);
+			});
+
+			const opt = {
+				margin: 0,
+				filename: `Cotizacion_${cotData.numero || 'DOC'}.pdf`,
+				image: { type: 'jpeg', quality: 0.98 },
+				html2canvas: { scale: 2, useCORS: true, logging: false, scrollY: 0 },
+				jsPDF: { unit: 'px', format: [targetW, targetH], orientation: 'portrait' },
+				pagebreak: { mode: ['css', 'legacy'] }
+			};
+
+			try {
+				return await html2pdf().set(opt).from(masterPdfWrapper).output('datauristring');
+			} catch (e) {
+				console.error('Error al generar PDF Base64:', e);
+				return '';
 			}
 		}
 
