@@ -3247,11 +3247,10 @@
 					opt.html2canvas = Object.assign({}, opt.html2canvas, { scale: 1.5 });
 				}
 
-				const worker = html2pdf().set(opt).from(masterPdfWrapper);
-
 				if (isMobile) {
-					// En teléfonos (Safari iOS / Chrome Android), generar Blob y forzar descarga
-					const pdfBlob = await worker.outputPdf('blob');
+					// En teléfonos (Safari iOS / Chrome Android), obtener instancia de jsPDF sin bucle de llamadas
+					const pdf = await html2pdf().set(opt).from(masterPdfWrapper).toPdf().get('pdf');
+					const pdfBlob = pdf.output('blob');
 					const blobUrl = URL.createObjectURL(pdfBlob);
 
 					const a = document.createElement('a');
@@ -3266,7 +3265,7 @@
 						URL.revokeObjectURL(blobUrl);
 					}, 3000);
 				} else {
-					await worker.save();
+					await html2pdf().set(opt).from(masterPdfWrapper).save();
 				}
 			} catch (e) {
 				console.error('Error al generar PDF:', e);
@@ -3294,7 +3293,8 @@
 					image: { type: 'jpeg', quality: 0.75 },
 					html2canvas: { scale: 1, useCORS: true, logging: false, scrollY: 0 }
 				});
-				return await html2pdf().set(emailOpt).from(masterPdfWrapper).outputPdf('datauristring');
+				const pdf = await html2pdf().set(emailOpt).from(masterPdfWrapper).toPdf().get('pdf');
+				return pdf.output('datauristring');
 			} finally {
 				if (containerToClean && containerToClean.parentNode) {
 					containerToClean.parentNode.removeChild(containerToClean);
