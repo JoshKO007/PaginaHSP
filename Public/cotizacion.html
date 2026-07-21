@@ -1,0 +1,3460 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cotizaciones - YOLOTECH</title>
+	<link rel="stylesheet" href="CSS/styles.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="CSS/cotizacion.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+	<script>if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+	<!-- EmailJS SDK -->
+	<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+	<script>
+		(function () {
+			if (window.emailjs) emailjs.init("e3YbJ7o5xzITbPSLh");
+		})();
+	</script>
+</head>
+
+<body>
+	<div class="container">
+		<div class="card">
+			<div class="main-tabs" role="tablist">
+				<button class="tab-btn active" id="tabCotizaciones" role="tab" aria-selected="true"><i
+						class="fas fa-file-invoice" style="margin-right:6px"></i>Cotizaciones</button>
+				<button class="tab-btn" id="tabClientes" role="tab" aria-selected="false"><i class="fas fa-users"
+						style="margin-right:6px"></i>Gestión de Clientes</button>
+				<button class="tab-btn" id="tabVendedores" role="tab" aria-selected="false"><i class="fas fa-user-tie"
+						style="margin-right:6px"></i>Gestión de Vendedores</button>
+				<button class="tab-btn" id="tabConfigCotizacion" role="tab" aria-selected="false"><i
+						class="fas fa-file-pdf" style="margin-right:6px"></i>Configuración PDF Cotizaciones</button>
+				<button class="tab-btn" id="tabConfigNota" role="tab" aria-selected="false"><i class="fas fa-file-pdf"
+						style="margin-right:6px"></i>Configuración PDF Notas</button>
+			</div>
+
+			<!-- Sección: Cotizaciones -->
+			<div id="secCotizaciones">
+				<h1>Historial de Cotizaciones</h1>
+				<p class="lead">Revisa las cotizaciones anteriores y genera una nueva cuando lo necesites.</p>
+				<div class="grid">
+					<div>
+						<div class="card">
+							<div class="search">
+								<input id="filterInput" placeholder="Filtrar por título o fecha"
+									aria-label="Filtrar cotizaciones">
+								<button id="generarBtn" class="btn">Generar cotización</button>
+							</div>
+							<div class="list card" id="listContainer">
+								<p id="emptyMsg" class="empty-msg">No hay cotizaciones aún.</p>
+								<div id="cotizacionesList"></div>
+							</div>
+						</div>
+					</div>
+					<aside>
+						<div class="card">
+							<h2 class="aside-title">Resumen</h2>
+							<div class="stats">
+								<div class="stat">
+									<div style="font-size:0.85rem;color:var(--muted)">Total</div>
+									<strong id="totalCount">0</strong>
+								</div>
+								<div class="stat">
+									<div style="font-size:0.85rem;color:var(--muted)">Última</div>
+									<strong id="lastDate">—</strong>
+								</div>
+							</div>
+							<p class="help">Usa el filtro para buscar cotizaciones por palabra o fecha.</p>
+						</div>
+					</aside>
+				</div>
+			</div>
+
+			<!-- Sección: Clientes -->
+			<div id="secClientes" style="display:none">
+				<h1>Directorio y Gestión de Clientes</h1>
+				<p class="lead">Administra la información de tus clientes. Puedes registrar nuevos, editar sus datos u
+					ocultarlos.</p>
+				<div class="card">
+					<div class="client-management-bar">
+						<div class="client-management-search">
+							<input id="mainClientFilter" class="input"
+								placeholder="Buscar cliente por nombre, teléfono o correo..."
+								aria-label="Buscar clientes">
+						</div>
+						<button id="mainNewClientBtn" class="btn" style="width:auto">+ Nuevo cliente</button>
+					</div>
+					<div style="overflow-x:auto">
+						<table class="client-table-main" id="mainClientTable">
+							<thead>
+								<tr>
+									<th>Nombre</th>
+									<th>Teléfono</th>
+									<th>Correo electrónico</th>
+									<th>Dirección</th>
+									<th style="width:160px;text-align:right">Acciones</th>
+								</tr>
+							</thead>
+							<tbody id="mainClientTableBody">
+								<!-- Filas renderizadas por JS -->
+							</tbody>
+						</table>
+						<p id="mainClientEmptyMsg" class="empty-msg" style="display:none">No hay clientes registrados
+							aún.</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- Sección: Vendedores -->
+			<div id="secVendedores" style="display:none">
+				<h1>Directorio y Gestión de Vendedores</h1>
+				<p class="lead">Administra la información de tus vendedores. Puedes registrar nuevos, editar sus datos u
+					ocultarlos.</p>
+				<div class="card">
+					<div class="client-management-bar">
+						<div class="client-management-search">
+							<input id="mainVendorFilter" class="input"
+								placeholder="Buscar vendedor por nombre, teléfono o correo..."
+								aria-label="Buscar vendedores">
+						</div>
+						<button id="mainNewVendorBtn" class="btn" style="width:auto">+ Nuevo vendedor</button>
+					</div>
+					<div style="overflow-x:auto">
+						<table class="vendor-table-main" id="mainVendorTable">
+							<thead>
+								<tr>
+									<th>Nombre</th>
+									<th>Teléfono</th>
+									<th>Correo electrónico</th>
+									<th>Dirección</th>
+									<th style="width:160px;text-align:right">Acciones</th>
+								</tr>
+							</thead>
+							<tbody id="mainVendorTableBody">
+								<!-- Filas renderizadas por JS -->
+							</tbody>
+						</table>
+						<p id="mainVendorEmptyMsg" class="empty-msg" style="display:none">No hay vendedores registrados
+							aún.</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- Sección: Configuración PDF Cotizaciones -->
+			<div id="secConfigCotizacion" style="display:none">
+				<h1>Diseñador Visual de PDF para Cotizaciones</h1>
+				<p class="lead">Arrastra cada etiqueta sobre la plantilla <code>PDF/Cotización.pdf</code> para ubicarla.
+					Selecciona cualquier etiqueta para personalizar su fuente, tamaño, color y formato.</p>
+
+				<!-- Barra de Herramientas de Formato Tipográfico -->
+				<div class="pdf-designer-toolbar">
+					<div class="pdf-toolbar-group">
+						<span style="font-weight:700;font-size:0.85rem;color:var(--muted)"
+							id="selectedElementTag">Selecciona un elemento</span>
+					</div>
+					<div class="pdf-toolbar-group">
+						<select id="pdfToolFont" class="input" style="width:130px;padding:6px;font-size:0.85rem">
+							<option value="Inter, sans-serif">Inter</option>
+							<option value="Arial, sans-serif">Arial</option>
+							<option value="Roboto, sans-serif">Roboto</option>
+							<option value="'Segoe UI', sans-serif">Segoe UI</option>
+							<option value="Georgia, serif">Georgia</option>
+							<option value="'Times New Roman', serif">Times New Roman</option>
+							<option value="Montserrat, sans-serif">Montserrat</option>
+						</select>
+						<select id="pdfToolSize" class="input" style="width:75px;padding:6px;font-size:0.85rem">
+							<option value="10px">10px</option>
+							<option value="11px">11px</option>
+							<option value="12px" selected>12px</option>
+							<option value="13px">13px</option>
+							<option value="14px">14px</option>
+							<option value="16px">16px</option>
+							<option value="18px">18px</option>
+							<option value="20px">20px</option>
+							<option value="24px">24px</option>
+						</select>
+						<input type="color" id="pdfToolColor" value="#0f1724"
+							style="width:36px;height:34px;padding:2px;border:1px solid var(--border);border-radius:6px;cursor:pointer"
+							title="Color de texto">
+					</div>
+					<div class="pdf-toolbar-group" id="pdfColControlsGroup" style="display:none">
+						<span style="font-size:0.82rem;font-weight:600;color:var(--muted)">Ancho col:</span>
+						<input type="number" id="pdfColWidth" min="20" max="684" value="100"
+							style="width:65px;padding:6px;font-size:0.85rem" class="input"
+							title="Ancho de columna">
+						<span style="font-size:0.82rem;font-weight:600;color:var(--muted);margin-left:6px">Pos.
+							X:</span>
+						<input type="number" id="pdfColOffsetX" min="0" max="684" value="0"
+							style="width:65px;padding:6px;font-size:0.85rem" class="input"
+							title="Posición de la columna">
+						<span
+							style="font-size:0.82rem;font-weight:600;color:var(--muted);margin-left:6px">Alineación:</span>
+						<select id="pdfColAlign" class="input" style="width:95px;padding:6px;font-size:0.85rem">
+							<option value="left">Izquierda</option>
+							<option value="center">Centro</option>
+							<option value="right">Derecha</option>
+						</select>
+					</div>
+					<div class="pdf-toolbar-group">
+						<button id="pdfToolBold" class="pdf-tool-btn" title="Negrita"><b>B</b></button>
+						<button id="pdfToolItalic" class="pdf-tool-btn" title="Cursiva"><i>I</i></button>
+						<button id="pdfToolUnderline" class="pdf-tool-btn" title="Subrayado"><u>U</u></button>
+					</div>
+					<div class="pdf-toolbar-group">
+						<button id="savePdfVisualLayoutBtn" class="btn"
+							style="padding:8px 16px;font-size:0.88rem"><i class="fas fa-save"></i> Guardar Diseño
+							PDF</button>
+					</div>
+					<div class="pdf-toolbar-group" style="margin-left:auto">
+						<span style="font-size:0.82rem;font-weight:600;color:var(--muted)">Ítems muestra:</span>
+						<input type="number" id="previewItemCountInput" min="1" max="25" value="3" class="input"
+							style="width:55px;padding:6px;font-size:0.85rem" title="Número de artículos de prueba (máx 5 por página)">
+						<button id="generateSamplePdfBtn" class="btn secondary"
+							style="padding:8px 14px;font-size:0.88rem;background:#059669;color:#fff"
+							title="Generar un PDF de muestra paginado de a 5 elementos"><i class="fas fa-file-pdf"></i>
+							PDF de Ejemplo</button>
+					</div>
+				</div>
+
+				<!-- Lienzo de Edición (Canvas + Capa Draggable) -->
+				<div class="pdf-canvas-wrapper" id="pdfCanvasWrapper">
+					<canvas id="pdfTemplateBgCanvas" style="width:100%;height:auto;display:block"></canvas>
+					<div id="pdfDraggableLayer" style="position:absolute;inset:0;pointer-events:none">
+						<div id="drag_nombre" class="pdf-drag-item" style="top:270px;left:210px;width:550px;white-space:nowrap;pointer-events:auto"
+							data-key="nombre">
+							<div class="drag-tag-only">{nombre_cliente}</div>
+						</div>
+						<div id="drag_fecha" class="pdf-drag-item" style="top:305px;left:210px;pointer-events:auto"
+							data-key="fecha">
+							<div class="drag-tag-only">{fecha}</div>
+						</div>
+						<div id="drag_numero" class="pdf-drag-item" style="top:235px;left:560px;pointer-events:auto"
+							data-key="numero">
+							<div class="drag-tag-only">{numero_cotizacion}</div>
+						</div>
+						<!-- Tabla general inmodificable (684px) con elementos de columna ajustables mediante círculos tipo Word -->
+						<div id="drag_tabla" class="pdf-drag-item fixed-size"
+							style="top:390px;left:55px;width:684px;height:70px;pointer-events:auto" data-key="tabla">
+							<div class="drag-content" style="position:relative;width:100%;height:100%;font-size:0.8rem">
+								<!-- Línea divisoria de base -->
+								<div
+									style="position:absolute;bottom:0;left:0;right:0;border-bottom:1.5px solid #cbd5e1;pointer-events:none">
+								</div>
+
+								<!-- Columna Descripción -->
+								<div class="table-col-item" data-col="desc" id="col_box_desc"
+									style="left:0px;width:240px;height:100%">
+									<div class="col-handle handle-left" data-col="desc" data-side="left"
+										title="Arrastrar para ajustar izquierda"></div>
+									<div class="col-handle handle-right" data-col="desc" data-side="right"
+										title="Arrastrar para ajustar derecha"></div>
+									<div id="col_content_desc"
+										style="display:flex;gap:6px;align-items:flex-start;padding:6px;pointer-events:none">
+										<div
+											style="width:40px;height:30px;background:#e2e8f0;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.55rem;flex-shrink:0">
+											Foto</div>
+										<div style="line-height:1.2"><b>PRODUCTO DEMO<br>DE MUESTRA</b><br><small
+												style="color:#64748b">Modelo: MD-100</small></div>
+									</div>
+								</div>
+
+								<!-- Columna Cantidad -->
+								<div class="table-col-item" data-col="cant" id="col_box_cant"
+									style="left:250px;width:75px;height:100%;text-align:center;font-weight:600">
+									<div class="col-handle handle-left" data-col="cant" data-side="left"
+										title="Arrastrar para ajustar izquierda"></div>
+									<div class="col-handle handle-right" data-col="cant" data-side="right"
+										title="Arrastrar para ajustar derecha"></div>
+									<div id="col_content_cant" style="padding:6px;pointer-events:none">1</div>
+								</div>
+
+								<!-- Columna Subtotal -->
+								<div class="table-col-item" data-col="sub" id="col_box_sub"
+									style="left:345px;width:100px;height:100%;text-align:right">
+									<div class="col-handle handle-left" data-col="sub" data-side="left"
+										title="Arrastrar para ajustar izquierda"></div>
+									<div class="col-handle handle-right" data-col="sub" data-side="right"
+										title="Arrastrar para ajustar derecha"></div>
+									<div id="col_content_sub" style="padding:6px;pointer-events:none">$1,000.00</div>
+								</div>
+
+								<!-- Columna IVA -->
+								<div class="table-col-item" data-col="iva" id="col_box_iva"
+									style="left:465px;width:85px;height:100%;text-align:right">
+									<div class="col-handle handle-left" data-col="iva" data-side="left"
+										title="Arrastrar para ajustar izquierda"></div>
+									<div class="col-handle handle-right" data-col="iva" data-side="right"
+										title="Arrastrar para ajustar derecha"></div>
+									<div id="col_content_iva" style="padding:6px;pointer-events:none">$160.00</div>
+								</div>
+
+								<!-- Columna Total -->
+								<div class="table-col-item" data-col="tot" id="col_box_tot"
+									style="left:560px;width:120px;height:100%;text-align:right;font-weight:700">
+									<div class="col-handle handle-left" data-col="tot" data-side="left"
+										title="Arrastrar para ajustar izquierda"></div>
+									<div class="col-handle handle-right" data-col="tot" data-side="right"
+										title="Arrastrar para ajustar derecha"></div>
+									<div id="col_content_tot" style="padding:6px;pointer-events:none">$1,160.00</div>
+								</div>
+							</div>
+						</div>
+						<div id="drag_vendedor" class="pdf-drag-item" style="top:875px;left:150px;pointer-events:auto"
+							data-key="vendedor">
+							<div class="drag-tag-only">{nombre_vendedor}</div>
+						</div>
+						<div id="drag_telefono" class="pdf-drag-item" style="top:925px;left:150px;pointer-events:auto"
+							data-key="telefono">
+							<div class="drag-tag-only">{telefono_vendedor}</div>
+						</div>
+						<div id="drag_total" class="pdf-drag-item" style="top:760px;left:560px;pointer-events:auto"
+							data-key="total">
+							<div class="drag-tag-only">{total}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Sección: Configuración PDF Notas -->
+			<div id="secConfigNota" style="display:none">
+				<h1>Configuración PDF Notas</h1>
+				<p class="lead">Personaliza el título por defecto, notas e instrucciones para la generación de PDFs de
+					Notas.</p>
+				<div class="card" style="max-width:640px">
+					<div class="form-row">
+						<div class="col">
+							<div class="field-label">Título por defecto de la Nota</div>
+							<input id="configPdfNotaTitulo" class="input" placeholder="Ej. NOTA DE VENTA / REMISIÓN"
+								value="NOTA DE VENTA">
+						</div>
+					</div>
+					<div class="form-row" style="margin-top:12px">
+						<div class="col">
+							<div class="field-label">Notas u observaciones por defecto</div>
+							<textarea id="configPdfNotaNotas" class="input" rows="5"
+								placeholder="Ej. Gracias por su compra. Conserve esta nota para cualquier aclaración..."></textarea>
+						</div>
+					</div>
+					<div style="margin-top:16px;text-align:right">
+						<button id="saveNotaPdfConfigBtn" class="btn">Guardar Configuración de Notas</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Client selection modal -->
+	<div id="clientSelectBackdrop" class="client-backdrop" aria-hidden="true">
+		<div class="client-modal" role="dialog" aria-modal="true" aria-labelledby="clientModalTitle">
+			<div class="header">
+				<h3 id="clientModalTitle">Seleccionar cliente</h3>
+				<button id="closeClientModal" class="close-btn" aria-label="Cerrar">✕</button>
+			</div>
+			<div class="client-search">
+				<input id="clientFilter" class="input" placeholder="Buscar cliente por nombre o teléfono">
+			</div>
+			<div style="overflow:auto;max-height:56vh">
+				<table class="client-table" id="clientTable">
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>Teléfono</th>
+							<th>Correo</th>
+							<th style="width:120px"></th>
+						</tr>
+					</thead>
+					<tbody id="clientTableBody"></tbody>
+				</table>
+			</div>
+			<div style="text-align:right;margin-top:10px"><button id="closeClientModal2"
+					class="btn ghost">Cerrar</button></div>
+		</div>
+	</div>
+
+	<!-- Vendor selection modal -->
+	<div id="vendorSelectBackdrop" class="client-backdrop" aria-hidden="true">
+		<div class="client-modal" role="dialog" aria-modal="true" aria-labelledby="vendorModalTitle">
+			<div class="header">
+				<h3 id="vendorModalTitle">Seleccionar vendedor</h3>
+				<button id="closeVendorModal" class="close-btn" aria-label="Cerrar">✕</button>
+			</div>
+			<div class="client-search">
+				<input id="vendorFilter" class="input" placeholder="Buscar vendedor por nombre o teléfono">
+			</div>
+			<div style="overflow:auto;max-height:56vh">
+				<table class="client-table" id="vendorTable">
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>Teléfono</th>
+							<th>Correo</th>
+							<th style="width:120px"></th>
+						</tr>
+					</thead>
+					<tbody id="vendorTableBody"></tbody>
+				</table>
+			</div>
+			<div style="text-align:right;margin-top:10px"><button id="closeVendorModal2"
+					class="btn ghost">Cerrar</button></div>
+		</div>
+	</div>
+
+	<!-- Client create/edit modal -->
+	<div id="clientCreateBackdrop" class="client-backdrop" aria-hidden="true">
+		<div class="client-modal" role="dialog" aria-modal="true" aria-labelledby="clientCreateTitle">
+			<input type="hidden" id="editClientIdx" value="">
+			<div class="header">
+				<h3 id="clientCreateTitle">Nuevo cliente</h3>
+				<p class="lead" id="clientCreateSubtitle">Agrega los datos del cliente. Los campos marcados son
+					obligatorios.</p>
+				<button id="closeClientCreate" class="close-btn" aria-label="Cerrar">✕</button>
+			</div>
+			<div class="form-grid">
+				<div class="form-row">
+					<div class="col required">
+						<div class="field-label">Nombre</div><input id="createClienteNombre" class="input">
+						<div id="errNombre" class="field-error" style="display:none">El nombre es obligatorio</div>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="col">
+						<div class="field-label">Teléfono</div><input id="createClienteTelefono" class="input">
+					</div>
+				</div>
+				<div class="form-row full">
+					<div class="col">
+						<div class="field-label">Dirección</div><input id="createClienteDireccion" class="input">
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="col">
+						<div class="field-label">Correo electrónico</div><input id="createClienteEmail" class="input">
+					</div>
+				</div>
+				<div class="form-row full" id="rowClienteActivo">
+					<div class="col" style="display:flex;align-items:center;gap:10px;padding:4px 0">
+						<input type="checkbox" id="createClienteActivo" checked
+							style="width:18px;height:18px;cursor:pointer">
+						<label for="createClienteActivo"
+							style="cursor:pointer;font-weight:600;font-size:0.92rem;user-select:none">Cliente
+							Activo</label>
+					</div>
+				</div>
+			</div>
+			<div class="modal-actions">
+				<button id="saveClientModalBtn" class="btn">Guardar cliente</button>
+				<button id="cancelClientModalBtn" class="btn ghost">Cancelar</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- Vendor create/edit modal -->
+	<div id="vendorCreateBackdrop" class="client-backdrop" aria-hidden="true">
+		<div class="client-modal" role="dialog" aria-modal="true" aria-labelledby="vendorCreateTitle">
+			<input type="hidden" id="editVendorIdx" value="">
+			<div class="header">
+				<h3 id="vendorCreateTitle">Nuevo vendedor</h3>
+				<p class="lead" id="vendorCreateSubtitle">Agrega los datos del vendedor. Los campos marcados son
+					obligatorios.</p>
+				<button id="closeVendorCreate" class="close-btn" aria-label="Cerrar">✕</button>
+			</div>
+			<div class="form-grid">
+				<div class="form-row">
+					<div class="col required">
+						<div class="field-label">Nombre</div><input id="createVendorNombre" class="input">
+						<div id="errVendorNombre" class="field-error" style="display:none">El nombre es obligatorio
+						</div>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="col required">
+						<div class="field-label">Teléfono</div><input id="createVendorTelefono" class="input">
+						<div id="errVendorTelefono" class="field-error" style="display:none">El teléfono es obligatorio
+						</div>
+					</div>
+				</div>
+				<div class="form-row full">
+					<div class="col">
+						<div class="field-label">Dirección</div><input id="createVendorDireccion" class="input">
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="col required">
+						<div class="field-label">Correo electrónico</div><input id="createVendorEmail" class="input">
+						<div id="errVendorEmail" class="field-error" style="display:none">El correo es obligatorio</div>
+					</div>
+				</div>
+				<div class="form-row full" id="rowVendorActivo">
+					<div class="col" style="display:flex;align-items:center;gap:10px;padding:4px 0">
+						<input type="checkbox" id="createVendorActivo" checked
+							style="width:18px;height:18px;cursor:pointer">
+						<label for="createVendorActivo"
+							style="cursor:pointer;font-weight:600;font-size:0.92rem;user-select:none">Vendedor
+							Activo</label>
+					</div>
+				</div>
+			</div>
+			<div class="modal-actions">
+				<button id="saveVendorModalBtn" class="btn">Guardar vendedor</button>
+				<button id="cancelVendorModalBtn" class="btn ghost">Cancelar</button>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// Cargar y renderizar historial desde Supabase (con respaldo en localStorage)
+		(function () {
+			let items = [];
+
+			const listEl = document.getElementById('cotizacionesList');
+			const emptyMsg = document.getElementById('emptyMsg');
+			const totalCount = document.getElementById('totalCount');
+			const lastDate = document.getElementById('lastDate');
+			const filterInput = document.getElementById('filterInput');
+
+			function formatDate(d) {
+				try { const dt = new Date(d); if (isNaN(dt)) return d || '—'; return dt.toLocaleDateString(); } catch (e) { return d || '—'; }
+			}
+
+			function escHtml(str) {
+				return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+			}
+
+			function editCotizacion(it) {
+				if (!it) return;
+				if (typeof openCotizacionDrawer === 'function') {
+					openCotizacionDrawer(true);
+				}
+
+				const drawerTitle = document.getElementById('drawerTitle');
+				if (drawerTitle) drawerTitle.textContent = `Editar Cotización ${it.numero || ''}`;
+
+				const autoToggleEl = document.getElementById('autoToggle');
+				const autoHiddenEl = document.getElementById('autoNo');
+				const noCotEl = document.getElementById('noCot');
+				if (autoToggleEl && autoHiddenEl && noCotEl) {
+					autoToggleEl.style.display = 'none';
+					autoHiddenEl.value = '0';
+					noCotEl.value = it.numero || '';
+					noCotEl.readOnly = true;
+					noCotEl.style.backgroundColor = '#f3f4f6';
+					noCotEl.style.cursor = 'not-allowed';
+				}
+
+				if (it.cliente) {
+					if (document.getElementById('clienteNombre')) document.getElementById('clienteNombre').value = it.cliente.nombre || '';
+					if (document.getElementById('clienteDireccion')) document.getElementById('clienteDireccion').value = it.cliente.direccion || '';
+					if (document.getElementById('clienteTelefono')) document.getElementById('clienteTelefono').value = it.cliente.telefono || '';
+					if (document.getElementById('clienteEmail')) document.getElementById('clienteEmail').value = it.cliente.email || '';
+				}
+
+				if (it.vendedor) {
+					if (document.getElementById('vendedorNombre')) document.getElementById('vendedorNombre').value = it.vendedor.nombre || '';
+					if (document.getElementById('vendedorTelefono')) document.getElementById('vendedorTelefono').value = it.vendedor.telefono || '';
+					if (document.getElementById('vendedorEmail')) document.getElementById('vendedorEmail').value = it.vendedor.email || '';
+					if (document.getElementById('vendedorDireccion')) document.getElementById('vendedorDireccion').value = it.vendedor.direccion || '';
+				}
+
+				if (Array.isArray(it.productos)) {
+					window.selectedProducts = [];
+					it.productos.forEach(p => {
+						window.selectedProducts.push({
+							id: p.id || Math.random().toString(),
+							nombre: p.nombre || '',
+							modelo: p.modelo || p.numero_modelo || '',
+							imagen: p.imagen || '',
+							qty: Number(p.qty) || 1,
+							precio: (p.precio !== undefined && p.precio !== null) ? String(p.precio) : ((p.precio_unitario !== undefined && p.precio_unitario !== null) ? String(p.precio_unitario) : ''),
+							aplicaIva: p.aplicaIva !== false,
+							ivaPorcentaje: p.ivaPorcentaje || 16
+						});
+					});
+					if (typeof renderSelectedProducts === 'function') {
+						renderSelectedProducts();
+					}
+				}
+			}
+			async function deleteCotizacion(numero) {
+				if (!numero) return;
+				if (!confirm(`¿Estás seguro de que deseas eliminar la cotización ${numero}?`)) return;
+
+				try {
+					const sb = window.supabase || (typeof supabase !== 'undefined' ? supabase : null);
+					if (sb) {
+						const { error } = await sb
+							.from('cotizaciones')
+							.delete()
+							.eq('numero', numero);
+						if (error) console.error('Error eliminando cotización en Supabase:', error);
+					}
+				} catch (e) {
+					console.error('Excepción eliminando cotización en Supabase:', e);
+				}
+
+				try {
+					const localList = JSON.parse(localStorage.getItem('cotizaciones') || '[]');
+					const updated = localList.filter(c => c.numero !== numero);
+					localStorage.setItem('cotizaciones', JSON.stringify(updated));
+				} catch (e) { }
+
+				refreshHistory();
+			}
+			window.deleteCotizacion = deleteCotizacion;
+
+			function render(list) {
+				listEl.innerHTML = '';
+				if (!list || !list.length) { emptyMsg.style.display = 'block'; totalCount.textContent = '0'; lastDate.textContent = '—'; return; }
+				emptyMsg.style.display = 'none';
+				totalCount.textContent = String(list.length);
+				const last = list[0];
+				lastDate.textContent = formatDate(last.fecha || last.createdAt || '—');
+
+				list.forEach(it => {
+					const row = document.createElement('div');
+					row.className = 'item';
+					row.style.display = 'flex';
+					row.style.justifyContent = 'space-between';
+					row.style.alignItems = 'center';
+					row.style.padding = '14px 16px';
+					row.style.border = '1px solid var(--border, #e2e8f0)';
+					row.style.borderRadius = '8px';
+					row.style.marginBottom = '10px';
+					row.style.background = '#ffffff';
+					row.style.boxShadow = '0 1px 3px rgba(0,0,0,0.05)';
+					row.style.gap = '16px';
+
+					const left = document.createElement('div');
+					left.style.flex = '1';
+
+					const titleRow = document.createElement('div');
+					titleRow.style.display = 'flex';
+					titleRow.style.alignItems = 'center';
+					titleRow.style.gap = '8px';
+					titleRow.style.marginBottom = '6px';
+
+					const title = document.createElement('div');
+					title.className = 'title';
+					title.style.fontWeight = '700';
+					title.style.fontSize = '1.02rem';
+					title.style.color = '#0f172a';
+					title.textContent = it.numero ? `Cotización ${it.numero}` : (it.titulo || 'Cotización');
+
+					const badge = document.createElement('span');
+					badge.style.padding = '2px 8px';
+					badge.style.borderRadius = '12px';
+					badge.style.fontSize = '0.75rem';
+					badge.style.fontWeight = '600';
+					const st = (it.estado || 'generada').toLowerCase();
+					if (st === 'generada' || st === 'aprobada') {
+						badge.style.background = '#dcfce7'; badge.style.color = '#166534';
+					} else {
+						badge.style.background = '#f1f5f9'; badge.style.color = '#475569';
+					}
+					badge.textContent = it.estado ? (it.estado.charAt(0).toUpperCase() + it.estado.slice(1)) : 'Generada';
+
+					titleRow.appendChild(title);
+					titleRow.appendChild(badge);
+					left.appendChild(titleRow);
+
+					const detailsRow = document.createElement('div');
+					detailsRow.style.display = 'grid';
+					detailsRow.style.gridTemplateColumns = 'repeat(auto-fit, minmax(160px, 1fr))';
+					detailsRow.style.gap = '6px 12px';
+					detailsRow.style.fontSize = '0.85rem';
+					detailsRow.style.color = '#475569';
+
+					const clienteNom = (it.cliente ? it.cliente.nombre : '') || '—';
+					const vendedorNom = (it.vendedor ? it.vendedor.nombre : '') || '—';
+					const prodCount = Array.isArray(it.productos) ? it.productos.length : 0;
+
+					let totalVal = 0;
+					if (it.total !== undefined && it.total !== null) {
+						totalVal = parseFloat(it.total) || 0;
+					} else if (Array.isArray(it.productos)) {
+						it.productos.forEach(p => {
+							const pr = parseFloat(String(p.precio || 0).replace(',', '.')) || 0;
+							const sub = pr * (p.qty || 1);
+							const iva = (p.aplicaIva !== false) ? (sub * 0.16) : 0;
+							totalVal += (sub + iva);
+						});
+					}
+					const formattedTotal = totalVal.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
+
+					detailsRow.innerHTML = `
+						<div><i class="fas fa-user" style="width:14px;color:#94a3b8"></i> <strong>Cliente:</strong> ${escHtml(clienteNom)}</div>
+						<div><i class="fas fa-user-tie" style="width:14px;color:#94a3b8"></i> <strong>Vendedor:</strong> ${escHtml(vendedorNom)}</div>
+						<div><i class="fas fa-calendar-alt" style="width:14px;color:#94a3b8"></i> <strong>Fecha:</strong> ${formatDate(it.fecha || it.createdAt)}</div>
+						<div><i class="fas fa-boxes" style="width:14px;color:#94a3b8"></i> <strong>Ítems:</strong> ${prodCount} prod.</div>
+						<div style="font-weight:700;color:#059669"><i class="fas fa-dollar-sign" style="width:14px;color:#059669"></i> <strong>Total:</strong> ${formattedTotal}</div>
+					`;
+
+					left.appendChild(detailsRow);
+
+					const right = document.createElement('div');
+					right.style.display = 'flex';
+					right.style.gap = '8px';
+					right.style.alignItems = 'center';
+					right.style.flexShrink = '0';
+
+					const editBtn = document.createElement('button');
+					editBtn.className = 'btn secondary';
+					editBtn.innerHTML = '<i class="fas fa-edit"></i> Editar';
+					editBtn.style.padding = '6px 12px';
+					editBtn.style.fontSize = '0.85rem';
+					editBtn.addEventListener('click', () => editCotizacion(it));
+
+					const viewBtn = document.createElement('button');
+					viewBtn.className = 'btn';
+					viewBtn.innerHTML = '<i class="fas fa-file-pdf"></i> Ver PDF';
+					viewBtn.style.padding = '6px 12px';
+					viewBtn.style.fontSize = '0.85rem';
+					viewBtn.addEventListener('click', () => {
+						if (typeof exportCotizacionToPdf === 'function') {
+							exportCotizacionToPdf(it);
+						}
+					});
+
+					const sendMailBtn = document.createElement('button');
+					sendMailBtn.className = 'btn secondary';
+					sendMailBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Correo';
+					sendMailBtn.style.padding = '6px 12px';
+					sendMailBtn.style.fontSize = '0.85rem';
+					sendMailBtn.style.background = '#2563eb';
+					sendMailBtn.style.color = '#ffffff';
+					sendMailBtn.style.borderColor = '#2563eb';
+					sendMailBtn.title = 'Enviar Cotización por Correo Electrónico';
+					sendMailBtn.addEventListener('click', () => {
+						if (typeof enviarCotizacionPorEmail === 'function') {
+							enviarCotizacionPorEmail(it);
+						}
+					});
+
+					const deleteBtn = document.createElement('button');
+					deleteBtn.className = 'btn ghost';
+					deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+					deleteBtn.style.padding = '6px 10px';
+					deleteBtn.style.color = '#ef4444';
+					deleteBtn.style.fontSize = '0.85rem';
+					deleteBtn.title = 'Eliminar Cotización';
+					deleteBtn.addEventListener('click', () => deleteCotizacion(it.numero));
+
+					right.appendChild(editBtn);
+					right.appendChild(viewBtn);
+					right.appendChild(sendMailBtn);
+					right.appendChild(deleteBtn);
+
+					row.appendChild(left);
+					row.appendChild(right);
+					listEl.appendChild(row);
+				});
+			}
+
+			async function refreshHistory() {
+				if (typeof loadCotizacionesFromSupabase === 'function') {
+					items = await loadCotizacionesFromSupabase();
+				} else {
+					const raw = localStorage.getItem('cotizaciones');
+					try { items = raw ? JSON.parse(raw) : []; } catch (e) { items = []; }
+				}
+				render(items);
+			}
+
+			window.refreshCotizacionesHistory = refreshHistory;
+			document.addEventListener('DOMContentLoaded', refreshHistory);
+			setTimeout(refreshHistory, 300);
+
+			// Búsqueda omnicanal (por número de folio, cliente, vendedor, productos, fecha, total o estado)
+			filterInput.addEventListener('input', function () {
+				const q = this.value.trim().toLowerCase();
+				if (!q) return render(items);
+				const filtered = items.filter(it => {
+					const numero = String(it.numero || '').toLowerCase();
+					const cliente = (it.cliente ? `${it.cliente.nombre || ''} ${it.cliente.email || ''} ${it.cliente.telefono || ''} ${it.cliente.direccion || ''}` : '').toLowerCase();
+					const vendedor = (it.vendedor ? `${it.vendedor.nombre || ''} ${it.vendedor.email || ''} ${it.vendedor.telefono || ''}` : '').toLowerCase();
+					const fecha = String(it.fecha || '').toLowerCase();
+					const estado = String(it.estado || '').toLowerCase();
+					const total = String(it.total || '').toLowerCase();
+					const prods = Array.isArray(it.productos)
+						? it.productos.map(p => `${p.nombre || ''} ${p.modelo || p.numero_modelo || ''}`).join(' ').toLowerCase()
+						: '';
+
+					const haystack = `${numero} ${cliente} ${vendedor} ${fecha} ${estado} ${total} ${prods}`;
+					return haystack.includes(q);
+				});
+				render(filtered);
+			});
+
+			// El botón principal 'Generar cotización' abre el drawer/modal
+			const mainGenerar = document.getElementById('generarBtn');
+			if (mainGenerar) {
+				mainGenerar.addEventListener('click', function () {
+					this.classList.add('active'); setTimeout(() => this.classList.remove('active'), 220);
+					openCotizacionDrawer();
+				});
+			}
+		})();
+	</script>
+
+	<!-- Modal / Drawer para generar cotización -->
+	<div id="cotDrawerBackdrop" class="modal-backdrop" aria-hidden="true">
+		<div class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+			<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+				<h3 id="drawerTitle">Generar cotización</h3>
+				<button id="closeDrawer" class="close-btn" aria-label="Cerrar">✕</button>
+			</div>
+
+			<div>
+				<div class="form-row">
+					<div class="col">
+						<div class="field-label">No. de cotización</div>
+						<div style="display:flex;gap:8px;align-items:center;flex-wrap:nowrap">
+							<input id="noCot" class="input" placeholder="Automático" />
+							<button id="autoToggle" class="toggle-btn on" aria-pressed="true">Automático</button>
+							<input type="hidden" id="autoNo" value="1">
+						</div>
+					</div>
+				</div>
+
+				<h4 style="margin:12px 0 6px">Cliente</h4>
+				<div class="form-row">
+					<div class="col">
+						<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+							<button id="selectClientBtn" class="btn ghost">Seleccionar cliente</button>
+							<button id="newClientBtn" class="btn">Nuevo cliente</button>
+						</div>
+						<div id="existingClientArea" style="display:none">
+							<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+								<input id="clienteSearch" class="input" placeholder="Buscar clientes guardados">
+								<button id="refreshClientes" class="btn ghost">Refrescar</button>
+							</div>
+							<div
+								style="overflow:auto;max-height:220px;border:1px solid var(--border);border-radius:6px;padding:6px;background:#fff">
+								<table class="client-table" id="clienteTableInline">
+									<thead>
+										<tr>
+											<th>Nombre</th>
+											<th>Teléfono</th>
+											<th>Correo</th>
+											<th style="width:90px"></th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody id="clienteTableBodyInline"></tbody>
+								</table>
+							</div>
+							<div id="clienteResults" style="margin-top:6px"></div>
+						</div>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="col">
+						<div class="field-label">Nombre</div>
+						<input id="clienteNombre" class="input">
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="col">
+						<div class="field-label">Dirección</div>
+						<input id="clienteDireccion" class="input">
+					</div>
+					<div class="col">
+						<div class="field-label">Teléfono</div>
+						<input id="clienteTelefono" class="input">
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="col">
+						<div class="field-label">Correo electrónico</div>
+						<input id="clienteEmail" class="input">
+					</div>
+				</div>
+
+				<h4 style="margin:16px 0 6px">Vendedor</h4>
+				<div class="form-row">
+					<div class="col">
+						<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+							<button id="selectVendorBtn" class="btn ghost">Seleccionar vendedor</button>
+							<button id="newVendorBtn" class="btn">Nuevo vendedor</button>
+						</div>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="col">
+						<div class="field-label">Nombre del vendedor</div>
+						<input id="vendedorNombre" class="input">
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="col">
+						<div class="field-label">Dirección</div>
+						<input id="vendedorDireccion" class="input">
+					</div>
+					<div class="col">
+						<div class="field-label">Teléfono</div>
+						<input id="vendedorTelefono" class="input">
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="col">
+						<div class="field-label">Correo electrónico</div>
+						<input id="vendedorEmail" class="input">
+					</div>
+				</div>
+
+
+				<h4 style="margin:12px 0 6px">Productos</h4>
+				<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
+					<button id="addProductBtn" class="btn">+ Catálogo</button>
+					<button id="addQuickProductBtn" class="btn ghost" style="background:#0f172a;color:#ffffff;border-color:#0f172a">+ Artículo Rápido</button>
+					<div class="small-note">Añade del catálogo o registra un artículo rápido.</div>
+				</div>
+
+				<div class="selected-products" id="selectedProductsContainer">
+					<!-- Productos añadidos aquí -->
+				</div>
+
+				<div class="drawer-footer">
+					<button id="cancelDrawer" class="btn ghost">Cancelar</button>
+					<button id="generarFinal" class="btn">Generar cotización</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal para buscar productos -->
+	<div id="prodSearchBackdrop" class="modal-backdrop" aria-hidden="true">
+		<div class="drawer" role="dialog" aria-modal="true" aria-labelledby="prodSearchTitle">
+			<div style="display:flex;align-items:center;min-height:34px;margin-bottom:12px;padding-right:200px">
+				<h3 id="prodSearchTitle" style="margin:0">Buscar productos</h3>
+				<a href="admin.html" target="_blank" class="btn ghost"
+					style="position:absolute;top:12px;right:54px;height:34px;padding:0 14px;font-size:0.85rem;text-decoration:none;display:inline-flex;align-items:center;gap:6px;border-radius:8px"
+					title="Añadir nuevo producto"><i class="fas fa-plus"></i> Añadir producto</a>
+				<button id="closeProdSearch" class="close-btn" aria-label="Cerrar">✕</button>
+			</div>
+			<div>
+				<div class="form-row">
+					<div class="col">
+						<div class="field-label">Marca</div>
+						<select id="filterMarca" class="input">
+							<option value="">Todas</option>
+						</select>
+					</div>
+					<div class="col">
+						<div class="field-label">Buscar</div>
+						<input id="filterProd" class="input" placeholder="Nombre o modelo">
+					</div>
+				</div>
+				<div id="prodResults" class="list"></div>
+				<div style="text-align:right;margin-top:10px"><button id="closeProdSearch2" class="close-btn"
+						aria-label="Cerrar">✕</button></div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal Artículo Rápido -->
+	<div id="quickProdModalBackdrop" class="modal-backdrop" aria-hidden="true">
+		<div class="drawer" role="dialog" aria-modal="true" style="max-width:540px">
+			<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+				<h3 style="margin:0;font-size:1.15rem;font-weight:700">Añadir Artículo Rápido</h3>
+				<button id="closeQuickProdModal" class="close-btn" aria-label="Cerrar">✕</button>
+			</div>
+			<div class="form-row">
+				<div class="col">
+					<div class="field-label">Nombre del artículo *</div>
+					<input id="quickProdNombre" class="input" placeholder="Ej. Cable HDMI 4K 2m">
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="col">
+					<div class="field-label">Modelo</div>
+					<input id="quickProdModelo" class="input" placeholder="Ej. HD-4K-2M">
+				</div>
+				<div class="col">
+					<div class="field-label">Marca</div>
+					<input id="quickProdMarca" class="input" placeholder="Ej. YOLOTECH / Genérico">
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="col">
+					<div class="field-label">Precio Unitario ($ MXN)</div>
+					<input id="quickProdPrecio" type="number" step="0.01" class="input" placeholder="0.00">
+				</div>
+				<div class="col">
+					<div class="field-label">Aplica IVA</div>
+					<select id="quickProdIva" class="input">
+						<option value="1">Sí (16%)</option>
+						<option value="0">No (0%)</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="col">
+					<div class="field-label">Imagen del artículo (Seleccionar archivo de tu PC)</div>
+					<input type="file" id="quickProdFile" class="input" accept="image/*">
+				</div>
+			</div>
+			<div class="modal-actions" style="margin-top:16px;text-align:right">
+				<button id="cancelQuickProdBtn" class="btn ghost">Cancelar</button>
+				<button id="saveQuickProdBtn" class="btn">Añadir a Cotización</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- Pantalla de carga al enviar correo con EmailJS / Resend -->
+	<div id="emailLoadingOverlay" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(15,23,42,0.8);backdrop-filter:blur(4px);z-index:999999;justify-content:center;align-items:center;flex-direction:column;color:#ffffff;font-family:sans-serif;pointer-events:none;">
+		<div style="width:54px;height:54px;border:5px solid rgba(255,255,255,0.2);border-top:5px solid #3b82f6;border-radius:50%;animation:spinEmail 0.9s linear infinite;margin-bottom:18px;"></div>
+		<h3 id="emailLoadingTitle" style="margin:0 0 8px 0;font-size:1.25rem;font-weight:700;color:#ffffff;letter-spacing:0.3px;">Enviando correo...</h3>
+		<p id="emailLoadingSub" style="margin:0;font-size:0.92rem;color:#cbd5e1;">Por favor espera mientras enviamos la cotización.</p>
+	</div>
+	<style>
+		@keyframes spinEmail {
+			0% { transform: rotate(0deg); }
+			100% { transform: rotate(360deg); }
+		}
+	</style>
+
+	<script type="module">
+		import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+		const SUPABASE_URL = 'https://zgjzensxrftkwnojvjqw.supabase.co';
+		const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnanplbnN4cmZ0a3dub2p2anF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTIwNjgsImV4cCI6MjA4MDU2ODA2OH0.vPJBa0xwr90bYxbNr2jw9ZodJMglKdYUaGjQrnfzeTg';
+		const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+		window.supabase = supabase;
+
+		// Drawer controls
+		const backdrop = document.getElementById('cotDrawerBackdrop');
+		const closeDrawer = document.getElementById('closeDrawer');
+		const cancelDrawer = document.getElementById('cancelDrawer');
+		const addProductBtn = document.getElementById('addProductBtn');
+		const prodSearchBackdrop = document.getElementById('prodSearchBackdrop');
+		const closeProdSearch = document.getElementById('closeProdSearch');
+		const closeProdSearch2 = document.getElementById('closeProdSearch2');
+
+		function openCotizacionDrawer(isEdit = false) {
+			backdrop.classList.add('show'); backdrop.setAttribute('aria-hidden', 'false');
+			if (!isEdit) {
+				const drawerTitle = document.getElementById('drawerTitle');
+				if (drawerTitle) drawerTitle.textContent = 'Generar cotización';
+				const autoToggleEl = document.getElementById('autoToggle');
+				if (autoToggleEl) autoToggleEl.style.display = 'inline-block';
+
+				if (typeof clearClientFields === 'function') clearClientFields();
+				if (typeof clearVendorFields === 'function') clearVendorFields();
+				window.selectedProducts = [];
+				if (typeof renderSelectedProducts === 'function') renderSelectedProducts();
+
+				setTimeout(() => { try { if (typeof updateAutoState === 'function') updateAutoState(); } catch (e) { console.warn(e) } }, 0);
+			}
+		}
+		function closeCotizacionDrawer() { backdrop.classList.remove('show'); backdrop.setAttribute('aria-hidden', 'true'); }
+		// Exponer globalmente para integrarse con el script no-módulo
+		window.openCotizacionDrawer = openCotizacionDrawer;
+		window.closeCotizacionDrawer = closeCotizacionDrawer;
+		async function openProdSearch() { prodSearchBackdrop.classList.add('show'); prodSearchBackdrop.setAttribute('aria-hidden', 'false'); if (filterProd) filterProd.value = ''; await searchProducts(); }
+		function closeProdSearchFn() { prodSearchBackdrop.classList.remove('show'); prodSearchBackdrop.setAttribute('aria-hidden', 'true'); }
+
+		closeDrawer.addEventListener('click', closeCotizacionDrawer);
+		cancelDrawer.addEventListener('click', closeCotizacionDrawer);
+		addProductBtn.addEventListener('click', openProdSearch);
+		closeProdSearch.addEventListener('click', closeProdSearchFn);
+		closeProdSearch2.addEventListener('click', closeProdSearchFn);
+
+		// Quick Article Modal Controls & ImgBB upload
+		const IMGBB_API_KEY = "18d7825e6b190dcaac01e42053affc61";
+
+		function fileToBase64(file) {
+			return new Promise((resolve, reject) => {
+				const reader = new FileReader();
+				reader.onload = () => resolve(reader.result.split(',')[1]);
+				reader.onerror = error => reject(error);
+				reader.readAsDataURL(file);
+			});
+		}
+
+		async function uploadToImgbb(file) {
+			const base64Image = await fileToBase64(file);
+			const formData = new FormData();
+			formData.append("image", base64Image);
+
+			const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+				method: "POST",
+				body: formData,
+			});
+
+			const data = await res.json();
+			if (!data.success) throw new Error("Error subiendo imagen a imgBB");
+			return data.data.url;
+		}
+
+		const addQuickProductBtn = document.getElementById('addQuickProductBtn');
+		const quickProdModalBackdrop = document.getElementById('quickProdModalBackdrop');
+		const closeQuickProdModal = document.getElementById('closeQuickProdModal');
+		const cancelQuickProdBtn = document.getElementById('cancelQuickProdBtn');
+		const saveQuickProdBtn = document.getElementById('saveQuickProdBtn');
+
+		function openQuickProdModal() {
+			if (!quickProdModalBackdrop) return;
+			document.getElementById('quickProdNombre').value = '';
+			document.getElementById('quickProdModelo').value = '';
+			document.getElementById('quickProdMarca').value = '';
+			document.getElementById('quickProdPrecio').value = '';
+			document.getElementById('quickProdIva').value = '1';
+			const fileInput = document.getElementById('quickProdFile');
+			if (fileInput) fileInput.value = '';
+			quickProdModalBackdrop.classList.add('show');
+			quickProdModalBackdrop.setAttribute('aria-hidden', 'false');
+		}
+
+		function closeQuickProdModalFn() {
+			if (!quickProdModalBackdrop) return;
+			quickProdModalBackdrop.classList.remove('show');
+			quickProdModalBackdrop.setAttribute('aria-hidden', 'true');
+		}
+
+		if (addQuickProductBtn) addQuickProductBtn.addEventListener('click', openQuickProdModal);
+		if (closeQuickProdModal) closeQuickProdModal.addEventListener('click', closeQuickProdModalFn);
+		if (cancelQuickProdBtn) cancelQuickProdBtn.addEventListener('click', closeQuickProdModalFn);
+
+		if (saveQuickProdBtn) {
+			saveQuickProdBtn.addEventListener('click', async function () {
+				const nombre = (document.getElementById('quickProdNombre').value || '').trim();
+				const modelo = (document.getElementById('quickProdModelo').value || '').trim();
+				const marca = (document.getElementById('quickProdMarca').value || '').trim();
+				const precioRaw = (document.getElementById('quickProdPrecio').value || '').trim();
+				const aplicaIva = document.getElementById('quickProdIva').value === '1';
+				const fileInput = document.getElementById('quickProdFile');
+				const file = fileInput && fileInput.files ? fileInput.files[0] : null;
+
+				if (!nombre) {
+					alert('Debes ingresar al menos el nombre del artículo.');
+					document.getElementById('quickProdNombre').focus();
+					return;
+				}
+
+				let imgUrl = 'IMG/default.png';
+
+				if (file) {
+					saveQuickProdBtn.disabled = true;
+					const origText = saveQuickProdBtn.textContent;
+					saveQuickProdBtn.textContent = 'Subiendo imagen...';
+					try {
+						imgUrl = await uploadToImgbb(file);
+					} catch (errImg) {
+						console.error('Error al subir imagen a ImgBB:', errImg);
+						alert('Ocurrió un error al subir la imagen. Se utilizará la imagen por defecto.');
+					} finally {
+						saveQuickProdBtn.disabled = false;
+						saveQuickProdBtn.textContent = origText;
+					}
+				}
+
+				const precioNum = parseFloat(precioRaw.replace(',', '.')) || 0;
+
+				window.selectedProducts.push({
+					id: 'quick_' + Date.now(),
+					nombre: nombre,
+					modelo: modelo,
+					marca: marca,
+					qty: 1,
+					precio: String(precioNum),
+					aplicaIva: aplicaIva,
+					imagen: imgUrl,
+					isQuick: true
+				});
+
+				if (typeof renderSelectedProducts === 'function') {
+					renderSelectedProducts();
+				}
+
+				// Guardar asíncronamente en la tabla de Supabase 'articulos_rapidos'
+				try {
+					const sb = window.supabase || (typeof supabase !== 'undefined' ? supabase : null);
+					if (sb) {
+						await sb.from('articulos_rapidos').insert([{
+							nombre: nombre,
+							modelo: modelo,
+							marca: marca,
+							precio: precioNum,
+							imagen: imgUrl === 'IMG/default.png' ? '' : imgUrl
+						}]);
+					}
+				} catch (errDb) {
+					console.warn('No se pudo guardar en articulos_rapidos de Supabase:', errDb);
+				}
+
+				closeQuickProdModalFn();
+			});
+		}
+
+		// Load marcas into select
+		async function loadMarcas() {
+			const sel = document.getElementById('filterMarca');
+			try {
+				const { data, error } = await supabase.from('marcas').select('id,nombre').order('nombre');
+				if (error) throw error;
+				data.forEach(m => { const o = document.createElement('option'); o.value = m.id; o.textContent = m.nombre; sel.appendChild(o); });
+			} catch (e) { console.warn('No se cargaron marcas', e); }
+		}
+
+		// Product search
+		const filterProd = document.getElementById('filterProd');
+		const prodResults = document.getElementById('prodResults');
+
+		async function searchProducts() {
+			const q = filterProd.value.trim();
+			const marca = document.getElementById('filterMarca').value;
+			// Build query: cargar todos los productos sin importar si están activos u ocultos
+			let query = supabase.from('productos').select('id,nombre,numero_modelo,imagen,marca_id').limit(200);
+			if (marca) query = query.eq('marca_id', marca);
+			if (q) {
+				query = supabase.from('productos').select('id,nombre,numero_modelo,imagen,marca_id').or(`nombre.ilike.%${q}%,numero_modelo.ilike.%${q}%`).limit(200);
+				if (marca) query = query.eq('marca_id', marca);
+			}
+
+			const { data, error } = await query;
+			prodResults.innerHTML = '';
+			if (error) { prodResults.textContent = 'Error al buscar'; return; }
+			if (!data || data.length === 0) { prodResults.textContent = 'No se encontraron productos.'; return; }
+			data.forEach(p => {
+				const row = document.createElement('div'); row.className = 'prod-row';
+				row.innerHTML = `<img src="${p.imagen || 'IMG/default.png'}" alt="${p.nombre}"><div class='meta'><div style='font-weight:700'>${p.nombre}</div><div class='small-note'>Modelo: ${p.numero_modelo || ''}</div></div><div class='prod-actions'><button class='btn' data-id='${p.id}' data-nombre='${p.nombre}' data-modelo='${p.numero_modelo || ''}' data-imagen='${p.imagen || ''}'>+</button></div>`;
+				prodResults.appendChild(row);
+			});
+		}
+
+		// Add handler to capture add clicks
+		prodResults.addEventListener('click', (e) => {
+			const btn = e.target.closest('button[data-id]');
+			if (!btn) return;
+			const p = { id: btn.dataset.id, nombre: btn.dataset.nombre, modelo: btn.dataset.modelo, imagen: btn.dataset.imagen };
+			addProductToSelection(p);
+		});
+
+		// Selected products management
+		window.selectedProducts = [];
+		const selectedContainer = document.getElementById('selectedProductsContainer');
+
+		function addProductToSelection(p) {
+			if (!window.selectedProducts) window.selectedProducts = [];
+			// avoid duplicates by id
+			if (window.selectedProducts.find(x => x.id == p.id)) return;
+			p.qty = 1;
+			p.precio = '';
+			p.aplicaIva = true;
+			p.ivaPorcentaje = 16;
+			window.selectedProducts.push(p);
+			renderSelectedProducts();
+		}
+
+		function renderSelectedProducts() {
+			if (!window.selectedProducts) window.selectedProducts = [];
+			const selectedContainer = document.getElementById('selectedProductsContainer');
+			if (!selectedContainer) return;
+			selectedContainer.innerHTML = '';
+			if (window.selectedProducts.length === 0) { selectedContainer.innerHTML = '<p class="empty-msg">No hay productos añadidos.</p>'; return; }
+			window.selectedProducts.forEach((p, idx) => {
+				if (p.aplicaIva === undefined) p.aplicaIva = true;
+				if (p.ivaPorcentaje === undefined) p.ivaPorcentaje = 16;
+
+				const priceVal = (p.precio !== undefined && p.precio !== null) ? p.precio : ((p.precio_unitario !== undefined && p.precio_unitario !== null) ? p.precio_unitario : '');
+				const rawPrice = String(priceVal).replace(',', '.');
+				const unitPrice = parseFloat(rawPrice) || 0;
+				const subtotal = unitPrice * (p.qty || 1);
+				const ivaMonto = p.aplicaIva ? (subtotal * (p.ivaPorcentaje / 100)) : 0;
+				const totalItem = subtotal + ivaMonto;
+
+				const row = document.createElement('div'); row.className = 'prod-row';
+				row.style.flexWrap = 'wrap';
+				const ivaLabelText = p.aplicaIva ? `(IVA: $${ivaMonto.toFixed(2)} | Total: $${totalItem.toFixed(2)})` : `Total: $${totalItem.toFixed(2)} (sin IVA)`;
+				row.innerHTML = `
+					<img src='${p.imagen || 'IMG/default.png'}'>
+					<div class='meta' style='min-width:140px'>
+						<div style='font-weight:700'>${escapeHtml(p.nombre)}</div>
+						<div class='small-note'>Modelo: ${escapeHtml(p.modelo || '—')}${p.marca ? ' | Marca: ' + escapeHtml(p.marca) : ''}${p.isQuick ? ' <span style="background:#0f172a;color:#fff;padding:1px 5px;border-radius:4px;font-size:0.7em">Rápido</span>' : ''}</div>
+						<div class='small-note total-label' style='color:#059669;font-weight:600;margin-top:2px'>${ivaLabelText}</div>
+					</div>
+					<div class='prod-actions' style='align-items:center;gap:8px;flex-wrap:wrap'>
+						<input class='qty-input' type='number' min='1' value='${p.qty}' data-idx='${idx}' title='Cantidad'>
+						<input class='price-input' type='text' inputmode='decimal' placeholder='Precio' data-idx='${idx}' value='${priceVal}' title='Precio unitario'>
+						<label style='display:inline-flex;align-items:center;gap:4px;font-size:0.85rem;font-weight:600;cursor:pointer;user-select:none' title='Aplicar IVA al producto'>
+							<input type='checkbox' class='iva-checkbox' data-idx='${idx}' ${p.aplicaIva ? 'checked' : ''}> +IVA (16%)
+						</label>
+						<button class='btn ghost' data-idx='${idx}'>Eliminar</button>
+					</div>`;
+				selectedContainer.appendChild(row);
+			});
+			// bind events
+			selectedContainer.querySelectorAll('.qty-input').forEach(inp => inp.addEventListener('change', (e) => {
+				const i = Number(e.target.dataset.idx); window.selectedProducts[i].qty = Number(e.target.value) || 1; renderSelectedProducts();
+			}));
+			selectedContainer.querySelectorAll('.price-input').forEach(inp => inp.addEventListener('input', (e) => {
+				const i = Number(e.target.dataset.idx);
+				window.selectedProducts[i].precio = e.target.value;
+				const rawPrice = String(e.target.value).replace(',', '.');
+				const unitPrice = parseFloat(rawPrice) || 0;
+				const subtotal = unitPrice * (window.selectedProducts[i].qty || 1);
+				const ivaMonto = window.selectedProducts[i].aplicaIva ? (subtotal * (window.selectedProducts[i].ivaPorcentaje / 100)) : 0;
+				const totalItem = subtotal + ivaMonto;
+				const totalLabel = e.target.closest('.prod-row').querySelector('.total-label');
+				if (totalLabel) {
+					totalLabel.textContent = window.selectedProducts[i].aplicaIva
+						? `(IVA: $${ivaMonto.toFixed(2)} | Total: $${totalItem.toFixed(2)})`
+						: `Total: $${totalItem.toFixed(2)} (sin IVA)`;
+				}
+			}));
+			selectedContainer.querySelectorAll('.iva-checkbox').forEach(chk => chk.addEventListener('change', (e) => {
+				const i = Number(e.target.dataset.idx); window.selectedProducts[i].aplicaIva = e.target.checked; renderSelectedProducts();
+			}));
+			selectedContainer.querySelectorAll('.prod-actions button[data-idx]').forEach(btn => btn.addEventListener('click', (e) => {
+				const i = Number(e.currentTarget.dataset.idx); window.selectedProducts.splice(i, 1); renderSelectedProducts();
+			}));
+		}
+		window.renderSelectedProducts = renderSelectedProducts;
+
+		// Search triggers
+		document.getElementById('filterMarca').addEventListener('change', searchProducts);
+		filterProd.addEventListener('input', () => { setTimeout(searchProducts, 200); });
+
+		// Manejo de pestañas principales (Cotizaciones / Clientes / Vendedores / Configuración PDF Cotizaciones / Configuración PDF Notas)
+		const mainTabsConfig = [
+			{ btnId: 'tabCotizaciones', secId: 'secCotizaciones' },
+			{ btnId: 'tabClientes', secId: 'secClientes', onOpen: renderMainClientTable },
+			{ btnId: 'tabVendedores', secId: 'secVendedores', onOpen: renderMainVendorTable },
+			{ btnId: 'tabConfigCotizacion', secId: 'secConfigCotizacion', onOpen: () => { if (typeof renderPdfTemplateBackground === 'function') renderPdfTemplateBackground(); } },
+			{ btnId: 'tabConfigNota', secId: 'secConfigNota' }
+		];
+
+		mainTabsConfig.forEach(item => {
+			const btn = document.getElementById(item.btnId);
+			const sec = document.getElementById(item.secId);
+			if (!btn || !sec) return;
+			btn.addEventListener('click', () => {
+				mainTabsConfig.forEach(other => {
+					const b = document.getElementById(other.btnId);
+					const s = document.getElementById(other.secId);
+					if (b && s) {
+						const isActive = (other.btnId === item.btnId);
+						b.classList.toggle('active', isActive);
+						b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+						s.style.display = isActive ? 'block' : 'none';
+					}
+				});
+				if (item.onOpen) item.onOpen();
+			});
+		});
+
+		// Customer selection UI: cargar clientes únicamente desde Supabase
+		const clienteResults = document.getElementById('clienteResults');
+		const clienteSelect = document.getElementById('clienteSelect');
+		let clientsList = [];
+
+		async function loadClients() {
+			try {
+				const { data, error } = await supabase.from('clientes').select('*').order('nombre', { ascending: true });
+				if (error) {
+					console.error('Error al consultar clientes en Supabase:', error);
+					clientsList = [];
+				} else {
+					clientsList = data || [];
+				}
+			} catch (e) {
+				console.error('Excepción al consultar clientes en Supabase:', e);
+				clientsList = [];
+			}
+
+			const activeClients = clientsList.filter(c => c.activo !== false);
+
+			if (clienteSelect) {
+				clienteSelect.innerHTML = '<option value="">-- seleccionar cliente --</option>';
+				activeClients.forEach(c => {
+					const o = document.createElement('option');
+					o.value = JSON.stringify(c);
+					o.textContent = c.nombre + (c.telefono ? (' — ' + c.telefono) : '');
+					clienteSelect.appendChild(o);
+				});
+			}
+			if (clienteResults) {
+				if (!clientsList.length) clienteResults.textContent = 'No hay clientes registrados en la base de datos.'; else clienteResults.textContent = '';
+			}
+			renderInlineClientTable();
+			renderMainClientTable();
+			return clientsList;
+		}
+
+		// Render inline client table in drawer
+		function renderInlineClientTable(filter) {
+			const tbody = document.getElementById('clienteTableBodyInline');
+			if (!tbody) return;
+			tbody.innerHTML = '';
+			const activeList = (clientsList || []).filter(c => c.activo !== false);
+			if (!activeList || activeList.length === 0) { tbody.innerHTML = '<tr><td colspan="4" style="padding:12px">No hay clientes guardados.</td></tr>'; return; }
+			activeList.forEach((c, idx) => {
+				const name = c.nombre || '';
+				const tel = c.telefono || '';
+				const email = c.email || '';
+				const hay = (name + ' ' + tel + ' ' + email).toLowerCase();
+				if (filter && !hay.includes(filter)) return;
+				const tr = document.createElement('tr');
+				tr.innerHTML = `<td>${escapeHtml(name)}</td><td>${escapeHtml(tel)}</td><td>${escapeHtml(email)}</td><td style="text-align:right"><button class='btn client-select-btn' data-idx='${idx}'>Seleccionar</button></td>`;
+				tbody.appendChild(tr);
+			});
+			tbody.querySelectorAll('.client-select-btn').forEach(btn => btn.addEventListener('click', function () {
+				const c = activeList[Number(this.dataset.idx)];
+				if (!c) return;
+				document.getElementById('clienteNombre').value = c.nombre || '';
+				document.getElementById('clienteTelefono').value = c.telefono || '';
+				document.getElementById('clienteEmail').value = c.email || '';
+				document.getElementById('clienteDireccion').value = c.direccion || '';
+				setClientFieldsReadonly(true);
+			}));
+		}
+
+		// Render main client management table
+		const mainClientTableBody = document.getElementById('mainClientTableBody');
+		const mainClientEmptyMsg = document.getElementById('mainClientEmptyMsg');
+		const mainClientFilter = document.getElementById('mainClientFilter');
+		const mainNewClientBtn = document.getElementById('mainNewClientBtn');
+
+		function renderMainClientTable(filterText) {
+			if (!mainClientTableBody) return;
+			mainClientTableBody.innerHTML = '';
+			const list = clientsList || [];
+			let count = 0;
+			const q = (filterText !== undefined ? filterText : (mainClientFilter ? mainClientFilter.value : '')).trim().toLowerCase();
+
+			list.forEach((c, idx) => {
+				const name = c.nombre || '';
+				const tel = c.telefono || '';
+				const email = c.email || '';
+				const dir = c.direccion || '';
+				const isInactive = (c.activo === false);
+				const hay = (name + ' ' + tel + ' ' + email + ' ' + dir).toLowerCase();
+				if (q && !hay.includes(q)) return;
+				count++;
+				const tr = document.createElement('tr');
+				if (isInactive) {
+					tr.className = 'inactive-row';
+				}
+
+				const editButtonHtml = !isInactive
+					? `<button class="action-btn edit" data-idx="${idx}"><i class="fas fa-edit"></i> Editar</button>`
+					: '';
+
+				const toggleButtonHtml = isInactive
+					? `<button class="action-btn show-btn" data-idx="${idx}"><i class="fas fa-eye"></i> Mostrar</button>`
+					: `<button class="action-btn hide-btn" data-idx="${idx}"><i class="fas fa-eye-slash"></i> Ocultar</button>`;
+
+				tr.innerHTML = `
+						<td data-label="Nombre" style="font-weight:600">${escapeHtml(name)}</td>
+						<td data-label="Teléfono">${escapeHtml(tel || '—')}</td>
+						<td data-label="Correo">${escapeHtml(email || '—')}</td>
+						<td data-label="Dirección">${escapeHtml(dir || '—')}</td>
+						<td data-label="Acciones" style="text-align:right">
+							${editButtonHtml}
+							${toggleButtonHtml}
+						</td>
+					`;
+				mainClientTableBody.appendChild(tr);
+			});
+
+			if (mainClientEmptyMsg) {
+				mainClientEmptyMsg.style.display = count === 0 ? 'block' : 'none';
+			}
+
+			mainClientTableBody.querySelectorAll('.action-btn.edit').forEach(btn => {
+				btn.addEventListener('click', function () {
+					const idx = Number(this.dataset.idx);
+					openEditClientModal(idx);
+				});
+			});
+
+			mainClientTableBody.querySelectorAll('.action-btn.hide-btn, .action-btn.show-btn').forEach(btn => {
+				btn.addEventListener('click', function () {
+					const idx = Number(this.dataset.idx);
+					toggleClientActive(idx);
+				});
+			});
+		}
+
+		if (mainClientFilter) {
+			mainClientFilter.addEventListener('input', function () {
+				renderMainClientTable(this.value.trim().toLowerCase());
+			});
+		}
+
+		if (mainNewClientBtn) {
+			mainNewClientBtn.addEventListener('click', () => {
+				openCreateClientModal(false);
+			});
+		}
+
+		// Open Create / Edit client modal
+		function openCreateClientModal(isFromDrawer = false) {
+			document.getElementById('editClientIdx').value = '';
+			document.getElementById('clientCreateTitle').textContent = 'Nuevo cliente';
+			document.getElementById('clientCreateSubtitle').textContent = 'Agrega los datos del cliente. Los campos marcados son obligatorios.';
+			document.getElementById('createClienteNombre').value = '';
+			document.getElementById('createClienteTelefono').value = '';
+			document.getElementById('createClienteDireccion').value = '';
+			document.getElementById('createClienteEmail').value = '';
+
+			const rowActivo = document.getElementById('rowClienteActivo');
+			const chkActivo = document.getElementById('createClienteActivo');
+			if (chkActivo) chkActivo.checked = true;
+			if (rowActivo) rowActivo.style.display = isFromDrawer ? 'none' : 'block';
+
+			clearClientFormErrors();
+			document.getElementById('clientCreateBackdrop').classList.add('show');
+			document.getElementById('clientCreateBackdrop').setAttribute('aria-hidden', 'false');
+		}
+
+		function openEditClientModal(idx) {
+			const c = clientsList[idx];
+			if (!c) return;
+			document.getElementById('editClientIdx').value = idx;
+			document.getElementById('clientCreateTitle').textContent = 'Editar cliente';
+			document.getElementById('clientCreateSubtitle').textContent = 'Modifica los datos del cliente.';
+			document.getElementById('createClienteNombre').value = c.nombre || '';
+			document.getElementById('createClienteTelefono').value = c.telefono || '';
+			document.getElementById('createClienteDireccion').value = c.direccion || '';
+			document.getElementById('createClienteEmail').value = c.email || '';
+
+			const rowActivo = document.getElementById('rowClienteActivo');
+			const chkActivo = document.getElementById('createClienteActivo');
+			if (rowActivo) rowActivo.style.display = 'block';
+			if (chkActivo) chkActivo.checked = (c.activo !== false);
+
+			clearClientFormErrors();
+			document.getElementById('clientCreateBackdrop').classList.add('show');
+			document.getElementById('clientCreateBackdrop').setAttribute('aria-hidden', 'false');
+		}
+
+		async function toggleClientActive(idx) {
+			const c = clientsList[idx];
+			if (!c) return;
+			const currentlyActive = (c.activo !== false);
+			const targetState = !currentlyActive;
+			const msg = currentlyActive
+				? `¿Estás seguro de que deseas ocultar al cliente "${c.nombre}"?`
+				: `¿Estás seguro de que deseas volver a mostrar al cliente "${c.nombre}"?`;
+
+			if (confirm(msg)) {
+				if (c.id) {
+					const { error } = await supabase.from('clientes').update({ activo: targetState }).eq('id', c.id);
+					if (error) console.error('Error al actualizar estado en Supabase:', error);
+				}
+				await loadClients();
+			}
+		}
+
+		function clearClientFormErrors() {
+			const el = document.getElementById('createClienteNombre');
+			if (el) el.classList.remove('error');
+			const msg = document.getElementById('errNombre');
+			if (msg) msg.style.display = 'none';
+		}
+
+		// Client buttons: abrir modal de selección / nuevo
+		const selectClientBtn = document.getElementById('selectClientBtn');
+		const newClientBtn = document.getElementById('newClientBtn');
+		const clientBackdrop = document.getElementById('clientSelectBackdrop');
+		const clientTableBody = document.getElementById('clientTableBody');
+		const clientFilter = document.getElementById('clientFilter');
+		const closeClientModal = document.getElementById('closeClientModal');
+		const closeClientModal2 = document.getElementById('closeClientModal2');
+
+		async function openClientModal() {
+			await loadClients();
+			renderClientTable();
+			clientBackdrop.classList.add('show'); clientBackdrop.setAttribute('aria-hidden', 'false');
+			if (selectClientBtn) selectClientBtn.classList.add('active');
+			if (newClientBtn) newClientBtn.classList.remove('active');
+		}
+		function closeClientModalFn() { clientBackdrop.classList.remove('show'); clientBackdrop.setAttribute('aria-hidden', 'true'); }
+
+		if (selectClientBtn) selectClientBtn.addEventListener('click', openClientModal);
+		if (newClientBtn) {
+			newClientBtn.addEventListener('click', function () {
+				openCreateClientModal(true);
+				newClientBtn.classList.add('active'); if (selectClientBtn) selectClientBtn.classList.remove('active');
+			});
+		}
+		if (closeClientModal) closeClientModal.addEventListener('click', closeClientModalFn);
+		if (closeClientModal2) closeClientModal2.addEventListener('click', closeClientModalFn);
+
+		// Create/Edit client modal handlers
+		const clientCreateBackdrop = document.getElementById('clientCreateBackdrop');
+		const closeClientCreate = document.getElementById('closeClientCreate');
+		const saveClientModalBtn = document.getElementById('saveClientModalBtn');
+		const cancelClientModalBtn = document.getElementById('cancelClientModalBtn');
+
+		function closeClientCreateFn() { clientCreateBackdrop.classList.remove('show'); clientCreateBackdrop.setAttribute('aria-hidden', 'true'); }
+		if (closeClientCreate) closeClientCreate.addEventListener('click', closeClientCreateFn);
+		if (cancelClientModalBtn) cancelClientModalBtn.addEventListener('click', closeClientCreateFn);
+
+		if (saveClientModalBtn) {
+			saveClientModalBtn.addEventListener('click', async function () {
+				const nombreEl = document.getElementById('createClienteNombre');
+				const direccionEl = document.getElementById('createClienteDireccion');
+				const telefonoEl = document.getElementById('createClienteTelefono');
+				const emailEl = document.getElementById('createClienteEmail');
+				const editIdxVal = document.getElementById('editClientIdx').value;
+				const chkActivo = document.getElementById('createClienteActivo');
+				const nombre = nombreEl.value.trim();
+				const direccion = direccionEl.value.trim();
+				const telefono = telefonoEl.value.trim();
+				const email = emailEl.value.trim();
+				const activo = chkActivo ? chkActivo.checked : true;
+
+				clearClientFormErrors();
+				if (!nombre) {
+					nombreEl.classList.add('error');
+					const err = document.getElementById('errNombre');
+					if (err) err.style.display = 'block';
+					nombreEl.focus();
+					return;
+				}
+
+				const clientObj = { nombre, direccion, telefono, email, activo };
+
+				if (editIdxVal !== '' && editIdxVal !== null && !isNaN(Number(editIdxVal))) {
+					const idx = Number(editIdxVal);
+					const current = clientsList[idx];
+					if (current && current.id) {
+						const { error } = await supabase.from('clientes').update(clientObj).eq('id', current.id);
+						if (error) console.error('Error al actualizar cliente en Supabase:', error);
+					}
+				} else {
+					const { error } = await supabase.from('clientes').insert([clientObj]);
+					if (error) console.error('Error al insertar cliente en Supabase:', error);
+				}
+
+				await loadClients();
+
+				// Si estábamos creando desde el drawer de cotización, poblar y bloquear campos
+				const cotDrawer = document.getElementById('cotDrawerBackdrop');
+				if (cotDrawer && cotDrawer.classList.contains('show')) {
+					document.getElementById('clienteNombre').value = nombre;
+					document.getElementById('clienteDireccion').value = direccion;
+					document.getElementById('clienteTelefono').value = telefono;
+					document.getElementById('clienteEmail').value = email;
+					setClientFieldsReadonly(true);
+				}
+
+				closeClientCreateFn();
+			});
+		}
+
+		if (clientFilter) clientFilter.addEventListener('input', function () { renderClientTable(this.value.trim().toLowerCase()); });
+
+		// inline search in drawer
+		const clienteSearch = document.getElementById('clienteSearch');
+		if (clienteSearch) clienteSearch.addEventListener('input', function () { renderInlineClientTable(this.value.trim().toLowerCase()); });
+		const refreshClientes = document.getElementById('refreshClientes');
+		if (refreshClientes) refreshClientes.addEventListener('click', () => { loadClients(); });
+
+		function renderClientTable(filter) {
+			if (!clientTableBody) return;
+			clientTableBody.innerHTML = '';
+			const activeList = (clientsList || []).filter(c => c.activo !== false);
+			if (!activeList || activeList.length === 0) { clientTableBody.innerHTML = '<tr><td colspan="4" style="padding:12px">No hay clientes registrados.</td></tr>'; return; }
+			activeList.forEach((c, idx) => {
+				const name = c.nombre || '';
+				const tel = c.telefono || '';
+				const email = c.email || '';
+				const hay = (name + ' ' + tel + ' ' + email).toLowerCase();
+				if (filter && !hay.includes(filter)) return;
+				const tr = document.createElement('tr'); tr.className = 'client-row';
+				tr.innerHTML = `<td class='meta'>${escapeHtml(name)}</td><td>${escapeHtml(tel)}</td><td>${escapeHtml(email)}</td><td style="text-align:right"><button class='btn client-select-btn' data-idx='${idx}'>Seleccionar</button></td>`;
+				clientTableBody.appendChild(tr);
+			});
+			clientTableBody.querySelectorAll('.client-select-btn').forEach(btn => btn.addEventListener('click', function () { const c = activeList[Number(this.dataset.idx)]; if (!c) return; document.getElementById('clienteNombre').value = c.nombre || ''; document.getElementById('clienteTelefono').value = c.telefono || ''; document.getElementById('clienteEmail').value = c.email || ''; document.getElementById('clienteDireccion').value = c.direccion || ''; setClientFieldsReadonly(true); closeClientModalFn(); }));
+		}
+
+		function escapeHtml(s) { if (!s) return ''; return String(s).replace(/[&<>"']/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": "&#39;" }[m]; }); }
+		// selecting existing client populates fields readonly
+		if (clienteSelect) {
+			clienteSelect.addEventListener('change', function () {
+				const val = this.value;
+				if (!val) return;
+				try { const c = JSON.parse(val); document.getElementById('clienteNombre').value = c.nombre || ''; document.getElementById('clienteTelefono').value = c.telefono || ''; document.getElementById('clienteEmail').value = c.email || ''; document.getElementById('clienteDireccion').value = c.direccion || ''; setClientFieldsReadonly(true); } catch (e) { }
+			});
+		}
+
+		function setClientFieldsReadonly(readonly) { ['clienteNombre', 'clienteDireccion', 'clienteTelefono', 'clienteEmail'].forEach(id => { const el = document.getElementById(id); if (!el) return; el.readOnly = !!readonly; if (readonly) el.classList.add('compact'); else el.classList.remove('compact'); }); }
+		function clearClientFields() { ['clienteNombre', 'clienteDireccion', 'clienteTelefono', 'clienteEmail'].forEach(id => { const el = document.getElementById(id); if (el) { el.value = ''; el.readOnly = false; el.classList.remove('compact'); } }); }
+
+		// Save/Cancel new client from drawer (if buttons still present)
+		const _saveClientBtn = document.getElementById('saveClientBtn');
+		if (_saveClientBtn) {
+			_saveClientBtn.addEventListener('click', async function () {
+				const nombre = document.getElementById('clienteNombre').value.trim();
+				const direccion = document.getElementById('clienteDireccion').value.trim();
+				const telefono = document.getElementById('clienteTelefono').value.trim();
+				const email = document.getElementById('clienteEmail').value.trim();
+				if (!nombre) { alert('El nombre es obligatorio'); return; }
+				const { error } = await supabase.from('clientes').insert([{ nombre, direccion, telefono, email }]);
+				if (error) console.error('Error al guardar cliente en Supabase:', error);
+				await loadClients();
+				setClientFieldsReadonly(true);
+				if (newClientBtn) newClientBtn.classList.add('active');
+				if (selectClientBtn) selectClientBtn.classList.remove('active');
+				alert('Cliente guardado');
+			});
+		}
+		const _cancelClientBtn = document.getElementById('cancelClientBtn');
+		if (_cancelClientBtn) {
+			_cancelClientBtn.addEventListener('click', function () { clearClientFields(); setClientFieldsReadonly(false); newClientBtn.classList.remove('active'); selectClientBtn.classList.remove('active'); });
+		}
+
+		// Configuración PDF Cotizaciones y Notas handlers
+		const saveCotizacionPdfConfigBtn = document.getElementById('saveCotizacionPdfConfigBtn');
+		if (saveCotizacionPdfConfigBtn) {
+			saveCotizacionPdfConfigBtn.addEventListener('click', function () {
+				const titulo = document.getElementById('configPdfCotizacionTitulo').value.trim();
+				const notas = document.getElementById('configPdfCotizacionNotas').value.trim();
+				localStorage.setItem('config_pdf_cotizacion', JSON.stringify({ titulo, notas }));
+				alert('Configuración de PDF para Cotizaciones guardada correctamente.');
+			});
+		}
+
+		const saveNotaPdfConfigBtn = document.getElementById('saveNotaPdfConfigBtn');
+		if (saveNotaPdfConfigBtn) {
+			saveNotaPdfConfigBtn.addEventListener('click', function () {
+				const titulo = document.getElementById('configPdfNotaTitulo').value.trim();
+				const notas = document.getElementById('configPdfNotaNotas').value.trim();
+				localStorage.setItem('config_pdf_nota', JSON.stringify({ titulo, notas }));
+				alert('Configuración de PDF para Notas guardada correctamente.');
+			});
+		}
+
+		// Generate and save quote
+		const generarFinalBtn = document.getElementById('generarFinal');
+		if (generarFinalBtn) generarFinalBtn.addEventListener('click', () => saveCotizacion());
+
+		// Toggle button handling (Automático / Manual)
+		async function generateNextQuoteNumber() {
+			const existingNumbers = [];
+
+			// 1. Leer de Supabase
+			try {
+				const { data, error } = await supabase
+					.from('cotizaciones')
+					.select('numero');
+				if (!error && data) {
+					data.forEach(item => {
+						if (item.numero) existingNumbers.push(item.numero);
+					});
+				}
+			} catch (e) {
+				console.warn('Error leyendo números de Supabase:', e);
+			}
+
+			// 2. Leer de localStorage
+			try {
+				const raw = localStorage.getItem('cotizaciones');
+				if (raw) {
+					const localList = JSON.parse(raw);
+					localList.forEach(item => {
+						if (item.numero) existingNumbers.push(item.numero);
+					});
+				}
+			} catch (e) { }
+
+			// 3. Extraer solo los números secuenciales
+			const numericValues = [];
+			existingNumbers.forEach(str => {
+				const matches = String(str).match(/\d+/g);
+				if (matches) {
+					const lastSeq = matches[matches.length - 1];
+					const val = parseInt(lastSeq, 10);
+					if (!isNaN(val)) numericValues.push(val);
+				}
+			});
+
+			// 4. Ordenar con sort() de menor a mayor
+			numericValues.sort((a, b) => a - b);
+
+			// 5. Determinar el mayor número correlativo y sumar 1 (inicio en 1)
+			const lastNum = numericValues.length > 0 ? numericValues[numericValues.length - 1] : 0;
+			const nextNum = lastNum + 1;
+
+			// 6. Formatear con 6 dígitos con ceros a la izquierda (ej: COT-000001)
+			return 'COT-' + String(nextNum).padStart(6, '0');
+		}
+
+		async function updateAutoState() {
+			const autoToggleEl = document.getElementById('autoToggle');
+			const autoHiddenEl = document.getElementById('autoNo');
+			if (!autoToggleEl || !autoHiddenEl) return;
+			const on = autoToggleEl.classList.contains('on');
+			autoToggleEl.textContent = on ? 'Automático' : 'Manual';
+			autoToggleEl.setAttribute('aria-pressed', on ? 'true' : 'false');
+			autoHiddenEl.value = on ? '1' : '0';
+
+			const noCotEl = document.getElementById('noCot');
+			if (!noCotEl) return;
+			if (on) {
+				try { noCotEl.value = await generateNextQuoteNumber(); } catch (e) { }
+				noCotEl.readOnly = true;
+				noCotEl.style.backgroundColor = '#f3f4f6';
+				noCotEl.style.cursor = 'not-allowed';
+				noCotEl.placeholder = 'Automático';
+			} else {
+				noCotEl.value = '';
+				noCotEl.readOnly = false;
+				noCotEl.style.backgroundColor = '#ffffff';
+				noCotEl.style.cursor = 'text';
+				noCotEl.placeholder = 'Escribe No. de cotización';
+				noCotEl.focus();
+			}
+		}
+		// Initialize and bind the autoToggle safely
+		(function initAutoToggle() {
+			function bind() {
+				const t = document.getElementById('autoToggle');
+				if (!t) return;
+				if (!t.classList.contains('on') && !t.classList.contains('off')) t.classList.add('on');
+				t.addEventListener('click', async () => {
+					const isOn = t.classList.contains('on');
+					t.classList.toggle('on', !isOn);
+					t.classList.toggle('off', isOn);
+					try { await updateAutoState(); } catch (e) { console.error('updateAutoState error', e); }
+				});
+				try { updateAutoState(); } catch (e) { console.warn('updateAutoState init', e); }
+			}
+			if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind); else bind();
+		})();
+
+		async function saveCotizacionToSupabase(payload) {
+			try {
+				let subtotal = 0;
+				let totalIva = 0;
+				(payload.productos || []).forEach(p => {
+					const price = parseFloat(String(p.precio || 0).replace(',', '.')) || 0;
+					const sub = price * (p.qty || 1);
+					const iva = (p.aplicaIva !== false) ? (sub * 0.16) : 0;
+					subtotal += sub;
+					totalIva += iva;
+				});
+				const total = subtotal + totalIva;
+
+				const dbRecord = {
+					numero: payload.numero,
+					fecha: payload.fecha ? new Date(payload.fecha).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+					cliente_nombre: payload.cliente ? payload.cliente.nombre : '',
+					cliente_email: payload.cliente ? payload.cliente.email : '',
+					cliente_telefono: payload.cliente ? payload.cliente.telefono : '',
+					cliente_empresa: payload.cliente ? payload.cliente.direccion : '',
+					vendedor_nombre: payload.vendedor ? payload.vendedor.nombre : '',
+					vendedor_email: payload.vendedor ? payload.vendedor.email : '',
+					vendedor_telefono: payload.vendedor ? payload.vendedor.telefono : '',
+					productos: payload.productos || [],
+					subtotal: subtotal,
+					iva: totalIva,
+					total: total,
+					estado: payload.estado || 'Borrador',
+					updated_at: new Date().toISOString()
+				};
+
+				const sb = window.supabase || (typeof supabase !== 'undefined' ? supabase : null);
+				if (sb) {
+					const { error } = await sb
+						.from('cotizaciones')
+						.upsert([dbRecord], { onConflict: 'numero' });
+
+					if (error) {
+						console.error('Error al guardar cotización en Supabase:', error);
+					}
+				}
+			} catch (e) {
+				console.error('Excepción al guardar cotización en Supabase:', e);
+			}
+		}
+
+		async function loadCotizacionesFromSupabase() {
+			try {
+				const sb = window.supabase || (typeof supabase !== 'undefined' ? supabase : null);
+				if (!sb) return JSON.parse(localStorage.getItem('cotizaciones') || '[]');
+
+				const { data, error } = await sb
+					.from('cotizaciones')
+					.select('*')
+					.order('created_at', { ascending: false });
+
+				if (!error && Array.isArray(data)) {
+					const mapped = data.map(c => ({
+						numero: c.numero,
+						fecha: c.fecha,
+						cliente: {
+							nombre: c.cliente_nombre,
+							email: c.cliente_email,
+							telefono: c.cliente_telefono,
+							direccion: c.cliente_empresa
+						},
+						vendedor: {
+							nombre: c.vendedor_nombre,
+							email: c.vendedor_email,
+							telefono: c.vendedor_telefono
+						},
+						productos: c.productos || [],
+						subtotal: c.subtotal,
+						iva: c.iva,
+						total: c.total,
+						estado: c.estado
+					}));
+					localStorage.setItem('cotizaciones', JSON.stringify(mapped));
+					return mapped;
+				}
+			} catch (e) {
+				console.error('Error al cargar cotizaciones desde Supabase:', e);
+			}
+			const raw = localStorage.getItem('cotizaciones');
+			try { return raw ? JSON.parse(raw) : []; } catch (e) { return []; }
+		}
+		window.loadCotizacionesFromSupabase = loadCotizacionesFromSupabase;
+
+		async function saveCotizacion() {
+			const clienteNombre = (document.getElementById('clienteNombre') ? document.getElementById('clienteNombre').value : '').trim();
+			const vendedorNombre = (document.getElementById('vendedorNombre') ? document.getElementById('vendedorNombre').value : '').trim();
+
+			if (!clienteNombre) {
+				alert('Debes seleccionar o ingresar un Cliente para generar la cotización.');
+				const el = document.getElementById('clienteNombre');
+				if (el) el.focus();
+				return;
+			}
+
+			if (!vendedorNombre) {
+				alert('Debes seleccionar o ingresar un Vendedor para generar la cotización.');
+				const el = document.getElementById('vendedorNombre');
+				if (el) el.focus();
+				return;
+			}
+
+			if (!window.selectedProducts || window.selectedProducts.length === 0) {
+				alert('Debes añadir al menos un producto a la cotización.');
+				return;
+			}
+
+			const auto = document.getElementById('autoNo').value === '1';
+			let no = document.getElementById('noCot').value;
+			if (!no && auto) {
+				no = await generateNextQuoteNumber();
+			}
+			const cliente = { nombre: document.getElementById('clienteNombre').value, direccion: document.getElementById('clienteDireccion').value, telefono: document.getElementById('clienteTelefono').value, email: document.getElementById('clienteEmail').value };
+			const vendedor = { nombre: document.getElementById('vendedorNombre').value, direccion: document.getElementById('vendedorDireccion').value, telefono: document.getElementById('vendedorTelefono').value, email: document.getElementById('vendedorEmail').value };
+			const payload = { numero: no, automatico: auto, cliente, vendedor, productos: (window.selectedProducts || []).slice(), fecha: new Date().toISOString(), estado: 'generada' };
+			
+			const lista = JSON.parse(localStorage.getItem('cotizaciones') || '[]');
+			const existingIdx = lista.findIndex(x => x.numero === no);
+			if (existingIdx >= 0) lista[existingIdx] = payload; else lista.push(payload);
+			localStorage.setItem('cotizaciones', JSON.stringify(lista));
+
+			await saveCotizacionToSupabase(payload);
+
+			if (typeof exportCotizacionToPdf === 'function') {
+				exportCotizacionToPdf(payload);
+			}
+
+			const clientEmail = (cliente.email || '').trim();
+			if (clientEmail) {
+				setTimeout(() => {
+					if (confirm(`¿Deseas enviar por correo la cotización ${no} al correo registrado (${clientEmail})?`)) {
+						if (typeof enviarCotizacionPorEmail === 'function') {
+							enviarCotizacionPorEmail(payload);
+						}
+					}
+				}, 500);
+			}
+
+			closeCotizacionDrawer();
+			if (typeof window.refreshCotizacionesHistory === 'function') {
+				window.refreshCotizacionesHistory();
+			}
+		}
+
+		// Vendor management UI: cargar vendedores únicamente desde Supabase
+		let vendorsList = [];
+
+		async function loadVendors() {
+			try {
+				const { data, error } = await supabase.from('vendedores').select('*').order('nombre', { ascending: true });
+				if (error) {
+					console.error('Error al consultar vendedores en Supabase:', error);
+					vendorsList = [];
+				} else {
+					vendorsList = data || [];
+				}
+			} catch (e) {
+				console.error('Excepción al consultar vendedores en Supabase:', e);
+				vendorsList = [];
+			}
+			renderMainVendorTable();
+			return vendorsList;
+		}
+
+		const mainVendorTableBody = document.getElementById('mainVendorTableBody');
+		const mainVendorEmptyMsg = document.getElementById('mainVendorEmptyMsg');
+		const mainVendorFilter = document.getElementById('mainVendorFilter');
+		const mainNewVendorBtn = document.getElementById('mainNewVendorBtn');
+
+		function renderMainVendorTable(filterText) {
+			if (!mainVendorTableBody) return;
+			mainVendorTableBody.innerHTML = '';
+			const list = vendorsList || [];
+			let count = 0;
+			const q = (filterText !== undefined ? filterText : (mainVendorFilter ? mainVendorFilter.value : '')).trim().toLowerCase();
+
+			list.forEach((v, idx) => {
+				const name = v.nombre || '';
+				const tel = v.telefono || '';
+				const email = v.email || '';
+				const dir = v.direccion || '';
+				const isInactive = (v.activo === false);
+				const hay = (name + ' ' + tel + ' ' + email + ' ' + dir).toLowerCase();
+				if (q && !hay.includes(q)) return;
+				count++;
+				const tr = document.createElement('tr');
+				if (isInactive) tr.className = 'inactive-row';
+
+				const editButtonHtml = !isInactive
+					? `<button class="action-btn edit" data-idx="${idx}"><i class="fas fa-edit"></i> Editar</button>`
+					: '';
+
+				const toggleButtonHtml = isInactive
+					? `<button class="action-btn show-btn" data-idx="${idx}"><i class="fas fa-eye"></i> Mostrar</button>`
+					: `<button class="action-btn hide-btn" data-idx="${idx}"><i class="fas fa-eye-slash"></i> Ocultar</button>`;
+
+				tr.innerHTML = `
+						<td data-label="Nombre" style="font-weight:600">${escapeHtml(name)}</td>
+						<td data-label="Teléfono">${escapeHtml(tel || '—')}</td>
+						<td data-label="Correo">${escapeHtml(email || '—')}</td>
+						<td data-label="Dirección">${escapeHtml(dir || '—')}</td>
+						<td data-label="Acciones" style="text-align:right">
+							${editButtonHtml}
+							${toggleButtonHtml}
+						</td>
+					`;
+				mainVendorTableBody.appendChild(tr);
+			});
+
+			if (mainVendorEmptyMsg) {
+				mainVendorEmptyMsg.style.display = count === 0 ? 'block' : 'none';
+			}
+
+			mainVendorTableBody.querySelectorAll('.action-btn.edit').forEach(btn => {
+				btn.addEventListener('click', function () {
+					const idx = Number(this.dataset.idx);
+					openEditVendorModal(idx);
+				});
+			});
+
+			mainVendorTableBody.querySelectorAll('.action-btn.hide-btn, .action-btn.show-btn').forEach(btn => {
+				btn.addEventListener('click', function () {
+					const idx = Number(this.dataset.idx);
+					toggleVendorActive(idx);
+				});
+			});
+		}
+
+		function setVendorFieldsReadonly(readonly) {
+			['vendedorNombre', 'vendedorDireccion', 'vendedorTelefono', 'vendedorEmail'].forEach(id => {
+				const el = document.getElementById(id);
+				if (!el) return;
+				el.readOnly = !!readonly;
+				if (readonly) el.classList.add('compact'); else el.classList.remove('compact');
+			});
+		}
+
+		function clearVendorFields() {
+			['vendedorNombre', 'vendedorDireccion', 'vendedorTelefono', 'vendedorEmail'].forEach(id => {
+				const el = document.getElementById(id);
+				if (el) { el.value = ''; el.readOnly = false; el.classList.remove('compact'); }
+			});
+		}
+
+		const selectVendorBtn = document.getElementById('selectVendorBtn');
+		const newVendorBtn = document.getElementById('newVendorBtn');
+		const vendorBackdrop = document.getElementById('vendorSelectBackdrop');
+		const vendorTableBody = document.getElementById('vendorTableBody');
+		const vendorFilter = document.getElementById('vendorFilter');
+		const closeVendorModal = document.getElementById('closeVendorModal');
+		const closeVendorModal2 = document.getElementById('closeVendorModal2');
+
+		async function openVendorModal() {
+			await loadVendors();
+			renderVendorTable();
+			if (vendorBackdrop) { vendorBackdrop.classList.add('show'); vendorBackdrop.setAttribute('aria-hidden', 'false'); }
+			if (selectVendorBtn) selectVendorBtn.classList.add('active');
+			if (newVendorBtn) newVendorBtn.classList.remove('active');
+		}
+		function closeVendorModalFn() { if (vendorBackdrop) { vendorBackdrop.classList.remove('show'); vendorBackdrop.setAttribute('aria-hidden', 'true'); } }
+
+		if (selectVendorBtn) selectVendorBtn.addEventListener('click', openVendorModal);
+		if (newVendorBtn) {
+			newVendorBtn.addEventListener('click', function () {
+				openCreateVendorModal(true);
+				if (newVendorBtn) newVendorBtn.classList.add('active');
+				if (selectVendorBtn) selectVendorBtn.classList.remove('active');
+			});
+		}
+		if (closeVendorModal) closeVendorModal.addEventListener('click', closeVendorModalFn);
+		if (closeVendorModal2) closeVendorModal2.addEventListener('click', closeVendorModalFn);
+
+		function renderVendorTable(filter) {
+			if (!vendorTableBody) return;
+			vendorTableBody.innerHTML = '';
+			const activeList = (vendorsList || []).filter(v => v.activo !== false);
+			if (!activeList || activeList.length === 0) { vendorTableBody.innerHTML = '<tr><td colspan="4" style="padding:12px">No hay vendedores registrados.</td></tr>'; return; }
+			activeList.forEach((v, idx) => {
+				const name = v.nombre || '';
+				const tel = v.telefono || '';
+				const email = v.email || '';
+				const hay = (name + ' ' + tel + ' ' + email).toLowerCase();
+				if (filter && !hay.includes(filter)) return;
+				const tr = document.createElement('tr'); tr.className = 'client-row';
+				tr.innerHTML = `<td class='meta'>${escapeHtml(name)}</td><td>${escapeHtml(tel)}</td><td>${escapeHtml(email)}</td><td style="text-align:right"><button class='btn vendor-select-btn' data-idx='${idx}'>Seleccionar</button></td>`;
+				vendorTableBody.appendChild(tr);
+			});
+			vendorTableBody.querySelectorAll('.vendor-select-btn').forEach(btn => btn.addEventListener('click', function () {
+				const v = activeList[Number(this.dataset.idx)];
+				if (!v) return;
+				document.getElementById('vendedorNombre').value = v.nombre || '';
+				document.getElementById('vendedorTelefono').value = v.telefono || '';
+				document.getElementById('vendedorEmail').value = v.email || '';
+				document.getElementById('vendedorDireccion').value = v.direccion || '';
+				setVendorFieldsReadonly(true);
+				closeVendorModalFn();
+			}));
+		}
+
+		if (vendorFilter) vendorFilter.addEventListener('input', function () { renderVendorTable(this.value.trim().toLowerCase()); });
+
+		if (mainVendorFilter) {
+			mainVendorFilter.addEventListener('input', function () {
+				renderMainVendorTable(this.value.trim().toLowerCase());
+			});
+		}
+
+		if (mainNewVendorBtn) {
+			mainNewVendorBtn.addEventListener('click', () => {
+				openCreateVendorModal(false);
+			});
+		}
+
+		function openCreateVendorModal(isFromDrawer = false) {
+			document.getElementById('editVendorIdx').value = '';
+			document.getElementById('vendorCreateTitle').textContent = 'Nuevo vendedor';
+			document.getElementById('vendorCreateSubtitle').textContent = 'Agrega los datos del vendedor. Los campos marcados son obligatorios.';
+			document.getElementById('createVendorNombre').value = '';
+			document.getElementById('createVendorTelefono').value = '';
+			document.getElementById('createVendorDireccion').value = '';
+			document.getElementById('createVendorEmail').value = '';
+
+			const rowActivo = document.getElementById('rowVendorActivo');
+			const chkActivo = document.getElementById('createVendorActivo');
+			if (chkActivo) chkActivo.checked = true;
+			if (rowActivo) rowActivo.style.display = isFromDrawer ? 'none' : 'block';
+
+			clearVendorFormErrors();
+			document.getElementById('vendorCreateBackdrop').classList.add('show');
+			document.getElementById('vendorCreateBackdrop').setAttribute('aria-hidden', 'false');
+		}
+
+		function openEditVendorModal(idx) {
+			const v = vendorsList[idx];
+			if (!v) return;
+			document.getElementById('editVendorIdx').value = idx;
+			document.getElementById('vendorCreateTitle').textContent = 'Editar vendedor';
+			document.getElementById('vendorCreateSubtitle').textContent = 'Modifica los datos del vendedor.';
+			document.getElementById('createVendorNombre').value = v.nombre || '';
+			document.getElementById('createVendorTelefono').value = v.telefono || '';
+			document.getElementById('createVendorDireccion').value = v.direccion || '';
+			document.getElementById('createVendorEmail').value = v.email || '';
+
+			const rowActivo = document.getElementById('rowVendorActivo');
+			const chkActivo = document.getElementById('createVendorActivo');
+			if (rowActivo) rowActivo.style.display = 'block';
+			if (chkActivo) chkActivo.checked = (v.activo !== false);
+
+			clearVendorFormErrors();
+			document.getElementById('vendorCreateBackdrop').classList.add('show');
+			document.getElementById('vendorCreateBackdrop').setAttribute('aria-hidden', 'false');
+		}
+
+		async function toggleVendorActive(idx) {
+			const v = vendorsList[idx];
+			if (!v) return;
+			const currentlyActive = (v.activo !== false);
+			const targetState = !currentlyActive;
+			const msg = currentlyActive
+				? `¿Estás seguro de que deseas ocultar al vendedor "${v.nombre}"?`
+				: `¿Estás seguro de que deseas volver a mostrar al vendedor "${v.nombre}"?`;
+
+			if (confirm(msg)) {
+				if (v.id) {
+					const { error } = await supabase.from('vendedores').update({ activo: targetState }).eq('id', v.id);
+					if (error) console.error('Error al actualizar estado del vendedor en Supabase:', error);
+				}
+				await loadVendors();
+			}
+		}
+
+		function clearVendorFormErrors() {
+			['createVendorNombre', 'createVendorTelefono', 'createVendorEmail'].forEach(id => {
+				const el = document.getElementById(id);
+				if (el) {
+					el.classList.remove('error');
+					const msg = document.getElementById('errVendor' + (id.includes('Nombre') ? 'Nombre' : id.includes('Telefono') ? 'Telefono' : 'Email'));
+					if (msg) msg.style.display = 'none';
+				}
+			});
+		}
+
+		const vendorCreateBackdrop = document.getElementById('vendorCreateBackdrop');
+		const closeVendorCreate = document.getElementById('closeVendorCreate');
+		const saveVendorModalBtn = document.getElementById('saveVendorModalBtn');
+		const cancelVendorModalBtn = document.getElementById('cancelVendorModalBtn');
+
+		function closeVendorCreateFn() { if (vendorCreateBackdrop) { vendorCreateBackdrop.classList.remove('show'); vendorCreateBackdrop.setAttribute('aria-hidden', 'true'); } }
+		if (closeVendorCreate) closeVendorCreate.addEventListener('click', closeVendorCreateFn);
+		if (cancelVendorModalBtn) cancelVendorModalBtn.addEventListener('click', closeVendorCreateFn);
+
+		if (saveVendorModalBtn) {
+			saveVendorModalBtn.addEventListener('click', async function () {
+				const nombreEl = document.getElementById('createVendorNombre');
+				const direccionEl = document.getElementById('createVendorDireccion');
+				const telefonoEl = document.getElementById('createVendorTelefono');
+				const emailEl = document.getElementById('createVendorEmail');
+				const editIdxVal = document.getElementById('editVendorIdx').value;
+				const chkActivo = document.getElementById('createVendorActivo');
+				const nombre = nombreEl.value.trim();
+				const direccion = direccionEl.value.trim();
+				const telefono = telefonoEl.value.trim();
+				const email = emailEl.value.trim();
+				const activo = chkActivo ? chkActivo.checked : true;
+
+				clearVendorFormErrors();
+				let firstInvalid = null;
+				if (!nombre) { nombreEl.classList.add('error'); document.getElementById('errVendorNombre').style.display = 'block'; firstInvalid = firstInvalid || nombreEl; }
+				if (!telefono) { telefonoEl.classList.add('error'); document.getElementById('errVendorTelefono').style.display = 'block'; firstInvalid = firstInvalid || telefonoEl; }
+				if (!email) { emailEl.classList.add('error'); document.getElementById('errVendorEmail').style.display = 'block'; firstInvalid = firstInvalid || emailEl; }
+				if (firstInvalid) { firstInvalid.focus(); return; }
+
+				const vendorObj = { nombre, direccion, telefono, email, activo };
+
+				if (editIdxVal !== '' && editIdxVal !== null && !isNaN(Number(editIdxVal))) {
+					const idx = Number(editIdxVal);
+					const current = vendorsList[idx];
+					if (current && current.id) {
+						const { error } = await supabase.from('vendedores').update(vendorObj).eq('id', current.id);
+						if (error) console.error('Error al actualizar vendedor en Supabase:', error);
+					}
+				} else {
+					const { error } = await supabase.from('vendedores').insert([vendorObj]);
+					if (error) console.error('Error al insertar vendedor en Supabase:', error);
+				}
+
+				await loadVendors();
+
+				// Si estábamos creando desde el drawer de cotización, poblar y bloquear campos
+				const cotDrawer = document.getElementById('cotDrawerBackdrop');
+				if (cotDrawer && cotDrawer.classList.contains('show')) {
+					document.getElementById('vendedorNombre').value = nombre;
+					document.getElementById('vendedorDireccion').value = direccion;
+					document.getElementById('vendedorTelefono').value = telefono;
+					document.getElementById('vendedorEmail').value = email;
+					setVendorFieldsReadonly(true);
+				}
+
+				closeVendorCreateFn();
+			});
+		}
+
+		// ==========================================
+		// DISEÑADOR VISUAL Y GENERADOR DE PDF (PDF/Cotización.pdf)
+		// ==========================================
+		async function renderPdfTemplateBackground() {
+			if (!window.pdfjsLib) return;
+			try {
+				let pdf = null;
+				const paths = ['PDF/Cotización.pdf', 'PDF/Cotizacio%CC%81n.pdf', 'PDF/cotizacion.pdf', 'PDF/Cotizacion.pdf'];
+				for (const p of paths) {
+					try {
+						const task = pdfjsLib.getDocument(p);
+						pdf = await task.promise;
+						if (pdf) break;
+					} catch (e) { }
+				}
+				if (!pdf) throw new Error('No se pudo encontrar ninguna plantilla PDF en Public/PDF/');
+				const page = await pdf.getPage(1);
+
+				// 1. Calcular tamaño exacto para Carta EE.UU. (8.5" x 11" @ 96 DPI = 816 x 1056 px)
+				const unscaledViewport = page.getViewport({ scale: 1 });
+				const targetW = 816;
+				const pageRatio = unscaledViewport.height / unscaledViewport.width;
+				const targetH = Math.round(targetW * pageRatio);
+
+				window.pdfPageWidth = targetW;
+				window.pdfPageHeight = targetH;
+
+				// 2. Generar imagen de fondo en alta resolución (factor 2x para impresión nítida)
+				const exportScale = (targetW / unscaledViewport.width) * 2;
+				const exportViewport = page.getViewport({ scale: exportScale });
+
+				const exportCanvas = document.createElement('canvas');
+				exportCanvas.width = exportViewport.width;
+				exportCanvas.height = exportViewport.height;
+				const exportContext = exportCanvas.getContext('2d');
+				await page.render({ canvasContext: exportContext, viewport: exportViewport }).promise;
+				window.pdfBgDataUrl = exportCanvas.toDataURL('image/png');
+
+				// 3. Renderizar en el diseñador visual en pantalla a escala 1:1 exacta (816px x 1056px)
+				const screenScale = targetW / unscaledViewport.width;
+				const screenViewport = page.getViewport({ scale: screenScale });
+
+				const canvas = document.getElementById('pdfTemplateBgCanvas');
+				if (canvas) {
+					canvas.width = targetW;
+					canvas.height = targetH;
+					const context = canvas.getContext('2d');
+					await page.render({ canvasContext: context, viewport: screenViewport }).promise;
+				}
+				fitPdfCanvasWrapperToMobile();
+			} catch (e) {
+				console.error('Error al cargar la plantilla PDF:', e);
+			}
+		}
+
+		function fitPdfCanvasWrapperToMobile() {
+			const wrapper = document.getElementById('pdfCanvasWrapper');
+			if (!wrapper) return;
+			const parent = wrapper.parentElement;
+			if (!parent) return;
+			const availableWidth = parent.clientWidth - 16;
+			if (window.innerWidth < 840 && availableWidth > 0 && availableWidth < 816) {
+				const scale = availableWidth / 816;
+				wrapper.style.transform = `scale(${scale})`;
+				wrapper.style.transformOrigin = 'top left';
+				wrapper.style.marginBottom = `-${1056 * (1 - scale)}px`;
+				wrapper.style.marginRight = `-${816 * (1 - scale)}px`;
+			} else {
+				wrapper.style.transform = 'none';
+				wrapper.style.marginBottom = '0';
+				wrapper.style.marginRight = 'auto';
+				wrapper.style.marginLeft = 'auto';
+			}
+		}
+		window.addEventListener('resize', fitPdfCanvasWrapperToMobile);
+
+		let activeDragItem = null;
+		let dragOffsetX = 0;
+		let dragOffsetY = 0;
+		let selectedDragItem = null;
+
+		function initPdfDragAndDrop() {
+			const container = document.getElementById('pdfCanvasWrapper');
+			if (!container) return;
+
+			function handleStart(e, clientX, clientY, item) {
+				if (e.target && e.target.classList.contains('col-handle')) return;
+				selectPdfDragItem(item);
+				activeDragItem = item;
+				const rect = item.getBoundingClientRect();
+				dragOffsetX = clientX - rect.left;
+				dragOffsetY = clientY - rect.top;
+			}
+
+			function handleMove(clientX, clientY) {
+				if (!activeDragItem) return;
+				const containerRect = container.getBoundingClientRect();
+				let newX = clientX - containerRect.left - dragOffsetX;
+				let newY = clientY - containerRect.top - dragOffsetY;
+
+				newX = Math.max(0, Math.min(newX, containerRect.width - activeDragItem.offsetWidth));
+				newY = Math.max(0, Math.min(newY, containerRect.height - activeDragItem.offsetHeight));
+
+				activeDragItem.style.left = newX + 'px';
+				activeDragItem.style.top = newY + 'px';
+			}
+
+			document.querySelectorAll('.pdf-drag-item').forEach(item => {
+				item.addEventListener('mousedown', (e) => {
+					if (e.target && e.target.classList.contains('col-handle')) return;
+					handleStart(e, e.clientX, e.clientY, item);
+				});
+
+				item.addEventListener('touchstart', (e) => {
+					if (e.target && e.target.classList.contains('col-handle')) return;
+					if (e.touches && e.touches[0]) {
+						handleStart(e, e.touches[0].clientX, e.touches[0].clientY, item);
+					}
+				}, { passive: true });
+			});
+
+			document.addEventListener('mousemove', (e) => {
+				if (activeDragItem) handleMove(e.clientX, e.clientY);
+			});
+
+			document.addEventListener('touchmove', (e) => {
+				if (activeDragItem && e.touches && e.touches[0]) {
+					handleMove(e.touches[0].clientX, e.touches[0].clientY);
+				}
+			}, { passive: true });
+
+			document.addEventListener('mouseup', () => { activeDragItem = null; });
+			document.addEventListener('touchend', () => { activeDragItem = null; });
+		}
+
+		let selectedColKey = null;
+		let tableColsConfig = {
+			desc: { left: 0, width: 240, fontSize: '12px', align: 'left' },
+			cant: { left: 250, width: 75, fontSize: '12px', align: 'center' },
+			sub: { left: 345, width: 100, fontSize: '12px', align: 'right' },
+			iva: { left: 465, width: 85, fontSize: '12px', align: 'right' },
+			tot: { left: 560, width: 120, fontSize: '12px', align: 'right' }
+		};
+
+		let activeColHandle = null;
+		let activeHandleColKey = null;
+		let activeHandleSide = null;
+		let handleStartX = 0;
+		let handleStartLeft = 0;
+		let handleStartWidth = 0;
+
+		function initColumnHandleDrag() {
+			document.querySelectorAll('.col-handle').forEach(handle => {
+				const startHandle = (e, clientX) => {
+					e.stopPropagation();
+					activeColHandle = handle;
+					activeHandleColKey = handle.dataset.col;
+					activeHandleSide = handle.dataset.side;
+					handleStartX = clientX;
+
+					const box = document.getElementById('col_box_' + activeHandleColKey);
+					if (box) {
+						handleStartLeft = box.offsetLeft;
+						handleStartWidth = box.offsetWidth;
+					}
+					selectPdfDragItem(document.getElementById('drag_tabla'), activeHandleColKey);
+				};
+
+				handle.addEventListener('mousedown', (e) => { startHandle(e, e.clientX); e.preventDefault(); });
+				handle.addEventListener('touchstart', (e) => {
+					if (e.touches && e.touches[0]) startHandle(e, e.touches[0].clientX);
+				}, { passive: true });
+			});
+
+			const handleMove = (clientX) => {
+				if (!activeColHandle || !activeHandleColKey) return;
+				const box = document.getElementById('col_box_' + activeHandleColKey);
+				if (!box) return;
+				const dx = clientX - handleStartX;
+
+				if (activeHandleSide === 'right') {
+					const newW = Math.max(30, Math.min(684 - handleStartLeft, handleStartWidth + dx));
+					box.style.width = newW + 'px';
+					if (tableColsConfig[activeHandleColKey]) tableColsConfig[activeHandleColKey].width = newW;
+					if (document.getElementById('pdfColWidth')) document.getElementById('pdfColWidth').value = newW;
+				} else if (activeHandleSide === 'left') {
+					const newL = Math.max(0, Math.min(handleStartLeft + handleStartWidth - 30, handleStartLeft + dx));
+					const newW = handleStartWidth + (handleStartLeft - newL);
+					box.style.left = newL + 'px';
+					box.style.width = newW + 'px';
+					if (tableColsConfig[activeHandleColKey]) {
+						tableColsConfig[activeHandleColKey].left = newL;
+						tableColsConfig[activeHandleColKey].width = newW;
+					}
+					if (document.getElementById('pdfColOffsetX')) document.getElementById('pdfColOffsetX').value = newL;
+					if (document.getElementById('pdfColWidth')) document.getElementById('pdfColWidth').value = newW;
+				}
+			};
+
+			document.addEventListener('mousemove', (e) => { handleMove(e.clientX); });
+			document.addEventListener('touchmove', (e) => {
+				if (activeColHandle && e.touches && e.touches[0]) handleMove(e.touches[0].clientX);
+			}, { passive: true });
+
+			document.addEventListener('mouseup', () => { activeColHandle = null; });
+			document.addEventListener('touchend', () => { activeColHandle = null; });
+		}
+
+		function rgbToHex(color) {
+			if (!color) return '#0f1724';
+			if (color.startsWith('#')) {
+				if (color.length === 4) {
+					return '#' + color[1] + color[1] + color[2] + color[2] + color[3] + color[3];
+				}
+				return color.slice(0, 7);
+			}
+			const rgb = color.match(/\d+/g);
+			if (!rgb || rgb.length < 3) return '#0f1724';
+			const r = parseInt(rgb[0], 10).toString(16).padStart(2, '0');
+			const g = parseInt(rgb[1], 10).toString(16).padStart(2, '0');
+			const b = parseInt(rgb[2], 10).toString(16).padStart(2, '0');
+			return `#${r}${g}${b}`;
+		}
+
+		function selectPdfDragItem(item, colKey = null) {
+			document.querySelectorAll('.pdf-drag-item').forEach(el => el.classList.remove('selected'));
+			document.querySelectorAll('.table-col-item').forEach(el => el.classList.remove('active-col'));
+			const colCtrlGrp = document.getElementById('pdfColControlsGroup');
+
+			if (!item) {
+				selectedDragItem = null;
+				selectedColKey = null;
+				if (colCtrlGrp) colCtrlGrp.style.display = 'none';
+				const selTag = document.getElementById('selectedElementTag');
+				if (selTag) selTag.textContent = 'Selecciona un elemento';
+				return;
+			}
+			selectedDragItem = item;
+			item.classList.add('selected');
+			const key = item.dataset.key;
+
+			if (key === 'tabla' && colKey) {
+				selectedColKey = colKey;
+				const names = { desc: 'Descripción', cant: 'Cantidad', sub: 'Subtotal', iva: 'IVA', tot: 'Total' };
+				const selTag = document.getElementById('selectedElementTag');
+				if (selTag) selTag.textContent = `Seleccionado: Columna ${names[colKey] || colKey}`;
+				if (colCtrlGrp) colCtrlGrp.style.display = 'flex';
+
+				const cfg = tableColsConfig[colKey] || { left: 0, width: 100, fontSize: '12px', align: 'left' };
+				if (document.getElementById('pdfColWidth')) document.getElementById('pdfColWidth').value = cfg.width;
+				if (document.getElementById('pdfColOffsetX')) document.getElementById('pdfColOffsetX').value = cfg.left;
+				if (document.getElementById('pdfColAlign')) document.getElementById('pdfColAlign').value = cfg.align;
+				if (document.getElementById('pdfToolSize') && cfg.fontSize) document.getElementById('pdfToolSize').value = cfg.fontSize;
+
+				const clickedColBox = document.getElementById('col_box_' + colKey);
+				if (clickedColBox) clickedColBox.classList.add('active-col');
+			} else {
+				selectedColKey = null;
+				if (colCtrlGrp) colCtrlGrp.style.display = 'none';
+				const selTag = document.getElementById('selectedElementTag');
+				if (selTag) selTag.textContent = `Seleccionado: {${key}}`;
+			}
+
+			const cfg = selectedColKey ? tableColsConfig[selectedColKey] : null;
+			const targetEl = selectedColKey ? document.getElementById('col_box_' + selectedColKey) : item;
+			const compStyle = window.getComputedStyle(targetEl || item);
+
+			const currentFont = (cfg && cfg.fontFamily) || targetEl.style.fontFamily || compStyle.fontFamily || 'Inter, sans-serif';
+			const fontSelect = document.getElementById('pdfToolFont');
+			if (fontSelect) {
+				let matched = false;
+				for (let opt of fontSelect.options) {
+					const familyName = opt.value.split(',')[0].replace(/['"]/g, '').trim().toLowerCase();
+					if (currentFont.toLowerCase().includes(familyName)) {
+						fontSelect.value = opt.value;
+						matched = true;
+						break;
+					}
+				}
+				if (!matched && fontSelect.options.length > 0) fontSelect.selectedIndex = 0;
+			}
+
+			const sizeSelect = document.getElementById('pdfToolSize');
+			if (sizeSelect) {
+				sizeSelect.value = (cfg && cfg.fontSize) || targetEl.style.fontSize || compStyle.fontSize || '12px';
+			}
+
+			const colorInput = document.getElementById('pdfToolColor');
+			if (colorInput) {
+				const col = (cfg && cfg.color) || targetEl.style.color || compStyle.color;
+				colorInput.value = rgbToHex(col);
+			}
+
+			const boldBtn = document.getElementById('pdfToolBold');
+			if (boldBtn) {
+				const fw = (cfg && cfg.fontWeight) || targetEl.style.fontWeight || compStyle.fontWeight;
+				boldBtn.classList.toggle('active', fw === 'bold' || fw === '700');
+			}
+
+			const italicBtn = document.getElementById('pdfToolItalic');
+			if (italicBtn) {
+				const fs = (cfg && cfg.fontStyle) || targetEl.style.fontStyle || compStyle.fontStyle;
+				italicBtn.classList.toggle('active', fs === 'italic');
+			}
+
+			const underlineBtn = document.getElementById('pdfToolUnderline');
+			if (underlineBtn) {
+				const td = (cfg && cfg.textDecoration) || targetEl.style.textDecoration || compStyle.textDecoration;
+				underlineBtn.classList.toggle('active', (td || '').includes('underline'));
+			}
+		}
+
+		// Bind click events on table-col-item inside drag_tabla
+		document.addEventListener('DOMContentLoaded', () => {
+			document.querySelectorAll('.table-col-item').forEach(colBox => {
+				const handleColClick = (e) => {
+					if (e.target && e.target.classList.contains('col-handle')) return;
+					e.stopPropagation();
+					const dragTabla = document.getElementById('drag_tabla');
+					selectPdfDragItem(dragTabla, colBox.dataset.col);
+				};
+
+				colBox.addEventListener('mousedown', handleColClick);
+				colBox.addEventListener('touchstart', handleColClick, { passive: true });
+			});
+
+			const fontSelect = document.getElementById('pdfToolFont');
+			if (fontSelect) {
+				fontSelect.addEventListener('change', (e) => {
+					if (selectedColKey && tableColsConfig[selectedColKey]) {
+						tableColsConfig[selectedColKey].fontFamily = e.target.value;
+						const boxEl = document.getElementById('col_box_' + selectedColKey);
+						if (boxEl) boxEl.style.fontFamily = e.target.value;
+					} else if (selectedDragItem) {
+						selectedDragItem.style.fontFamily = e.target.value;
+					}
+				});
+			}
+
+			const sizeSelect = document.getElementById('pdfToolSize');
+			if (sizeSelect) {
+				sizeSelect.addEventListener('change', (e) => {
+					if (selectedColKey && tableColsConfig[selectedColKey]) {
+						tableColsConfig[selectedColKey].fontSize = e.target.value;
+						const boxEl = document.getElementById('col_box_' + selectedColKey);
+						if (boxEl) boxEl.style.fontSize = e.target.value;
+					} else if (selectedDragItem) {
+						selectedDragItem.style.fontSize = e.target.value;
+					}
+				});
+			}
+
+			const colorInput = document.getElementById('pdfToolColor');
+			if (colorInput) {
+				colorInput.addEventListener('input', (e) => {
+					if (selectedColKey && tableColsConfig[selectedColKey]) {
+						tableColsConfig[selectedColKey].color = e.target.value;
+						const boxEl = document.getElementById('col_box_' + selectedColKey);
+						if (boxEl) boxEl.style.color = e.target.value;
+					} else if (selectedDragItem) {
+						selectedDragItem.style.color = e.target.value;
+					}
+				});
+			}
+
+			const boldBtn = document.getElementById('pdfToolBold');
+			if (boldBtn) {
+				boldBtn.addEventListener('click', () => {
+					if (selectedColKey && tableColsConfig[selectedColKey]) {
+						const isBold = tableColsConfig[selectedColKey].fontWeight === 'bold';
+						const nextWeight = isBold ? 'normal' : 'bold';
+						tableColsConfig[selectedColKey].fontWeight = nextWeight;
+						const boxEl = document.getElementById('col_box_' + selectedColKey);
+						if (boxEl) boxEl.style.fontWeight = nextWeight;
+						boldBtn.classList.toggle('active', !isBold);
+					} else if (selectedDragItem) {
+						const isBold = selectedDragItem.style.fontWeight === 'bold';
+						selectedDragItem.style.fontWeight = isBold ? 'normal' : 'bold';
+						boldBtn.classList.toggle('active', !isBold);
+					}
+				});
+			}
+
+			const italicBtn = document.getElementById('pdfToolItalic');
+			if (italicBtn) {
+				italicBtn.addEventListener('click', () => {
+					if (selectedColKey && tableColsConfig[selectedColKey]) {
+						const isItalic = tableColsConfig[selectedColKey].fontStyle === 'italic';
+						const nextStyle = isItalic ? 'normal' : 'italic';
+						tableColsConfig[selectedColKey].fontStyle = nextStyle;
+						const boxEl = document.getElementById('col_box_' + selectedColKey);
+						if (boxEl) boxEl.style.fontStyle = nextStyle;
+						italicBtn.classList.toggle('active', !isItalic);
+					} else if (selectedDragItem) {
+						const isItalic = selectedDragItem.style.fontStyle === 'italic';
+						selectedDragItem.style.fontStyle = isItalic ? 'normal' : 'italic';
+						italicBtn.classList.toggle('active', !isItalic);
+					}
+				});
+			}
+
+			const underlineBtn = document.getElementById('pdfToolUnderline');
+			if (underlineBtn) {
+				underlineBtn.addEventListener('click', () => {
+					if (selectedColKey && tableColsConfig[selectedColKey]) {
+						const isUnderline = (tableColsConfig[selectedColKey].textDecoration || '').includes('underline');
+						const nextDeco = isUnderline ? 'none' : 'underline';
+						tableColsConfig[selectedColKey].textDecoration = nextDeco;
+						const boxEl = document.getElementById('col_box_' + selectedColKey);
+						if (boxEl) boxEl.style.textDecoration = nextDeco;
+						underlineBtn.classList.toggle('active', !isUnderline);
+					} else if (selectedDragItem) {
+						const isUnderline = (selectedDragItem.style.textDecoration || '').includes('underline');
+						selectedDragItem.style.textDecoration = isUnderline ? 'none' : 'underline';
+						underlineBtn.classList.toggle('active', !isUnderline);
+					}
+				});
+			}
+		});
+
+		const updateColWidth = (e) => {
+			if (selectedColKey && tableColsConfig[selectedColKey]) {
+				const val = Math.max(20, Math.min(684, parseInt(e.target.value) || 20));
+				tableColsConfig[selectedColKey].width = val;
+				const boxEl = document.getElementById('col_box_' + selectedColKey);
+				if (boxEl) boxEl.style.width = val + 'px';
+			}
+		};
+		const colWidthInput = document.getElementById('pdfColWidth');
+		if (colWidthInput) {
+			colWidthInput.addEventListener('input', updateColWidth);
+			colWidthInput.addEventListener('change', updateColWidth);
+		}
+
+		const updateColOffsetX = (e) => {
+			if (selectedColKey && tableColsConfig[selectedColKey]) {
+				const val = Math.max(0, Math.min(684, parseInt(e.target.value) || 0));
+				tableColsConfig[selectedColKey].left = val;
+				const boxEl = document.getElementById('col_box_' + selectedColKey);
+				if (boxEl) boxEl.style.left = val + 'px';
+			}
+		};
+		const colOffsetXInput = document.getElementById('pdfColOffsetX');
+		if (colOffsetXInput) {
+			colOffsetXInput.addEventListener('input', updateColOffsetX);
+			colOffsetXInput.addEventListener('change', updateColOffsetX);
+		}
+
+		const colAlignSelect = document.getElementById('pdfColAlign');
+		if (colAlignSelect) {
+			colAlignSelect.addEventListener('change', (e) => {
+				if (selectedColKey && tableColsConfig[selectedColKey]) {
+					const val = e.target.value;
+					tableColsConfig[selectedColKey].align = val;
+					const boxEl = document.getElementById('col_box_' + selectedColKey);
+					if (boxEl) boxEl.style.textAlign = val;
+				}
+			});
+		}
+
+		function getCurrentPdfLayoutConfig() {
+			const layout = {};
+			document.querySelectorAll('.pdf-drag-item').forEach(item => {
+				const key = item.dataset.key;
+				const comp = window.getComputedStyle(item);
+				layout[key] = {
+					top: item.style.top || comp.top || '',
+					left: item.style.left || comp.left || '',
+					width: item.style.width || comp.width || '',
+					fontFamily: item.style.fontFamily || comp.fontFamily || '',
+					fontSize: item.style.fontSize || comp.fontSize || '',
+					color: item.style.color || comp.color || '',
+					fontWeight: item.style.fontWeight || comp.fontWeight || '',
+					fontStyle: item.style.fontStyle || comp.fontStyle || '',
+					textDecoration: item.style.textDecoration || comp.textDecoration || ''
+				};
+			});
+
+			const cols = JSON.parse(JSON.stringify(tableColsConfig));
+			['desc', 'cant', 'sub', 'iva', 'tot'].forEach(k => {
+				const box = document.getElementById('col_box_' + k);
+				if (box) {
+					cols[k].left = box.offsetLeft;
+					cols[k].width = box.offsetWidth;
+					const bComp = window.getComputedStyle(box);
+					if (box.style.fontFamily || bComp.fontFamily) cols[k].fontFamily = box.style.fontFamily || bComp.fontFamily;
+					if (box.style.fontSize || bComp.fontSize) cols[k].fontSize = box.style.fontSize || bComp.fontSize;
+					if (box.style.color || bComp.color) cols[k].color = box.style.color || bComp.color;
+					if (box.style.fontWeight || bComp.fontWeight) cols[k].fontWeight = box.style.fontWeight || bComp.fontWeight;
+					if (box.style.fontStyle || bComp.fontStyle) cols[k].fontStyle = box.style.fontStyle || bComp.fontStyle;
+					if (box.style.textDecoration || bComp.textDecoration) cols[k].textDecoration = box.style.textDecoration || bComp.textDecoration;
+				}
+			});
+
+			return { layout, tableCols: cols };
+		}
+
+		async function savePdfLayoutConfig() {
+			const currentConfig = getCurrentPdfLayoutConfig();
+			const currentStr = JSON.stringify(currentConfig);
+			const configName = 'layout_cotizacion';
+
+			try {
+				const { error: upsertErr } = await supabase
+					.from('pdf_page_configurations')
+					.upsert([{
+						config_name: configName,
+						is_default: true,
+						coordinates_data: currentConfig.layout,
+						table_cols_data: currentConfig.tableCols,
+						updated_at: new Date().toISOString()
+					}], { onConflict: 'config_name' });
+
+				if (upsertErr) {
+					console.error('Error al guardar:', upsertErr);
+				}
+			} catch (e) {
+				console.warn('Respaldo local de configuración:', e);
+			}
+
+			localStorage.setItem('config_pdf_cotizacion_default', currentStr);
+			localStorage.setItem('config_pdf_cotizacion_layout', JSON.stringify(currentConfig.layout));
+			localStorage.setItem('config_pdf_cotizacion_table_cols', JSON.stringify(currentConfig.tableCols));
+			alert('Diseño guardado correctamente.');
+		}
+
+		async function loadSavedPdfLayoutConfig() {
+			let layout = null;
+			let tableCols = null;
+
+			try {
+				let { data, error } = await supabase
+					.from('pdf_page_configurations')
+					.select('coordinates_data, table_cols_data, is_default')
+					.eq('config_name', 'layout_cotizacion')
+					.maybeSingle();
+
+				if (error || !data) {
+					const { data: defData } = await supabase
+						.from('pdf_page_configurations')
+						.select('coordinates_data, table_cols_data')
+						.eq('is_default', true)
+						.maybeSingle();
+					if (defData) data = defData;
+				}
+
+				if (data) {
+					layout = data.coordinates_data;
+					tableCols = data.table_cols_data;
+				}
+			} catch (e) {
+				console.warn('Error al cargar diseño desde Supabase, recurriendo a localStorage:', e);
+			}
+
+			if (!layout && !tableCols) {
+				let layoutRaw = localStorage.getItem('config_pdf_cotizacion_layout');
+				let colsRaw = localStorage.getItem('config_pdf_cotizacion_table_cols');
+
+				if (!layoutRaw && !colsRaw) {
+					const defaultRaw = localStorage.getItem('config_pdf_cotizacion_default');
+					if (defaultRaw) {
+						try {
+							const def = JSON.parse(defaultRaw);
+							layoutRaw = JSON.stringify(def.layout);
+							colsRaw = JSON.stringify(def.tableCols);
+						} catch (e) { }
+					}
+				}
+
+				try { if (layoutRaw) layout = JSON.parse(layoutRaw); } catch (e) { }
+				try { if (colsRaw) tableCols = JSON.parse(colsRaw); } catch (e) { }
+			}
+
+			if (layout) {
+				document.querySelectorAll('.pdf-drag-item').forEach(item => {
+					const key = item.dataset.key;
+					if (layout[key]) {
+						const c = layout[key];
+						if (c.top) item.style.top = c.top;
+						if (c.left) item.style.left = c.left;
+						if (c.width) item.style.width = c.width;
+						if (c.fontFamily) item.style.fontFamily = c.fontFamily;
+						if (c.fontSize) item.style.fontSize = c.fontSize;
+						if (c.color) item.style.color = c.color;
+						if (c.fontWeight) item.style.fontWeight = c.fontWeight;
+						if (c.fontStyle) item.style.fontStyle = c.fontStyle;
+						if (c.textDecoration) item.style.textDecoration = c.textDecoration;
+					}
+				});
+			}
+
+			if (tableCols) {
+				tableColsConfig = Object.assign(tableColsConfig, tableCols);
+				['desc', 'cant', 'sub', 'iva', 'tot'].forEach(k => {
+					const c = tableColsConfig[k];
+					const boxEl = document.getElementById('col_box_' + k);
+					if (boxEl) {
+						if (c.left !== undefined) boxEl.style.left = c.left + 'px';
+						if (c.width !== undefined) boxEl.style.width = c.width + 'px';
+						if (c.align) boxEl.style.textAlign = c.align;
+						if (c.fontSize) boxEl.style.fontSize = c.fontSize;
+						if (c.fontFamily) boxEl.style.fontFamily = c.fontFamily;
+						if (c.color) boxEl.style.color = c.color;
+						if (c.fontWeight) boxEl.style.fontWeight = c.fontWeight;
+						if (c.fontStyle) boxEl.style.fontStyle = c.fontStyle;
+						if (c.textDecoration) boxEl.style.textDecoration = c.textDecoration;
+					}
+				});
+			}
+		}
+
+		function resetPdfLayoutConfig() {
+			if (confirm('¿Deseas restablecer las posiciones y formatos del PDF? Si existe un diseño predeterminado guardado, se aplicará ese. De lo contrario se usarán los valores iniciales.')) {
+				localStorage.removeItem('config_pdf_cotizacion_layout');
+				localStorage.removeItem('config_pdf_cotizacion_table_cols');
+				location.reload();
+			}
+		}
+
+		document.addEventListener('DOMContentLoaded', () => {
+			const savePdfVisualLayoutBtn = document.getElementById('savePdfVisualLayoutBtn');
+			if (savePdfVisualLayoutBtn) {
+				savePdfVisualLayoutBtn.addEventListener('click', () => savePdfLayoutConfig());
+			}
+
+			const generateSamplePdfBtn = document.getElementById('generateSamplePdfBtn');
+			if (generateSamplePdfBtn) {
+				generateSamplePdfBtn.addEventListener('click', generateSamplePdf);
+			}
+		});
+
+		function generateSamplePdf() {
+			const countInput = document.getElementById('previewItemCountInput');
+			const count = Math.max(1, Math.min(25, parseInt(countInput ? countInput.value : 3) || 3));
+
+			const sampleCatalog = [
+				{ nombre: 'Cámara IP 4K de Seguridad Exterior', modelo: 'MD-100', qty: 2, precio: 1250, aplicaIva: true },
+				{ nombre: 'Switch PoE Gigabit 16 Puertos Admin', modelo: 'SW-POE16', qty: 1, precio: 3450, aplicaIva: true },
+				{ nombre: 'Sensor de Movimiento Infrarrojo Dual', modelo: 'IR-SENS-01', qty: 4, precio: 480, aplicaIva: true },
+				{ nombre: 'Disco Duro Especializado DVR 4TB 24/7', modelo: 'WD-PURP4T', qty: 2, precio: 1890, aplicaIva: true },
+				{ nombre: 'Panel de Control Alarma Residencial 8Z', modelo: 'ALM-PNL8', qty: 1, precio: 2790, aplicaIva: true },
+				{ nombre: 'Lector Biométrico de Huella y Tarjeta', modelo: 'BIO-ACC10', qty: 3, precio: 1150, aplicaIva: true },
+				{ nombre: 'Bobina de Cable UTP Cat6 100% Cobre 305m', modelo: 'CAB-CAT6-C', qty: 2, precio: 2450, aplicaIva: true },
+				{ nombre: 'Fuente de Poder Centralizada 12V 10A 9CH', modelo: 'PWR-12V10A', qty: 1, precio: 950, aplicaIva: true },
+				{ nombre: 'Sirena Estroboscópica 120dB Exterior', modelo: 'SIR-120DB', qty: 2, precio: 620, aplicaIva: true },
+				{ nombre: 'Transceptor Pasivo Balun HD 4K Par', modelo: 'BAL-HD4K', qty: 8, precio: 120, aplicaIva: true }
+			];
+
+			const sampleProducts = [];
+			for (let i = 0; i < count; i++) {
+				const base = sampleCatalog[i % sampleCatalog.length];
+				sampleProducts.push({
+					id: i + 1,
+					nombre: `${base.nombre}${i >= sampleCatalog.length ? ' #' + (i + 1) : ''}`,
+					modelo: base.modelo,
+					qty: base.qty,
+					precio: base.precio,
+					aplicaIva: base.aplicaIva
+				});
+			}
+
+			const sampleData = {
+				numero: 'COT-DEMO-' + Math.floor(1000 + Math.random() * 9000),
+				fecha: new Date().toISOString().split('T')[0],
+				cliente: { nombre: 'Cliente Ejemplo S.A. de C.V.' },
+				vendedor: { nombre: 'Vendedor Demo', telefono: '555-0192-384' },
+				productos: sampleProducts
+			};
+
+			exportCotizacionToPdf(sampleData);
+		}
+
+		async function buildCotizacionPdfElement(cotData) {
+			const modal = document.getElementById('pdfDesignerModal');
+			const isModalOpen = modal && modal.classList.contains('show');
+			let layout = {};
+			let tc = tableColsConfig;
+
+			if (isModalOpen) {
+				const currentActive = getCurrentPdfLayoutConfig();
+				layout = (currentActive && currentActive.layout) ? currentActive.layout : {};
+				tc = (currentActive && currentActive.tableCols) ? currentActive.tableCols : tableColsConfig;
+			} else {
+				try {
+					let { data } = await supabase
+						.from('pdf_page_configurations')
+						.select('coordinates_data, table_cols_data')
+						.eq('config_name', 'layout_cotizacion')
+						.maybeSingle();
+
+					if (!data) {
+						const { data: defData } = await supabase
+							.from('pdf_page_configurations')
+							.select('coordinates_data, table_cols_data')
+							.eq('is_default', true)
+							.maybeSingle();
+						if (defData) data = defData;
+					}
+
+					if (data) {
+						layout = data.coordinates_data || layout;
+						tc = data.table_cols_data || tc;
+					}
+				} catch (e) { }
+
+				if (!layout || !layout.nombre) {
+					let layoutRaw = localStorage.getItem('config_pdf_cotizacion_layout');
+					let colsRaw = localStorage.getItem('config_pdf_cotizacion_table_cols');
+
+					if (!layoutRaw && !colsRaw) {
+						const defaultRaw = localStorage.getItem('config_pdf_cotizacion_default');
+						if (defaultRaw) {
+							try {
+								const def = JSON.parse(defaultRaw);
+								layoutRaw = JSON.stringify(def.layout);
+								colsRaw = JSON.stringify(def.tableCols);
+							} catch (e) { }
+						}
+					}
+
+					try { if (layoutRaw) layout = JSON.parse(layoutRaw); } catch (e) { }
+					try { if (colsRaw) tc = Object.assign({}, tableColsConfig, JSON.parse(colsRaw)); } catch (e) { }
+				}
+			}
+
+			if (!window.pdfBgDataUrl) {
+				await renderPdfTemplateBackground();
+			}
+
+			const bgImgUrl = window.pdfBgDataUrl || '';
+			const targetW = window.pdfPageWidth || 816;
+			const targetH = window.pdfPageHeight || 1056;
+
+			function applyStyle(el, key, defaultTop, defaultLeft, defaultWidth) {
+				const cfg = layout[key] || {};
+				el.style.position = 'absolute';
+				el.style.top = cfg.top || defaultTop;
+				el.style.left = cfg.left || defaultLeft;
+				if (cfg.width || defaultWidth) el.style.width = cfg.width || defaultWidth;
+				if (cfg.fontFamily) el.style.fontFamily = cfg.fontFamily;
+				if (cfg.fontSize) el.style.fontSize = cfg.fontSize;
+				if (cfg.color) el.style.color = cfg.color;
+				if (cfg.fontWeight) el.style.fontWeight = cfg.fontWeight;
+				if (cfg.fontStyle) el.style.fontStyle = cfg.fontStyle;
+				if (cfg.textDecoration) el.style.textDecoration = cfg.textDecoration;
+			}
+
+			function formatMultilineDescription(str, wordsPerLine = 3) {
+				if (!str) return '';
+				const words = str.trim().split(/\s+/);
+				const lines = [];
+				for (let i = 0; i < words.length; i += wordsPerLine) {
+					lines.push(words.slice(i, i + wordsPerLine).map(w => escapeHtml(w)).join(' '));
+				}
+				return lines.join('<br>');
+			}
+
+			const prods = cotData.productos || [];
+			const maxItemsPerPage = 5;
+			const prodChunks = [];
+			if (prods.length === 0) {
+				prodChunks.push([]);
+			} else {
+				for (let i = 0; i < prods.length; i += maxItemsPerPage) {
+					prodChunks.push(prods.slice(i, i + maxItemsPerPage));
+				}
+			}
+			const totalPages = prodChunks.length;
+
+			let grandTotal = 0;
+			prods.forEach(p => {
+				const unitPrice = parseFloat(String(p.precio || '').replace(',', '.')) || 0;
+				const sub = unitPrice * (p.qty || 1);
+				const iva = (p.aplicaIva !== false) ? (sub * 0.16) : 0;
+				grandTotal += (sub + iva);
+			});
+
+			const masterPdfWrapper = document.createElement('div');
+
+			prodChunks.forEach((chunkItems, pageIdx) => {
+				const pdfContainer = document.createElement('div');
+				pdfContainer.style.position = 'relative';
+				pdfContainer.style.width = targetW + 'px';
+				pdfContainer.style.height = (targetH - 2) + 'px';
+				pdfContainer.style.background = `url("${bgImgUrl}") no-repeat 0 0 / 100% 100%`;
+				pdfContainer.style.fontFamily = 'Inter, sans-serif';
+				pdfContainer.style.boxSizing = 'border-box';
+				pdfContainer.style.overflow = 'hidden';
+				if (pageIdx < totalPages - 1) {
+					pdfContainer.style.pageBreakAfter = 'always';
+				}
+
+				// 1. Cliente
+				const elCliente = document.createElement('div');
+				elCliente.textContent = (cotData.cliente ? cotData.cliente.nombre : '') || '—';
+				elCliente.style.whiteSpace = 'nowrap';
+				applyStyle(elCliente, 'nombre', '270px', '210px', '550px');
+				pdfContainer.appendChild(elCliente);
+
+				// 2. Fecha
+				const elFecha = document.createElement('div');
+				const dt = cotData.fecha ? new Date(cotData.fecha) : new Date();
+				elFecha.textContent = !isNaN(dt) ? dt.toLocaleDateString() : (cotData.fecha || '—');
+				applyStyle(elFecha, 'fecha', '305px', '210px');
+				pdfContainer.appendChild(elFecha);
+
+				// 3. Número
+				const elNumero = document.createElement('div');
+				elNumero.textContent = cotData.numero || '—';
+				applyStyle(elNumero, 'numero', '235px', '560px');
+				pdfContainer.appendChild(elNumero);
+
+				// 4. Vendedor
+				const elVendedor = document.createElement('div');
+				elVendedor.textContent = (cotData.vendedor ? cotData.vendedor.nombre : '') || '—';
+				applyStyle(elVendedor, 'vendedor', '875px', '150px');
+				pdfContainer.appendChild(elVendedor);
+
+				// 5. Teléfono Vendedor
+				const elTelVendedor = document.createElement('div');
+				elTelVendedor.textContent = (cotData.vendedor ? cotData.vendedor.telefono : '') || '—';
+				applyStyle(elTelVendedor, 'telefono', '925px', '150px');
+				pdfContainer.appendChild(elTelVendedor);
+
+				// 6. Total
+				const elTotal = document.createElement('div');
+				const totalVal = cotData.total !== undefined ? parseFloat(cotData.total) : grandTotal;
+				elTotal.textContent = !isNaN(totalVal) ? totalVal.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' }) : '$0.00';
+				applyStyle(elTotal, 'total', '760px', '560px');
+				pdfContainer.appendChild(elTotal);
+
+				// 6. Tabla de Productos (máx 5 por página)
+				const elTabla = document.createElement('div');
+				applyStyle(elTabla, 'tabla', '390px', '55px', '684px');
+
+				let currentY = 0;
+				chunkItems.forEach(p => {
+					const unitPrice = parseFloat(String(p.precio || '').replace(',', '.')) || 0;
+					const subtotal = unitPrice * (p.qty || 1);
+					const ivaMonto = (p.aplicaIva !== false) ? (subtotal * 0.16) : 0;
+					const totalItem = subtotal + ivaMonto;
+
+					const rowContainer = document.createElement('div');
+					rowContainer.style.position = 'absolute';
+					rowContainer.style.top = currentY + 'px';
+					rowContainer.style.left = '0px';
+					rowContainer.style.width = '684px';
+					rowContainer.style.height = '62px';
+					rowContainer.style.borderBottom = '1.5px solid #cbd5e1';
+
+					function applyColFormat(el, colKey) {
+						const c = tc[colKey] || {};
+						if (c.fontFamily) el.style.fontFamily = c.fontFamily;
+						if (c.color) el.style.color = c.color;
+						if (c.fontWeight) el.style.fontWeight = c.fontWeight;
+						if (c.fontStyle) el.style.fontStyle = c.fontStyle;
+						if (c.textDecoration) el.style.textDecoration = c.textDecoration;
+					}
+
+					// Columna Descripción
+					const cDesc = document.createElement('div');
+					cDesc.style.position = 'absolute';
+					cDesc.style.left = (tc.desc.left || 0) + 'px';
+					cDesc.style.width = (tc.desc.width || 240) + 'px';
+					cDesc.style.fontSize = tc.desc.fontSize || '12px';
+					cDesc.style.textAlign = tc.desc.align || 'left';
+					applyColFormat(cDesc, 'desc');
+					cDesc.style.display = 'flex';
+					cDesc.style.gap = '6px';
+					cDesc.style.alignItems = 'flex-start';
+					cDesc.style.padding = '4px';
+					cDesc.style.boxSizing = 'border-box';
+					cDesc.innerHTML = `
+						<img src="${p.imagen || 'IMG/default.png'}" style="width:44px;height:34px;object-fit:cover;border-radius:4px;flex-shrink:0">
+						<div style="line-height:1.25">
+							<div style="font-weight:700">${formatMultilineDescription(p.nombre || '', 3)}</div>
+							${p.modelo ? `<div style="font-size:0.8em;color:#475569;margin-top:1px">Modelo: ${escapeHtml(p.modelo)}</div>` : ''}
+						</div>
+					`;
+					rowContainer.appendChild(cDesc);
+
+					// Columna Cantidad
+					const cCant = document.createElement('div');
+					cCant.style.position = 'absolute';
+					cCant.style.left = (tc.cant.left || 250) + 'px';
+					cCant.style.width = (tc.cant.width || 75) + 'px';
+					cCant.style.fontSize = tc.cant.fontSize || '12px';
+					cCant.style.textAlign = tc.cant.align || 'center';
+					cCant.style.fontWeight = '600';
+					applyColFormat(cCant, 'cant');
+					cCant.style.padding = '4px';
+					cCant.style.boxSizing = 'border-box';
+					cCant.textContent = String(p.qty || 1);
+					rowContainer.appendChild(cCant);
+
+					// Columna Subtotal
+					const cSub = document.createElement('div');
+					cSub.style.position = 'absolute';
+					cSub.style.left = (tc.sub.left || 345) + 'px';
+					cSub.style.width = (tc.sub.width || 100) + 'px';
+					cSub.style.fontSize = tc.sub.fontSize || '12px';
+					cSub.style.textAlign = tc.sub.align || 'right';
+					applyColFormat(cSub, 'sub');
+					cSub.style.padding = '4px';
+					cSub.style.boxSizing = 'border-box';
+					cSub.textContent = `$${subtotal.toFixed(2)}`;
+					rowContainer.appendChild(cSub);
+
+					// Columna IVA
+					const cIva = document.createElement('div');
+					cIva.style.position = 'absolute';
+					cIva.style.left = (tc.iva.left || 465) + 'px';
+					cIva.style.width = (tc.iva.width || 85) + 'px';
+					cIva.style.fontSize = tc.iva.fontSize || '12px';
+					cIva.style.textAlign = tc.iva.align || 'right';
+					applyColFormat(cIva, 'iva');
+					cIva.style.padding = '4px';
+					cIva.style.boxSizing = 'border-box';
+					cIva.textContent = `$${ivaMonto.toFixed(2)}`;
+					rowContainer.appendChild(cIva);
+
+					// Columna Total
+					const cTot = document.createElement('div');
+					cTot.style.position = 'absolute';
+					cTot.style.left = (tc.tot.left || 560) + 'px';
+					cTot.style.width = (tc.tot.width || 120) + 'px';
+					cTot.style.fontSize = tc.tot.fontSize || '12px';
+					cTot.style.textAlign = tc.tot.align || 'right';
+					cTot.style.fontWeight = '700';
+					applyColFormat(cTot, 'tot');
+					cTot.style.padding = '4px';
+					cTot.style.boxSizing = 'border-box';
+					cTot.textContent = `$${totalItem.toFixed(2)}`;
+					rowContainer.appendChild(cTot);
+
+					elTabla.appendChild(rowContainer);
+					currentY += 62;
+				});
+
+				pdfContainer.appendChild(elTabla);
+				masterPdfWrapper.appendChild(pdfContainer);
+			});
+
+			const opt = {
+				margin: 0,
+				filename: `Cotizacion_${cotData.numero || 'DOC'}.pdf`,
+				image: { type: 'jpeg', quality: 0.98 },
+				html2canvas: { scale: 2, useCORS: true, logging: false, scrollY: 0 },
+				jsPDF: { unit: 'px', format: [targetW, targetH], orientation: 'portrait' },
+				pagebreak: { mode: ['css', 'legacy'] }
+			};
+
+			return { masterPdfWrapper, opt };
+		}
+
+		async function exportCotizacionToPdf(cotData) {
+			try {
+				const { masterPdfWrapper, opt } = await buildCotizacionPdfElement(cotData);
+				await html2pdf().set(opt).from(masterPdfWrapper).save();
+			} catch (e) {
+				console.error('Error al generar PDF:', e);
+				alert('Ocurrió un error al generar el archivo PDF.');
+			}
+		}
+
+		async function generateCotizacionPdfBase64(cotData) {
+			const { masterPdfWrapper, opt } = await buildCotizacionPdfElement(cotData);
+			const emailOpt = Object.assign({}, opt, {
+				image: { type: 'jpeg', quality: 0.75 },
+				html2canvas: { scale: 1, useCORS: true, logging: false, scrollY: 0 }
+			});
+			return await html2pdf().set(emailOpt).from(masterPdfWrapper).outputPdf('datauristring');
+		}
+
+		// Exponer globalmente
+		window.exportCotizacionToPdf = exportCotizacionToPdf;
+
+		function showEmailLoading(title, sub) {
+			const overlay = document.getElementById('emailLoadingOverlay');
+			if (overlay) {
+				if (title) document.getElementById('emailLoadingTitle').textContent = title;
+				if (sub) document.getElementById('emailLoadingSub').textContent = sub;
+				overlay.style.display = 'flex';
+				overlay.style.pointerEvents = 'auto';
+			}
+		}
+		function hideEmailLoading() {
+			const overlay = document.getElementById('emailLoadingOverlay');
+			if (overlay) {
+				overlay.style.display = 'none';
+				overlay.style.pointerEvents = 'none';
+			}
+		}
+
+		async function enviarCotizacionPorEmail(cotData) {
+			const clienteEmail = (cotData && cotData.cliente ? cotData.cliente.email : '').trim();
+			if (!clienteEmail) {
+				alert('La cotización no tiene un correo de cliente asignado. Por favor edítala para agregar el correo del cliente.');
+				return;
+			}
+
+			showEmailLoading('Generando PDF y enviando correo...', `Enviando a ${clienteEmail}`);
+
+			try {
+				let pdfBase64 = null;
+				try {
+					pdfBase64 = await generateCotizacionPdfBase64(cotData);
+				} catch (errPdf) {
+					console.warn('No se pudo generar PDF para Resend:', errPdf);
+				}
+
+				const base64Clean = pdfBase64 ? pdfBase64.replace(/^data:application\/pdf.*?;base64,/, '') : '';
+
+				let totalVal = 0;
+				if (cotData.total !== undefined && cotData.total !== null) {
+					totalVal = parseFloat(cotData.total) || 0;
+				} else if (Array.isArray(cotData.productos)) {
+					cotData.productos.forEach(p => {
+						const pr = parseFloat(String(p.precio || 0).replace(',', '.')) || 0;
+						const sub = pr * (p.qty || 1);
+						const iva = (p.aplicaIva !== false) ? (sub * 0.16) : 0;
+						totalVal += (sub + iva);
+					});
+				}
+				const formattedTotal = `$${totalVal.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN`;
+				const numCot = cotData.numero || 'COT-000000';
+				const fechaStr = new Date(cotData.fecha || Date.now()).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+
+				const clienteNombre = (cotData.cliente ? cotData.cliente.nombre : '') || 'Estimado Cliente';
+				const clienteTel = (cotData.cliente ? cotData.cliente.telefono : '') || '—';
+				const clienteDir = (cotData.cliente ? cotData.cliente.direccion : '') || '—';
+				const vendedorNombre = (cotData.vendedor ? cotData.vendedor.nombre : '') || 'YOLOTECH';
+				const vendedorTel = (cotData.vendedor ? cotData.vendedor.telefono : '') || '—';
+				const vendedorEmail = (cotData.vendedor ? cotData.vendedor.email : '') || '—';
+
+				const emailHtml = `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cotización YOLOTECH</title>
+</head>
+<body style="margin:0; padding:20px 0; background-color:#f1f5f9; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; color:#0f172a;">
+  <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px; background-color:#ffffff; border-radius:12px; border:1px solid #e2e8f0; overflow:hidden; box-shadow:0 4px 16px rgba(15, 23, 42, 0.05); margin:0 auto;">
+    <tr>
+      <td style="padding:32px 40px; background-color:#0f172a; text-align:center; border-bottom:3px solid #1e3a8a;">
+        <h1 style="margin:0; font-size:24px; font-weight:700; color:#ffffff; letter-spacing:2px; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;">YOLOTECH</h1>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:32px 40px 16px 40px;">
+        <p style="margin:0 0 6px 0; font-size:12px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.8px;">Cotización Oficial</p>
+        <h2 style="margin:0 0 14px 0; font-size:20px; font-weight:600; color:#0f172a;">Estimado(a) ${clienteNombre},</h2>
+        <p style="margin:0; font-size:14px; line-height:1.6; color:#334155;">Agradecemos su interés en nuestros productos y servicios. Adjunto a este comunicado encontrará el documento PDF correspondiente a la cotización número <strong style="color:#0f172a; background-color:#f1f5f9; padding:2px 8px; border-radius:4px; font-weight:600;">${numCot}</strong>.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:16px 40px;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td width="48%" valign="top" style="background-color:#f8fafc; padding:18px; border-radius:8px; border:1px solid #e2e8f0;">
+              <p style="margin:0 0 10px 0; font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid #cbd5e1; padding-bottom:6px;">INFORMACIÓN DEL CLIENTE</p>
+              <p style="margin:0 0 6px 0; font-size:14px; font-weight:600; color:#0f172a;">${clienteNombre}</p>
+              <p style="margin:0 0 4px 0; font-size:13px; color:#475569;">Teléfono: ${clienteTel}</p>
+              <p style="margin:0 0 4px 0; font-size:13px; color:#475569;">Correo: ${clienteEmail}</p>
+              <p style="margin:0; font-size:13px; color:#475569;">Dirección: ${clienteDir}</p>
+            </td>
+            <td width="4%"></td>
+            <td width="48%" valign="top" style="background-color:#f8fafc; padding:18px; border-radius:8px; border:1px solid #e2e8f0;">
+              <p style="margin:0 0 10px 0; font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid #cbd5e1; padding-bottom:6px;">ATENDIDO POR</p>
+              <p style="margin:0 0 6px 0; font-size:14px; font-weight:600; color:#0f172a;">${vendedorNombre}</p>
+              <p style="margin:0 0 4px 0; font-size:13px; color:#475569;">Teléfono: ${vendedorTel}</p>
+              <p style="margin:0; font-size:13px; color:#475569;">Correo: ${vendedorEmail}</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:8px 40px 20px 40px;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#ffffff; border-radius:8px; border:1px solid #cbd5e1; padding:16px 20px;">
+          <tr>
+            <td align="left" valign="middle">
+              <span style="font-size:11px; color:#64748b; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; display:block; margin-bottom:2px;">FECHA DE EMISIÓN</span>
+              <span style="font-size:14px; font-weight:600; color:#0f172a;">${fechaStr}</span>
+            </td>
+            <td align="right" valign="middle">
+              <span style="font-size:11px; color:#64748b; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; display:block; margin-bottom:2px;">MONTO TOTAL</span>
+              <span style="font-size:18px; font-weight:700; color:#0f172a;">${formattedTotal}</span>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:0 40px 28px 40px;">
+        <p style="margin:0; font-size:13px; color:#64748b; line-height:1.5; text-align:center;">El documento completo con el desglose detallado se encuentra adjunto a este correo en formato PDF.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:24px 40px; background-color:#f8fafc; border-top:1px solid #e2e8f0; text-align:center;">
+        <p style="margin:0 0 4px 0; font-size:12px; font-weight:700; color:#0f172a; letter-spacing:1px;">YOLOTECH</p>
+        <p style="margin:0; font-size:11px; color:#94a3b8;">Este mensaje contiene información confidencial. Si tiene alguna inquietud respecto a los detalles de este documento, por favor responda directamente a este correo.</p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+
+				const resendPayload = {
+					from: 'YOLOTECH <onboarding@resend.dev>',
+					to: [clienteEmail],
+					subject: `Cotización YOLOTECH ${numCot}`,
+					html: emailHtml
+				};
+
+				if (base64Clean) {
+					resendPayload.attachments = [
+						{
+							filename: `Cotizacion_${numCot}.pdf`,
+							content: base64Clean
+						}
+					];
+				}
+
+				let res;
+				try {
+					res = await fetch('https://corsproxy.io/?https://api.resend.com/emails', {
+						method: 'POST',
+						headers: {
+							'Authorization': 'Bearer re_jkwUpkhs_CDJVb84tVf7Qy3q7bG5BSJJV',
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(resendPayload)
+					});
+				} catch (proxyErr) {
+					res = await fetch('https://api.resend.com/emails', {
+						method: 'POST',
+						headers: {
+							'Authorization': 'Bearer re_jkwUpkhs_CDJVb84tVf7Qy3q7bG5BSJJV',
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(resendPayload)
+					});
+				}
+
+				const data = await res.json();
+
+				if (!res.ok) {
+					throw new Error(data.message || (data.name ? `${data.name}: ${data.message}` : 'Error al enviar por Resend'));
+				}
+
+				hideEmailLoading();
+				alert(`¡Cotización ${numCot} enviada con éxito a ${clienteEmail} con el PDF adjunto!`);
+			} catch (e) {
+				hideEmailLoading();
+				console.error('Error enviando con Resend:', e);
+				
+				// Fallback mailto si la red o navegador bloquea la API
+				if (confirm(`No se pudo enviar automáticamente a través de la API (${e.message}). ¿Deseas descargar el PDF y abrir tu cliente de correo para enviarlo manualmente a ${clienteEmail}?`)) {
+					if (typeof exportCotizacionToPdf === 'function') {
+						exportCotizacionToPdf(cotData);
+					}
+					const numCot = cotData.numero || 'COT-000000';
+					const subject = encodeURIComponent(`Cotización YOLOTECH ${numCot}`);
+					const body = encodeURIComponent(`Estimado(a) ${cotData.cliente ? cotData.cliente.nombre : ''},\n\nAnexo la cotización ${numCot}.\n\nSaludos,\nYOLOTECH`);
+					window.location.href = `mailto:${clienteEmail}?subject=${subject}&body=${body}`;
+				}
+			}
+		}
+		window.enviarCotizacionPorEmail = enviarCotizacionPorEmail;
+
+		// init
+		loadMarcas();
+		loadClients();
+		loadVendors();
+		renderPdfTemplateBackground();
+		initPdfDragAndDrop();
+		initColumnHandleDrag();
+		loadSavedPdfLayoutConfig();
+	</script>
+</body>
+
+</html>
