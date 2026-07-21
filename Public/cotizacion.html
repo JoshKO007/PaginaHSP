@@ -3351,21 +3351,13 @@
 				const blob = await renderElementToPdfBlob(masterPdfWrapper, renderOpt);
 				const blobUrl = URL.createObjectURL(blob);
 
-				// Abrir en nueva pestaña en todos los dispositivos
-				const newTab = window.open('', '_blank');
-				if (newTab) {
-					newTab.location.href = blobUrl;
-					setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
-				} else {
-					// Fallback si el navegador bloqueó la pestaña (sin gesto de usuario previo)
-					const a = document.createElement('a');
-					a.href = blobUrl;
-					a.download = fileName;
-					a.style.display = 'none';
-					document.body.appendChild(a);
-					a.click();
-					setTimeout(() => { if (a.parentNode) a.parentNode.removeChild(a); URL.revokeObjectURL(blobUrl); }, 5000);
-				}
+				const a = document.createElement('a');
+				a.href = blobUrl;
+				a.download = fileName;
+				a.style.display = 'none';
+				document.body.appendChild(a);
+				a.click();
+				setTimeout(() => { if (a.parentNode) a.parentNode.removeChild(a); URL.revokeObjectURL(blobUrl); }, 5000);
 			} catch (e) {
 				console.error('Error al generar PDF:', e);
 				alert('Ocurrió un error al generar el archivo PDF: ' + (e.message || e));
