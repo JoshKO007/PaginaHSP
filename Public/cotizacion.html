@@ -10,6 +10,8 @@
 	<link rel="stylesheet" href="CSS/cotizacion.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 	<script>if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 	<!-- EmailJS SDK -->
 	<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -3276,33 +3278,51 @@
 			return { masterPdfWrapper, opt, mountHost };
 		}
 
-		function generatePdfWithHtml2Pdf(element, opt, mode = 'save') {
-			return new Promise((resolve, reject) => {
-				try {
-					const worker = html2pdf().set(opt).from(element);
-					if (mode === 'save') {
-						worker.save().then(() => resolve(true), reject);
-					} else if (mode === 'blob') {
-						worker.toPdf().get('pdf').then(pdf => {
-							try {
-								resolve(pdf.output('blob'));
-							} catch (err) {
-								reject(err);
-							}
-						}, reject);
-					} else if (mode === 'datauristring') {
-						worker.toPdf().get('pdf').then(pdf => {
-							try {
-								resolve(pdf.output('datauristring'));
-							} catch (err) {
-								reject(err);
-							}
-						}, reject);
-					}
-				} catch (err) {
-					reject(err);
-				}
+		// Genera un PDF directamente con html2canvas + jsPDF, evitando el wrapper de html2pdf.js
+		// que rompe async/await en móviles con "Maximum call stack size exceeded"
+		async function renderElementToPdfBlob(element, opt) {
+			const h2cOpt = opt.html2canvas || {};
+			const pdfOpt = opt.jsPDF || {};
+			const imgOpt = opt.image || { type: 'jpeg', quality: 0.98 };
+
+			const targetW = (pdfOpt.format && pdfOpt.format[0]) || 816;
+			const targetH = (pdfOpt.format && pdfOpt.format[1]) || 1056;
+
+			// Capturar cada página por separado para evitar canvas gigantes en móvil
+			const pages = Array.from(element.children);
+			const jsPDF = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
+			if (!jsPDF) throw new Error('jsPDF no está disponible.');
+			const pdfDoc = new jsPDF({
+				unit: 'px',
+				format: [targetW, targetH],
+				orientation: 'portrait',
+				compress: true
 			});
+
+			for (let i = 0; i < pages.length; i++) {
+				const pageEl = pages[i];
+				const canvas = await html2canvas(pageEl, Object.assign({
+					scale: h2cOpt.scale || 2,
+					useCORS: true,
+					logging: false,
+					scrollY: 0,
+					allowTaint: true,
+					windowWidth: targetW,
+					windowHeight: targetH,
+					backgroundColor: '#ffffff'
+				}, h2cOpt));
+
+				const imgData = canvas.toDataURL('image/' + (imgOpt.type || 'jpeg'), imgOpt.quality || 0.98);
+
+				if (i > 0) pdfDoc.addPage([targetW, targetH], 'portrait');
+				pdfDoc.addImage(imgData, (imgOpt.type || 'jpeg').toUpperCase(), 0, 0, targetW, targetH, '', 'FAST');
+
+				// Liberar memoria del canvas inmediatamente
+				canvas.width = 0;
+				canvas.height = 0;
+			}
+
+			return pdfDoc.output('blob');
 		}
 
 		async function exportCotizacionToPdf(cotData) {
@@ -3316,8 +3336,9 @@
 				const opt = res.opt;
 				mountHost = res.mountHost;
 
+				const scale = isMobile ? 1.2 : 2;
 				const renderOpt = Object.assign({}, opt, {
-					html2canvas: Object.assign({}, opt.html2canvas, { scale: isMobile ? 1.5 : 2 })
+					html2canvas: Object.assign({}, opt.html2canvas, { scale })
 				});
 
 				const imgs = Array.from(masterPdfWrapper.querySelectorAll('img'));
@@ -3326,58 +3347,42 @@
 					return new Promise(r => { img.onload = r; img.onerror = r; });
 				}));
 
-				if (isMobile) {
-					const blob = await generatePdfWithHtml2Pdf(masterPdfWrapper, renderOpt, 'blob');
-					const fileName = renderOpt.filename || `Cotizacion_${cotData.numero || 'DOC'}.pdf`;
+				const fileName = opt.filename || `Cotizacion_${cotData.numero || 'DOC'}.pdf`;
+				const blob = await renderElementToPdfBlob(masterPdfWrapper, renderOpt);
 
-					// 1. Intentar Web Share API nativa de Android / iOS (Hoja nativa de compartir / guardar)
+				if (isMobile) {
+					// Intentar Web Share API nativa (iOS/Android)
 					const pdfFile = new File([blob], fileName, { type: 'application/pdf' });
 					if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
 						try {
-							await navigator.share({
-								files: [pdfFile],
-								title: fileName,
-								text: 'Cotización YOLOTECH'
-							});
+							await navigator.share({ files: [pdfFile], title: fileName, text: 'Cotización YOLOTECH' });
 							return;
 						} catch (shareErr) {
 							if (shareErr.name !== 'AbortError') console.warn('Share API fallback:', shareErr);
 						}
 					}
-
-					// 2. Fallback: Abrir en pestaña o forzar enlace de Blob
+					// Fallback: abrir en nueva pestaña
 					const blobUrl = URL.createObjectURL(blob);
-					const printWindow = window.open(blobUrl, '_blank');
-					if (!printWindow) {
+					const w = window.open(blobUrl, '_blank');
+					if (!w) {
 						const a = document.createElement('a');
-						a.href = blobUrl;
-						a.download = fileName;
-						a.style.display = 'none';
-						document.body.appendChild(a);
-						a.click();
-						setTimeout(() => {
-							if (a.parentNode) a.parentNode.removeChild(a);
-							URL.revokeObjectURL(blobUrl);
-						}, 5000);
+						a.href = blobUrl; a.download = fileName; a.style.display = 'none';
+						document.body.appendChild(a); a.click();
+						setTimeout(() => { if (a.parentNode) a.parentNode.removeChild(a); URL.revokeObjectURL(blobUrl); }, 5000);
 					}
 				} else if (isSafari) {
-					const blob = await generatePdfWithHtml2Pdf(masterPdfWrapper, renderOpt, 'blob');
-					const fileName = renderOpt.filename || `Cotizacion_${cotData.numero || 'DOC'}.pdf`;
-
 					const blobUrl = URL.createObjectURL(blob);
 					const a = document.createElement('a');
-					a.href = blobUrl;
-					a.download = fileName;
-					a.style.display = 'none';
-					document.body.appendChild(a);
-					a.click();
-
-					setTimeout(() => {
-						if (a.parentNode) a.parentNode.removeChild(a);
-						URL.revokeObjectURL(blobUrl);
-					}, 5000);
+					a.href = blobUrl; a.download = fileName; a.style.display = 'none';
+					document.body.appendChild(a); a.click();
+					setTimeout(() => { if (a.parentNode) a.parentNode.removeChild(a); URL.revokeObjectURL(blobUrl); }, 5000);
 				} else {
-					await generatePdfWithHtml2Pdf(masterPdfWrapper, renderOpt, 'save');
+					// Chrome/Firefox PC: descarga directa
+					const blobUrl = URL.createObjectURL(blob);
+					const a = document.createElement('a');
+					a.href = blobUrl; a.download = fileName; a.style.display = 'none';
+					document.body.appendChild(a); a.click();
+					setTimeout(() => { if (a.parentNode) a.parentNode.removeChild(a); URL.revokeObjectURL(blobUrl); }, 5000);
 				}
 			} catch (e) {
 				console.error('Error al generar PDF:', e);
@@ -3410,7 +3415,13 @@
 					return new Promise(r => { img.onload = r; img.onerror = r; });
 				}));
 
-				return await generatePdfWithHtml2Pdf(masterPdfWrapper, emailOpt, 'datauristring');
+				const blob = await renderElementToPdfBlob(masterPdfWrapper, emailOpt);
+				return new Promise(resolve => {
+					const reader = new FileReader();
+					reader.onloadend = () => resolve(reader.result);
+					reader.onerror = () => resolve('');
+					reader.readAsDataURL(blob);
+				});
 			} catch (e) {
 				console.error('Error al generar PDF Base64:', e);
 				return '';
